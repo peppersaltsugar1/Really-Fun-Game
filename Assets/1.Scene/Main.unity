@@ -20990,3 +20990,57 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+--- !u!1 &8918953923892448240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8918953924189731210, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+  m_PrefabInstance: {fileID: 8918953923892448239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8918953923892448241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8918953924336122228, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+  m_PrefabInstance: {fileID: 8918953923892448239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8918953923892448242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918953923892448240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 967533321980a5a408fbf516ac1d69b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 8918953923892448243}
+  sPoint: {fileID: 0}
+  player: {fileID: 8918953923892448244}
+--- !u!114 &8918953923892448243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918953923892448241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56af45d6ebb773946a5ccc8183fa0787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8918953923892448244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8918953923892448240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2685074da31ae74cbc6f3b67a8c09ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 0
+  atk: 0
+  atkSpeed: 0
+  moveSpeed: 0
+  weaponDistance: 1
