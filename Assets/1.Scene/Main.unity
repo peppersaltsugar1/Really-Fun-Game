@@ -173,6 +173,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &788708782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 788708785}
+  - component: {fileID: 788708784}
+  - component: {fileID: 788708783}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &788708783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788708782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b02f10e03931740abb6a6d4440cf01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &788708784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788708782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee962296e01b2454f9f7c83843ba8c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletList:
+  - {fileID: 6926711150965903544, guid: 7814bc03f737a8f49a4b0ecd6e4399c5, type: 3}
+  monsterList: []
+  bulletCount: 200
+  monsterCount: 0
+  shotPoint: {fileID: 0}
+--- !u!4 &788708785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 788708782}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.5262203, y: -3.6325028, z: -0.13150567}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1158125014
 GameObject:
   m_ObjectHideFlags: 0
@@ -20984,11 +21047,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8918953924189731208, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8918953924189731210, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
       propertyPath: m_Name
       value: Player_Ruko
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8918953924189731206, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
 --- !u!1 &8918953923892448240 stripped
 GameObject:
@@ -21000,21 +21068,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8918953924336122228, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
   m_PrefabInstance: {fileID: 8918953923892448239}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8918953923892448242
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8918953923892448240}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 967533321980a5a408fbf516ac1d69b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 8918953923892448243}
-  sPoint: {fileID: 0}
-  player: {fileID: 8918953923892448244}
 --- !u!114 &8918953923892448243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21027,6 +21080,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56af45d6ebb773946a5ccc8183fa0787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolingManager: {fileID: 788708784}
+  attackSpeed: 0
+  weaponType: 0
 --- !u!114 &8918953923892448244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21039,8 +21095,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2685074da31ae74cbc6f3b67a8c09ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 8918953923892448243}
+  sPoint: {fileID: 0}
   hp: 0
   atk: 0
   atkSpeed: 0
-  moveSpeed: 0
+  moveSpeed: 5
   weaponDistance: 1
