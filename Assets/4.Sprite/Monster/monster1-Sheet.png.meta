@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bc51c8a029ead6f4eaae0a29944f5ed9
+guid: 5af6a15ea8776f74cbe6d12d0450daf7
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 23
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,13 +117,76 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RUko_side_stop_0
+      name: monster1-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e47e333c5f0d7364fae32fa6bc2762f3
+      internalID: -1509175389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: monster1-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 675f8047e17d0a644ab2b5ff27f2214e
+      internalID: 408477830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: monster1-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 51
+        width: 50
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 453eac29cadb7604f9a9cb477154a6bc
+      internalID: -512874756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: monster1-Sheet_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 40
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +194,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3ef54eef789c434fbfb1a275fc49076
-      internalID: -924971129
+      spriteID: 509fbfccec130ac428f158e7eae05f73
+      internalID: 769548515
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: RUko_side_stop_1
+      name: monster1-Sheet_4
       rect:
         serializedVersion: 2
-        x: 33
+        x: 51
         y: 0
-        width: 32
-        height: 40
+        width: 50
+        height: 50
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,92 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e940ea6b5dbe02c42b75a584d7c76856
-      internalID: -151605188
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RUko_side_stop_2
-      rect:
-        serializedVersion: 2
-        x: 66
-        y: 0
-        width: 32
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9fc2e7e20d20d614fb8ef2fb0e87d052
-      internalID: -2033032426
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RUko_side_stop_3
-      rect:
-        serializedVersion: 2
-        x: 99
-        y: 0
-        width: 32
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 601dcd5b9a9963e4ebfaaa046c5d55e6
-      internalID: -921151097
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RUko_side_stop_4
-      rect:
-        serializedVersion: 2
-        x: 132
-        y: 0
-        width: 32
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 330f553537324e54b98ce15def33fa4e
-      internalID: 322409277
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RUko_side_stop_5
-      rect:
-        serializedVersion: 2
-        x: 165
-        y: 0
-        width: 32
-        height: 40
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 84409a76753fb0c40967877ae5d95ab7
-      internalID: -1895533479
+      spriteID: b651a783cf0ed114682c948796b482f5
+      internalID: -974548524
       vertices: []
       indices: 
       edges: []
@@ -253,12 +232,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RUko_side_stop_2: -2033032426
-      RUko_side_stop_3: -921151097
-      RUko_side_stop_1: -151605188
-      RUko_side_stop_0: -924971129
-      RUko_side_stop_4: 322409277
-      RUko_side_stop_5: -1895533479
+      monster1-Sheet_3: 769548515
+      monster1-Sheet_4: -974548524
+      monster1-Sheet_1: 408477830
+      monster1-Sheet_0: -1509175389
+      monster1-Sheet_2: -512874756
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

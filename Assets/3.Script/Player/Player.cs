@@ -13,10 +13,13 @@ public class Player : MonoBehaviour
     public float weaponDistance;
     Rigidbody2D playerRigid;
     SpriteRenderer playerSprite;
+    Animator anim;
+
     void Start()
     {
         playerRigid = gameObject.GetComponent<Rigidbody2D>();
         playerSprite = gameObject.GetComponent<SpriteRenderer>();
+        anim = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -31,6 +34,7 @@ public class Player : MonoBehaviour
     {
         Vector3 moveVelocity = Vector3.zero;
 
+        
         // Horizontal 입력 처리
         float h = Input.GetAxisRaw("Horizontal");
         if (h < 0)
@@ -55,6 +59,8 @@ public class Player : MonoBehaviour
 
         // Rigidbody에 속도 적용
         playerRigid.velocity = moveVelocity.normalized * moveSpeed;
+        // 애니메이터 달리기 스피드
+        anim.SetFloat("Speed", moveVelocity.magnitude);
     }
 
     public void RotatePlayer()//플레이어 보는 방향에 따라 스프라이트 변경
