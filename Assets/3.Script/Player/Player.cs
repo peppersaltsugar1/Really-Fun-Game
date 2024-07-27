@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public float atkSpeed;
     public float moveSpeed;
     public float weaponDistance;
+    private float angleRange = 35f; // 최소 각도
     Rigidbody2D playerRigid;
     SpriteRenderer playerSprite;
     Animator anim;
@@ -72,11 +73,31 @@ public class Player : MonoBehaviour
         direction.Normalize();
         if (mousePosition.x > transform.position.x)
         {
-            playerSprite.flipX = true; 
+            playerSprite.flipX = true;
         }
         else if (mousePosition.x < transform.position.x)
         {
             playerSprite.flipX = false;
+        }
+
+        if (mousePosition.y > transform.position.y)
+        {
+            // 각도 계산
+            float angle = Vector3.Angle(Vector3.up, direction);
+
+            // 각도가 -30도에서 30도 사이에 있는지 확인
+            if (angle <= angleRange)
+            {
+                anim.SetBool("isBack", true); // 조건을 만족했을 때 isBack 값을 true로 설정
+            }
+            else
+            {
+                anim.SetBool("isBack", false); // 조건을 만족하지 않았을 때 isBack 값을 false로 설정
+            }
+        }
+        else
+        {
+            anim.SetBool("isBack", false); // 마우스가 캐릭터 아래에 있을 때 isBack 값을 false로 설정
         }
 
     }

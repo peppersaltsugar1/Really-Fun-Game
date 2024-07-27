@@ -6,7 +6,6 @@ public class Weapon : MonoBehaviour
 {
     private GameObject[] bulletList;
     private Transform firePoint;
-    public PoolingManager poolingManager;
     public float attackSpeed;
     private float nextFireTime = 0f;
     public enum WeaponType
@@ -47,15 +46,13 @@ public class Weapon : MonoBehaviour
     }
     public void Fire()
     {
-        Debug.Log("여긴들어왔음");
+        PoolingManager poolingManager = PoolingManager.Instance;
         if (poolingManager.bulletPool.Count > 0)
         {
-            Debug.Log("여긴들어옴");
             Bullet bullet = poolingManager.bulletPool.Dequeue();
             bullet.transform.position = transform.position;
             bullet.transform.rotation = transform.rotation;
             bullet.gameObject.SetActive(true);
-
         }
     }
     private void TryFire()
