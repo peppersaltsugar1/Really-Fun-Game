@@ -8,10 +8,12 @@ public class Bullet : MonoBehaviour
     public int damage = 10; // 총알 데미지
     public Rigidbody2D rb;
     public float lifetime = 10f; // 총알이 활성화된 상태를 유지할 시간
+    private PoolingManager pool;
     // Start is called before the first frame update
     void Start()
     {
-        
+         pool = PoolingManager.Instance;
+
     }
 
     // Update is called once per frame
@@ -39,7 +41,6 @@ public class Bullet : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         gameObject.SetActive(false); // 비활성화
-        PoolingManager pool = PoolingManager.Instance;
         pool.bulletPool.Enqueue(this);
     }
 }
