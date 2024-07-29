@@ -87,10 +87,14 @@ public class Monster : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
-            if(player != null)
+            if (player != null)
             {
                 player.TakeDamage(atk);
             }
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        
     }
 }

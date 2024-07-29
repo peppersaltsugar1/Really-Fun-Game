@@ -43,6 +43,11 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false); // 비활성화
         pool.bulletPool.Enqueue(this);
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        gameObject.SetActive(false); // 비활성화
+
+    }
 }
 
 

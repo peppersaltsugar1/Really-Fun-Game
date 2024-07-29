@@ -11,7 +11,11 @@ public class Player : MonoBehaviour
     public float atkSpeed;
     public float moveSpeed;
     public float weaponDistance;
+    public float pushPower;
+    public int coin;
     private float angleRange = 35f; // 최소 각도
+
+
     Rigidbody2D playerRigid;
     SpriteRenderer playerSprite;
     Animator anim;

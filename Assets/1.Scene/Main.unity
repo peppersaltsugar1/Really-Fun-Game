@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 112688892}
   - component: {fileID: 112688891}
   - component: {fileID: 112688894}
+  - component: {fileID: 112688895}
   m_Layer: 0
   m_Name: M_V1
   m_TagString: Untagged
@@ -245,6 +246,22 @@ MonoBehaviour:
   speed: 5
   atk: 20
   hp: 100
+--- !u!70 &112688895
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112688890}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2.173913, y: 2.173913}
+  m_Direction: 0
 --- !u!1 &621383811
 GameObject:
   m_ObjectHideFlags: 0
@@ -21495,6 +21512,8 @@ MonoBehaviour:
   atkSpeed: 0
   moveSpeed: 5
   weaponDistance: 0.75
+  pushPower: 0
+  coin: 0
 --- !u!70 &8918953923892448252
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
