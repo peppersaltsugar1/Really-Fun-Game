@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 70dc571c0f931b840b97e76d5d21b1ec
+guid: bb52aa27d25dd0041a0c622e780cb6bc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 20
+  spritePixelsToUnits: 30
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -70,7 +70,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 2
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -117,421 +117,421 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ruko_idle_0
+      name: UI_Heart_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
-        width: 26
-        height: 31
+        y: 63
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 840301199c6d463448d0d7dd5a995de5
-      internalID: 2098441968
+      spriteID: 1eea462c29330d34e8f35b0f46613223
+      internalID: -1627110979
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_idle_1
+      name: UI_Heart_1
       rect:
         serializedVersion: 2
-        x: 27
-        y: 96
-        width: 26
-        height: 31
+        x: 30
+        y: 63
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb34850211300b84b99aa5b5cc9bea8a
-      internalID: 1644323297
+      spriteID: 6b60df4556cab4d4a9a19d5c0a43fb24
+      internalID: -1872684575
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_idle_2
+      name: UI_Heart_2
       rect:
         serializedVersion: 2
-        x: 54
-        y: 96
-        width: 26
-        height: 31
+        x: 60
+        y: 63
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d931f4c9e0025b94d9cb75ce5b59c78f
-      internalID: -1330666069
+      spriteID: 2be2b470a4092f540a449ebf393a0558
+      internalID: 1586125811
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_idle_3
+      name: UI_Heart_3
       rect:
         serializedVersion: 2
-        x: 81
-        y: 96
-        width: 26
-        height: 31
+        x: 90
+        y: 63
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fb69ff963a15e054db0a8ee05b4149d1
-      internalID: 116786492
+      spriteID: 6bbfc2aa7dc79f44db9800916d0a67fa
+      internalID: 825814558
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_idle_4
+      name: UI_Heart_4
       rect:
         serializedVersion: 2
-        x: 108
-        y: 96
-        width: 26
-        height: 31
+        x: 120
+        y: 63
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7e13a10d8792304791c5871c12ff9ed
-      internalID: 67188040
+      spriteID: 31d82fe652e62e34a881af7ad1e263c2
+      internalID: 2008032573
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_idle_5
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 32734c907977ca2438457a3e82b27703
-      internalID: 332040799
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ruko_run_0
-      rect:
-        serializedVersion: 2
-        x: 27
-        y: 64
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a5c28f6539652ee43bc537b19f0989e5
-      internalID: 111307487
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ruko_run_1
-      rect:
-        serializedVersion: 2
-        x: 54
-        y: 64
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 18db01c40d07f8342b2e6142c18819b2
-      internalID: -674257389
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ruko_run_2
-      rect:
-        serializedVersion: 2
-        x: 81
-        y: 64
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 727f21f2065f91449b782fb5020d2828
-      internalID: 2069303822
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ruko_run_3
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 64
-        width: 26
-        height: 31
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6aa6324f7a46717429d2a1e0898ea114
-      internalID: -1394341917
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Ruko_back_0
+      name: UI_Heart_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
-        width: 26
-        height: 31
+        y: 42
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 926d01cff4c92c240ac5bfbb5d8b8d1f
-      internalID: 1773208543
+      spriteID: 7e5bfaf9d45cf07489b0fb09a8ab956a
+      internalID: 1213216676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_back_1
+      name: UI_Heart_6
       rect:
         serializedVersion: 2
-        x: 27
-        y: 32
-        width: 26
-        height: 31
+        x: 30
+        y: 42
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f35b0d6b70a5cc942bf24c53f4daa48a
-      internalID: -746875439
+      spriteID: e470c1ff9d70ce7408d295a05f4e0ba2
+      internalID: 1004708466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_back_2
+      name: UI_Heart_7
       rect:
         serializedVersion: 2
-        x: 54
-        y: 32
-        width: 26
-        height: 31
+        x: 60
+        y: 42
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b70c567d0bdf0244f9e3c0fe51280f7f
-      internalID: 911202105
+      spriteID: 5e0e873e7afc7db44ad11aa1c2668373
+      internalID: -1722891186
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_back_3
+      name: UI_Heart_8
       rect:
         serializedVersion: 2
-        x: 81
-        y: 32
-        width: 26
-        height: 31
+        x: 90
+        y: 42
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be47e16151d2b864fb10c7b1cff19117
-      internalID: -830989739
+      spriteID: 5e226e1a6c527a240ace07c2643d3776
+      internalID: -172340967
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_back_4
+      name: UI_Heart_9
       rect:
         serializedVersion: 2
-        x: 108
-        y: 32
-        width: 26
-        height: 31
+        x: 120
+        y: 42
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dea2ced619ac3564491cba6dcb76ca64
-      internalID: 1237593088
+      spriteID: 030d6529520c3cc46850d35f37315042
+      internalID: 1470629272
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_back_5
+      name: UI_Heart_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 21
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 114979f9edb09b7488e94af1506c10d2
+      internalID: 1105112934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Heart_11
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 21
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c87c7b3036b784a49bfe7f2348249ef8
+      internalID: 240810054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Heart_12
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 21
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e7f800b2398c5643aa2fafa7cd63ad3
+      internalID: -1567752787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Heart_13
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 21
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ef9d8d39885333499263695eac35494
+      internalID: 618191053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Heart_14
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 21
+        width: 29
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e906cf2b84c48341a84593e26c5a1e5
+      internalID: -163160123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Heart_15
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 26
-        height: 31
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6b1bec826aef72b4aa454b7623d4f32a
-      internalID: 1257362136
+      spriteID: 945f7fad05205fa4fbdf1072173dbe9b
+      internalID: 1902504183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_backRun_0
+      name: UI_Heart_16
       rect:
         serializedVersion: 2
-        x: 27
+        x: 30
         y: 0
-        width: 26
-        height: 31
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a602c5a100d6da2458ddc68461305727
-      internalID: -1463778587
+      spriteID: 746fc61e9a3f2e7499acc927b1d2cd71
+      internalID: 1599095276
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_backRun_1
+      name: UI_Heart_17
       rect:
         serializedVersion: 2
-        x: 54
+        x: 60
         y: 0
-        width: 26
-        height: 31
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4c70dee0d9f9e8439044210bcf9f349
-      internalID: 108865134
+      spriteID: bf4a177f0309564448d6630627fef949
+      internalID: 1223397097
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_backRun_2
+      name: UI_Heart_18
       rect:
         serializedVersion: 2
-        x: 81
+        x: 90
         y: 0
-        width: 26
-        height: 31
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf19d71383466214b83635c3e8685df6
-      internalID: 48674349
+      spriteID: 45a551cba6973b34eb72e3c3d06bcfb2
+      internalID: -1233500987
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Ruko_backRun_3
+      name: UI_Heart_19
       rect:
         serializedVersion: 2
-        x: 108
+        x: 120
         y: 0
-        width: 26
-        height: 31
+        width: 29
+        height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 74e5b18e6f9bb154190be56b43883ef8
-      internalID: 738665740
+      spriteID: d403fa768c370304c819ee9e0123b8b4
+      internalID: 1835015485
       vertices: []
       indices: 
       edges: []
@@ -547,26 +547,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Ruko_idle_3: 116786492
-      Ruko_run_1: -674257389
-      Ruko_back_4: 1237593088
-      Ruko_idle_0: 2098441968
-      Ruko_idle_5: 332040799
-      Ruko_run_0: 111307487
-      Ruko_backRun_2: 48674349
-      Ruko_backRun_3: 738665740
-      Ruko_run_2: 2069303822
-      Ruko_run_3: -1394341917
-      Ruko_backRun_0: -1463778587
-      Ruko_back_1: -746875439
-      Ruko_back_2: 911202105
-      Ruko_backRun_1: 108865134
-      Ruko_idle_4: 67188040
-      Ruko_back_0: 1773208543
-      Ruko_back_5: 1257362136
-      Ruko_back_3: -830989739
-      Ruko_idle_1: 1644323297
-      Ruko_idle_2: -1330666069
+      UI_Heart_12: -1567752787
+      UI_Heart_9: 1470629272
+      UI_Heart_19: 1835015485
+      UI_Heart_13: 618191053
+      UI_Heart_6: 1004708466
+      UI_Heart_5: 1213216676
+      UI_Heart_18: -1233500987
+      UI_Heart_0: -1627110979
+      UI_Heart_15: 1902504183
+      UI_Heart_16: 1599095276
+      UI_Heart_3: 825814558
+      UI_Heart_2: 1586125811
+      UI_Heart_11: 240810054
+      UI_Heart_17: 1223397097
+      UI_Heart_14: -163160123
+      UI_Heart_4: 2008032573
+      UI_Heart_10: 1105112934
+      UI_Heart_7: -1722891186
+      UI_Heart_1: -1872684575
+      UI_Heart_8: -172340967
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
