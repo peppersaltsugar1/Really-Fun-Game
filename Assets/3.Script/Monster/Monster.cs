@@ -32,17 +32,17 @@ public class Monster : MonoBehaviour
             case MonsterType.TypeA:
                 speed = 3f;
                 hp = 100;
-                atk = 10;
+                atk = 1;
                 break;
             case MonsterType.TypeB:
                 speed = 2f;
                 hp = 150;
-                atk = 20;
+                atk = 2;
                 break;
             case MonsterType.TypeC:
                 speed = 1f;
                 hp = 200;
-                atk = 30;
+                atk = 3;
                 break;
         }
     }
@@ -84,6 +84,11 @@ public class Monster : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+       
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("ºÎµúÈû");
         if (collision.gameObject.CompareTag("Player"))
         {
             Player player = collision.gameObject.GetComponent<Player>();
@@ -92,9 +97,5 @@ public class Monster : MonoBehaviour
                 player.TakeDamage(atk);
             }
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
     }
 }

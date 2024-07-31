@@ -5,15 +5,25 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] Weapon weapon;
+    //플레이어 에임
     public Transform sPoint;
-    public float hp;
+    private float angleRange = 35f; // 최소 각도
+    //플레이어체력관련
+    public float maxHp;
+    public float currentHp;
+    public float temHp;
+    public float shield;
+    public float shieldHp;
+    public float spark;
+    //플레이어공격관련
     public float atk;
     public float atkSpeed;
-    public float moveSpeed;
-    public float weaponDistance;
     public float pushPower;
+    //플레이어 이동속도
+    public float moveSpeed;
+    //그외 플레이어 정보
     public int coin;
-    private float angleRange = 35f; // 최소 각도
+    public float weaponDistance;
 
 
     Rigidbody2D playerRigid;
@@ -120,8 +130,69 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(float atk)
     {
-
-        hp = hp - atk;
+        if (shieldHp > 0)
+        {
+            shieldHp -= atk;
+            if (shieldHp < 0)
+            {
+                shieldHp = 0;
+            }
+            shield = maxHp / 3;
+            return;
+        }
+        if (spark > 0)
+        {
+            spark -= atk;
+            if (spark < 0)
+            {
+                spark = 0;
+            }
+            Hit();
+            return;
+        }
+        if (temHp > 0)
+        {
+            temHp -= atk;
+            if (temHp < 0)
+            {
+                temHp = 0;
+            }
+            return;
+        }
+        if (shield > 0)
+        {
+            if (shield * 3 >= currentHp)
+            {
+                shield -= 1;
+                if (shield < 0)
+                {
+                    shield = 0;
+                }
+            }
+            currentHp -= atk;
+            return;
+        }
+        if (currentHp > 0)
+        {
+            currentHp -= atk;
+            if (currentHp >= 0)
+            {
+                Die();
+            }
+        }
         Debug.Log("쳐맞음");
+        Debug.Log(currentHp);
+    }
+    private void Die()
+    {
+        Debug.Log("뒤짐");
+    }
+    private void Hit()
+    {
+
+    }
+    public void Heal(int i)
+    {
+
     }
 }
