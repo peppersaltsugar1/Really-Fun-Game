@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public float temHp;
     public float shield;
     public float shieldHp;
-    public float spark;
+    public float elect;
     //플레이어공격관련
     public float atk;
     public float atkSpeed;
@@ -24,17 +24,25 @@ public class Player : MonoBehaviour
     //그외 플레이어 정보
     public int coin;
     public float weaponDistance;
-
-
+    private float healTime = 0.2f;
+    private Coroutine healing_Co;
+    [SerializeField]
+    private Collider2D playerCol;
     Rigidbody2D playerRigid;
     SpriteRenderer playerSprite;
     Animator anim;
+    private UIManager uiManager;
+    private bool isHit = false;
+    private float hitTime = 2.0f;
 
     void Start()
     {
         playerRigid = gameObject.GetComponent<Rigidbody2D>();
         playerSprite = gameObject.GetComponent<SpriteRenderer>();
         anim = gameObject.GetComponent<Animator>();
+        uiManager = UIManager.Instance;
+        currentHp = maxHp;
+
     }
 
     // Update is called once per frame
@@ -49,7 +57,7 @@ public class Player : MonoBehaviour
     {
         Vector3 moveVelocity = Vector3.zero;
 
-        
+
         // Horizontal 입력 처리
         float h = Input.GetAxisRaw("Horizontal");
         if (h < 0)
@@ -133,6 +141,9 @@ public class Player : MonoBehaviour
         if (shieldHp > 0)
         {
             shieldHp -= atk;
+            uiManager.ShiledSet();
+            StartCoroutine(Hit_co());
+
             if (shieldHp < 0)
             {
                 shieldHp = 0;
@@ -140,21 +151,28 @@ public class Player : MonoBehaviour
             shield = maxHp / 3;
             return;
         }
-        if (spark > 0)
+        if (elect > 0)
         {
-            spark -= atk;
-            if (spark < 0)
+            elect -= atk;
+            uiManager.ElectDel();
+            StartCoroutine(Hit_co());
+
+            if (elect < 0)
             {
-                spark = 0;
+                elect = 0;
             }
-            Hit();
+            Elect();
             return;
         }
         if (temHp > 0)
         {
             temHp -= atk;
-            if (temHp < 0)
+            uiManager.TemHpSet();
+            StartCoroutine(Hit_co());
+
+            if (temHp <= 0)
             {
+                uiManager.TemHpDel();
                 temHp = 0;
             }
             return;
@@ -164,35 +182,70 @@ public class Player : MonoBehaviour
             if (shield * 3 >= currentHp)
             {
                 shield -= 1;
+                uiManager.ShiledOff();
+                StartCoroutine(Hit_co());
+
                 if (shield < 0)
                 {
                     shield = 0;
                 }
+                return;
             }
-            currentHp -= atk;
-            return;
         }
         if (currentHp > 0)
         {
+            Debug.Log("체력이까임");
             currentHp -= atk;
-            if (currentHp >= 0)
+            uiManager.HpSet();
+            StartCoroutine(Hit_co());
+            if (currentHp <= 0)
             {
                 Die();
             }
+            return;
         }
-        Debug.Log("쳐맞음");
-        Debug.Log(currentHp);
     }
     private void Die()
     {
         Debug.Log("뒤짐");
     }
-    private void Hit()
+    
+    public void Heal(int healNum)
     {
-
+        if (healing_Co != null)
+        {
+            StopCoroutine(Healing_Co(healNum));
+        }
+        healing_Co = StartCoroutine(Healing_Co(healNum));
     }
-    public void Heal(int i)
+    public void Elect()
     {
+        //번개배터리 터질경우 효과구현해야함
+    }
 
+    private IEnumerator Healing_Co(int healNum)
+    {
+        for (int i = 0; i < healNum; i++)
+        {
+            if (currentHp < maxHp)
+            {
+                currentHp += 1; // 체력을 증가시킵니다.
+                currentHp = Mathf.Min(currentHp, maxHp); // 체력이 최대 체력을 넘지 않도록 합니다.
+            }
+
+            yield return new WaitForSeconds(healTime); // healTime만큼 대기합니다.
+        }
+
+        healing_Co = null; // 코루틴이 끝났음을 표시합니다.
+    }
+    private IEnumerator Hit_co()
+    {
+        isHit = true;
+        playerCol.enabled = false;
+
+        yield return new WaitForSeconds(hitTime);
+
+        playerCol.enabled = true;
+        isHit = false;
     }
 }
