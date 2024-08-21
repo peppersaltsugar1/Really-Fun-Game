@@ -248,4 +248,22 @@ public class Player : MonoBehaviour
         playerCol.enabled = true;
         isHit = false;
     }
+    public void TemHpUp(int temHpNum)
+    {
+        temHp += temHpNum;
+        uiManager.TemHpSet();
+    }
+    public void ShileHpUp(int shuldNum)
+    {
+        shieldHp += shuldNum;
+    }
+
+    public void ElectUp(int electNum)
+    {
+        elect += electNum;
+    }
+    public void CoinUp(int coinNum)
+    {
+
+    }
 }
