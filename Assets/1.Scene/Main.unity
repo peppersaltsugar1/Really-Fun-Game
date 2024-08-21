@@ -3939,7 +3939,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &61423829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38253,7 +38253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2082903362
 Transform:
   m_ObjectHideFlags: 0
@@ -44890,13 +44890,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 8918953923892448243}
   sPoint: {fileID: 0}
-  hp: 0
+  maxHp: 0
+  currentHp: 0
+  temHp: 0
+  shield: 0
+  shieldHp: 0
+  elect: 0
   atk: 0
   atkSpeed: 0
-  moveSpeed: 5
-  weaponDistance: 0.75
   pushPower: 0
+  moveSpeed: 5
   coin: 0
+  weaponDistance: 0.75
+  playerCol: {fileID: 0}
 --- !u!210 &8918953923892448247
 SortingGroup:
   m_ObjectHideFlags: 0
