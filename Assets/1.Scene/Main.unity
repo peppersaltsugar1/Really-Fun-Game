@@ -53517,6 +53517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2060123215}
   - component: {fileID: 2060123214}
+  - component: {fileID: 2060123216}
   m_Layer: 0
   m_Name: SPRoom_Clover
   m_TagString: Untagged
@@ -53592,6 +53593,19 @@ Transform:
   m_Father: {fileID: 2082903362}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2060123216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2060123213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a26c18b2394af1428b6eae1a760d570, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: 4
 --- !u!1 &2082903361
 GameObject:
   m_ObjectHideFlags: 0
