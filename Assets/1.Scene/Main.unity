@@ -53606,6 +53606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 4
+  PortalNum: 1
 --- !u!1 &2082903361
 GameObject:
   m_ObjectHideFlags: 0
