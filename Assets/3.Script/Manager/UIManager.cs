@@ -48,6 +48,7 @@ public class UIManager : MonoBehaviour
     }
     public void HpBarSet()
     {
+        Debug.Log("UI생성함");
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
