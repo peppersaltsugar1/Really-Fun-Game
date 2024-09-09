@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     private UIManager uiManager;
     private bool isHit = false;
     private float hitTime = 2.0f;
+    //플레이어 카메라
+    public Camera camera;
 
     void Start()
     {
