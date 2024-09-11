@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,16 +10,16 @@ public class Player : MonoBehaviour
     public Transform sPoint;
     private float angleRange = 35f; // 최소 각도
     //플레이어체력관련
-    public float maxHp;
-    public float currentHp;
-    public float temHp;
-    public float shield;
-    public float shieldHp;
-    public float elect;
+    public float maxHp; // 최대 체력
+    public float currentHp; // 현재 체력
+    public float temHp; // 임시 체력(아이템
+    public float shield; // 공격 막아주는 것
+    public float shieldHp; // 
+    public float elect; // 
     //플레이어공격관련
-    public float atk;
-    public float atkSpeed;
-    public float pushPower;
+    public float atk; // 공격력
+    public float atkSpeed; // 공격속도
+    public float pushPower; // 어택시 밀격
     //플레이어 이동속도
     public float moveSpeed;
     //그외 플레이어 정보
@@ -36,6 +37,11 @@ public class Player : MonoBehaviour
     private float hitTime = 2.0f;
     //플레이어 카메라
     public Camera camera;
+    // 프로그램
+    public bool EnomyDelete = false;
+    private float DelayTime = 1.5f;
+    private float NextDeleteTime = 0.0f;
+    public float detectionRadius = 5.0f; 
 
     void Start()
     {
@@ -44,7 +50,6 @@ public class Player : MonoBehaviour
         anim = gameObject.GetComponent<Animator>();
         uiManager = UIManager.Instance;
         currentHp = maxHp;
-
     }
 
     // Update is called once per frame
@@ -53,6 +58,7 @@ public class Player : MonoBehaviour
         Move();
         RotateWeapon();
         RotatePlayer();
+        FDeleteMonster();
     }
 
     public void Move() //플레이어 이동
@@ -211,7 +217,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("뒤짐");
     }
-    
+
     public void Heal(int healNum)
     {
         if (healing_Co != null)
@@ -219,6 +225,9 @@ public class Player : MonoBehaviour
             StopCoroutine(Healing_Co(healNum));
         }
         healing_Co = StartCoroutine(Healing_Co(healNum));
+
+
+        Debug.Log("HP+");
     }
     public void Elect()
     {
@@ -266,6 +275,52 @@ public class Player : MonoBehaviour
     }
     public void CoinUp(int coinNum)
     {
+        coin += coinNum;
+    }
+    public Weapon GetWeapon()
+    {
+        return weapon;
+    }
 
+    public void SetSpeed(float newSpeed)
+    {
+        this.moveSpeed += newSpeed;
+    }
+
+    // 수정 중. 몬스터 삭제 알고리즘.
+    public void FDeleteMonster()
+    {
+        if (EnomyDelete)
+        {
+            if (Time.time >= NextDeleteTime)
+            {
+                // 캐릭터 주변의 모든 몬스터 탐색
+                Collider2D[] hitMonsters = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+
+                foreach (Collider2D collider in hitMonsters)
+                {
+                    Monster monster = collider.GetComponent<Monster>();
+
+                    if (monster != null)
+                    {
+                        Destroy(monster.gameObject);
+                        Debug.Log("Monster is deleted");
+                        break;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+                NextDeleteTime = Time.time + DelayTime; // 다음 삭제 가능 시간 업데이트
+            }
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }

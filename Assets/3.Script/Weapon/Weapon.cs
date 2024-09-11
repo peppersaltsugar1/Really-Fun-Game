@@ -86,4 +86,18 @@ public class Weapon : MonoBehaviour
             nextFireTime = Time.time + attackSpeed; // 다음 공격 가능한 시간 업데이트
         }
     }
+
+    public void SetAttackSpeed(float speed)
+    {
+        // Debug.Log("ChangeSpeed");
+        attackSpeed += speed;
+
+        if (attackSpeed < 0.1f)
+        {
+            attackSpeed = 0.1f;
+        }
+
+        // Debug.Log("Attack Speed set to: " + attackSpeed);
+    }
+
 }

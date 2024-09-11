@@ -73,4 +73,22 @@ public class PoolingManager : MonoBehaviour
         Debug.Log(bulletPool.Count);
     }
 
+    public void RefreshBulletDamage(int newDamage)
+    {
+        foreach (Bullet bullet in bulletPool)
+        {
+            bullet.SetAttackPower(newDamage); // 기존 데미지에 대한 보정을 해줍니다.
+            // Debug.Log("Refreshed bullet with new damage: " + bullet.damage);
+        }
+    }
+
+    public void RefreshBulletSpeed(float newSpeed)
+    {
+        foreach (Bullet bullet in bulletPool)
+        {
+            bullet.SetBulletSpeed(newSpeed); // 기존 데미지에 대한 보정을 해줍니다.
+            Debug.Log("Refreshed bullet with new speed: " + bullet.speed);
+        }
+    }
+
 }
