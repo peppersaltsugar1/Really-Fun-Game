@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     private List<GameObject> hpList = new();
     [SerializeField]
     private Canvas canvas;
+    [SerializeField]
+    private int interval;
+
     private int hpNum = 0;
 
     private void Awake()
@@ -48,6 +51,7 @@ public class UIManager : MonoBehaviour
     }
     public void HpBarSet()
     {
+        Debug.Log("UI생성함");
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
@@ -68,7 +72,7 @@ public class UIManager : MonoBehaviour
                 GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
                 newHp.transform.SetParent(canvas.transform, false);
                 RectTransform rectTransform = newHp.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2(i * 115, 0); // 위치 조정 (임의로 설정)
+                rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
                 hpList.Add(newHp);
                 hpNum += 1;
             }
@@ -80,7 +84,7 @@ public class UIManager : MonoBehaviour
                     GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
                     newTemHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * 115, 0); // 위치 조정 (임의로 설정)
+                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newTemHp);
                     hpNum += 1;
 
@@ -95,7 +99,7 @@ public class UIManager : MonoBehaviour
                     GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
                     spark.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = spark.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * 115, 0); // 위치 조정 (임의로 설정)
+                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(spark);
                     hpNum += 1;
 
@@ -109,7 +113,7 @@ public class UIManager : MonoBehaviour
                     GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
                     newShildHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * 115, 0); // 위치 조정 (임의로 설정)
+                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newShildHp);
                     hpNum += 1;
 
