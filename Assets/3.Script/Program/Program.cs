@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Program : MonoBehaviour
 {
-
+    public enum program { AttackPower, AttackSpeed, BulletSpeed, DeleteMonster, HPHeal, MovingSpeed };
+    public static int ProgramCount = 6;
     // ProgramInterface
     public string ProgramName; // 프로그램 이름
     public string Explanation; // 설명
@@ -13,7 +14,7 @@ public class Program : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
