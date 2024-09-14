@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c056aa960ea597a4c9e99291c6d523af
+guid: dee220664f1f4fe47974ecfd73949c2b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -7,7 +7,7 @@ TextureImporter:
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
-    sRGBTexture: 0
+    sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
@@ -117,85 +117,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UI_Window_Mate_0
+      name: Audio_icon_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 30
+        height: 27
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 53a4ee46ee94e8942900706ed2de7d35
-      internalID: -536468512
+      spriteID: 6958a6ac93c66394eaa72dd0b97875b0
+      internalID: -392515766
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Window_Mate_1
+      name: Audio_icon_1
       rect:
         serializedVersion: 2
-        x: 65
+        x: 31
         y: 0
-        width: 64
-        height: 64
+        width: 30
+        height: 27
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4fc19ed436fb61441b7e805fc707a4c9
-      internalID: 1674255390
+      spriteID: 3105eb5a3b1417c48af6cd1c16d519f9
+      internalID: -272179251
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Window_Mate_2
+      name: Audio_icon_2
       rect:
         serializedVersion: 2
-        x: 130
+        x: 62
         y: 0
-        width: 64
-        height: 64
+        width: 30
+        height: 27
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 3, y: 3, z: 3, w: 3}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 87aadad0e75a01343988b4a9b51cfc76
-      internalID: 140948802
+      spriteID: 8cced9a9870d02f42856bf0cc3a4e14e
+      internalID: -626814122
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_Window_Mate_3
+      name: Audio_icon_3
       rect:
         serializedVersion: 2
-        x: 195
+        x: 93
         y: 0
-        width: 64
-        height: 64
+        width: 30
+        height: 27
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 3, y: 3, z: 3, w: 3}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 34656c3c85b623047a2fa085698ea884
-      internalID: 505047314
+      spriteID: d00342b4aad363348aa6c223b4897d63
+      internalID: -1447659640
       vertices: []
       indices: 
       edges: []
@@ -211,10 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      UI_Window_Mate_3: 505047314
-      UI_Window_Mate_0: -536468512
-      UI_Window_Mate_1: 1674255390
-      UI_Window_Mate_2: 140948802
+      Audio_icon_1: -272179251
+      Audio_icon_0: -392515766
+      Audio_icon_2: -626814122
+      Audio_icon_3: -1447659640
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
