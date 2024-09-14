@@ -40,15 +40,12 @@ public class Program : MonoBehaviour
     // 이미지를 설정하는 매서드
     public void SetSprite(string spriteSheetName, int spriteIndex)
     {
-        // 스프라이트 시트에서 모든 스프라이트 로드
         Sprite[] sprites = Resources.LoadAll<Sprite>(spriteSheetName);
 
         if (sprites != null && spriteIndex < sprites.Length)
         {
-            // 인덱스를 통해 특정 스프라이트 선택
             Sprite newSprite = sprites[spriteIndex];
 
-            // 스프라이트를 SpriteRenderer에 할당
             spriteRenderer.sprite = newSprite;
             Debug.Log("Sprite assigned: " + newSprite.name);
         }
