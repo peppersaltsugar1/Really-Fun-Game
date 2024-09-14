@@ -13,7 +13,6 @@ public class Bullet : MonoBehaviour
     void Start()
     {
          pool = PoolingManager.Instance;
-
     }
 
     // Update is called once per frame
@@ -24,6 +23,7 @@ public class Bullet : MonoBehaviour
 
     private void OnEnable()
     {
+        // Debug.Log("Bullet activated with damage: " + damage);
         if (rb != null)
         {
             // 총알이 활성화될 때 방향을 설정합니다.
@@ -47,6 +47,18 @@ public class Bullet : MonoBehaviour
     {
         gameObject.SetActive(false); // 비활성화
 
+    }
+
+    public void SetAttackPower(int power)
+    {
+        // Debug.Log("ChangePower");
+        damage += power; 
+    }
+
+    public void SetBulletSpeed(float newspeed)
+    {
+        // Debug.Log("ChangeSpeed");
+        speed += newspeed;
     }
 }
 
