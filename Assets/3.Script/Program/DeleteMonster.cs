@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class DeleteMonster : ChangeStatusProgram
 {
+    public static string StaticProgramName = "Delete Monster";
+    public static string StaticExplanation = "몬스터 삭제 프로그램. 일정 주기마다 주변 몬스터가 삭제된다.";
+
     // Start is called before the first frame update
     void Start()
     {
-        Explanation = "몬스터 삭제 프로그램. 일정 주기마다 주변 몬스터가 삭제된다.";
         DeleteIsPossible = true;
     }
 

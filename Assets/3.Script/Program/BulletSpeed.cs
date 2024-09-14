@@ -6,6 +6,8 @@ public class BulletSpeed : ChangeStatusProgram
 {
     private float ChangeSpeed;
     private PoolingManager Instance;
+    public static string StaticProgramName = "Bullet Speed";
+    public static string StaticExplanation = "총알속도 증가 프로그램";
 
     // Start is called before the first frame update
     void Start()

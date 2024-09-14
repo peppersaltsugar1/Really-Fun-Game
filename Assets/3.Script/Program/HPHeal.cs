@@ -5,12 +5,13 @@ using UnityEngine;
 public class HPHeal : ChangeStatusProgram
 {
     private int HealingHP;
+    public static string StaticProgramName = "HP Heal";
+    public static string StaticExplanation = "힐링 프로그램. 체력이 참";
 
     // Start is called before the first frame update
     void Start()
     {
         HealingHP = 5;
-        Explanation = "힐링 프로그램. 체력이 참";
         DeleteIsPossible = true;
     }
 

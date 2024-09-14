@@ -8,11 +8,12 @@ public class AttackPower : ChangeStatusProgram
     private int ChangePower;
     // private Bullet bullet;
     private PoolingManager Instance;
+    public static string StaticProgramName = "Attack Power";
+    public static string StaticExplanation = "공격력 증가 프로그램";
     // Start is called before the first frame update
     void Start()
     {
         ChangePower = 100;
-        Explanation = "공격력 증가 프로그램";
         DeleteIsPossible = true;
     }
 
