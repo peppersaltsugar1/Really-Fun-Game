@@ -15723,7 +15723,7 @@ GameObject:
   - component: {fileID: 1467123234}
   - component: {fileID: 1467123233}
   m_Layer: 5
-  m_Name: ControlOption_UI
+  m_Name: ControlOptions_UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
