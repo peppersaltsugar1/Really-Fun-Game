@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
 
     public void UseBasicWeapon()
     {
-        attackSpeed = 1.5f;
+        attackSpeed =0.5f;
     }
     public void Fire()
     {
