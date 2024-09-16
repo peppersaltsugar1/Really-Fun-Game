@@ -6,9 +6,13 @@ public class MapGenerator : MonoBehaviour
     //맵 리스트
     [SerializeField]
     private Map[] firstMapPrefabList;
+    [SerializeField]
     private Map[] normalMapPrefabList;
+    [SerializeField]
     private Map[] specialMapPrefabList;
+    [SerializeField]
     private Map[] randomSpecialMapPrefabList;
+    [SerializeField]
     private Map[] bossMapPrefabList;
     private List<Map> mapList = new List<Map>();
     //맵 생성관련 인수
@@ -20,8 +24,6 @@ public class MapGenerator : MonoBehaviour
     private int makeMapNum; //만들어야 할 맵의갯수(포탈이만들어진 갯수)
     [SerializeField]
     private int specialMapNum; //생성할 스페셜맵의 갯수
-    [SerializeField]
-    private int downloadMapNum; //생성할 다운로드맵의 갯수
     [SerializeField]
     private int randomSpeicalMapNum; //생성할 랜덤스페셜맵의 갯수
     //맵 생성 확률인수
@@ -37,12 +39,13 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         currentMapNum = 0;
+        CreateMap();
+        HideMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void CreateMap()
@@ -51,7 +54,7 @@ public class MapGenerator : MonoBehaviour
         int createmapnum = maxMapNum - mapList.Count;
         for (int i = 0; i < createmapnum; i++)
         {
-            CreateMiddleMap(); 
+            CreateMiddleMap();
         }
     }
     private void CreateFirstMap()
@@ -74,57 +77,57 @@ public class MapGenerator : MonoBehaviour
                     case 1:
                         while (true)
                         {
-                            int middleMapIndex = Random.RandomRange(0, mapList.Count);
+                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum == 4)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
                                 middleMap.transform.SetParent(map, false);
                                 mapList.Add(middleMap);
                                 TakePortal(middleMap, connectPortalList);
+                                ConnectPortal();
                             }
                             else
                             {
                                 return;
                             }
-                            ConnectPortal();
                             break;
                         }
                         break;
                     case 2:
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < 2; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, mapList.Count);
+                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum >= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
                                 middleMap.transform.SetParent(map, false);
                                 mapList.Add(middleMap);
                                 TakePortal(middleMap, connectPortalList);
+                                ConnectPortal();
                             }
                             else
                             {
                                 i--;
                             }
-                            ConnectPortal();
                         }
                         break;
 
                     case 3:
-                        for (int i = 0; i < 4; i++)
+                        for (int i = 0; i < 3; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, mapList.Count);
+                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum <= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
                                 middleMap.transform.SetParent(map, false);
                                 mapList.Add(middleMap);
                                 TakePortal(middleMap, connectPortalList);
+                                ConnectPortal();
                             }
                             else
                             {
                                 i--;
                             }
-                            ConnectPortal();
                         }
                         break;
 
@@ -192,7 +195,10 @@ public class MapGenerator : MonoBehaviour
     }
     private void ConnectPortal()
     {
+        Debug.Log(portalList.Count+"포탈리스트 갯수");
+        Debug.Log(connectPortalList.Count+"연결할포탈리스트 갯수");
         portalList[0].connectPortal = connectPortalList[0];
+        connectPortalList[0].connectPortal = portalList[0];
         portalList.RemoveAt(0);
         connectPortalList.RemoveAt(0);
         MapCheck(connectPortalList);
@@ -305,7 +311,7 @@ public class MapGenerator : MonoBehaviour
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
             for (int i = 0; i < mapList.Count; i++)
             {
-                if (randomSpecialMapPrefabList[mapIndex].Type == mapList[i].Type)
+                if (randomSpecialMapPrefabList[mapIndex].name == mapList[i].name)
                 {
                     isDuplicate = true; // 같은 타입의 맵이 존재할 경우 true
                     break; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
@@ -355,18 +361,27 @@ public class MapGenerator : MonoBehaviour
                         return false;
                     }
                 case 3:
-                    if (downloadMapNum > 0)
+                    /*if (downloadMapNum > 0)
                     {
                         return true;
                     }
                     else
                     {
                         return false;
-                    }
+                    }*/
+                    return true;
             }
             return true;
         }
         return false;
 
+    }
+    private void HideMap()
+    {
+        for (int i = 0; i < mapList.Count; i++)
+        {
+            mapList[i].gameObject.SetActive(false);
+        }
+        mapList[0].gameObject.SetActive(true);
     }
 }
