@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e2c8c2d01f6779842a71fa47ee40df47
+guid: cc355cd2b4d800e4cb849ef40b406240
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 31
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,76 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: use_DropItem_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05d1e05525943994ab10b605d592618f
-      internalID: -1812489411
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_DropItem_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6bdf461b7d25b4d45a3fc2db5bed790a
-      internalID: -1990997115
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_DropItem_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 31
-        height: 31
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4b1160edc1615f2438bf285f5f1793d4
-      internalID: 1835978218
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_DropItem_3
+      name: UI_Menu_icon2-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 31
-        height: 31
+        width: 7
+        height: 7
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: daa4107c70a5d4a4d8af5d8b78af86b3
-      internalID: 872543800
+      spriteID: 86f33725334001b4d9c4fe7b301ad827
+      internalID: -526225479
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: use_DropItem_4
+      name: UI_Menu_icon2-Sheet_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 8
         y: 0
-        width: 31
-        height: 31
+        width: 7
+        height: 7
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -215,8 +152,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4ca10b00d7886f49ad57c8be5f8c8dc
-      internalID: -914421886
+      spriteID: 32b75a409c6a9bb4fa749df5dc5aa9b5
+      internalID: 52237448
       vertices: []
       indices: 
       edges: []
@@ -232,11 +169,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      use_DropItem_1: -1990997115
-      use_DropItem_2: 1835978218
-      use_DropItem_3: 872543800
-      use_DropItem_4: -914421886
-      use_DropItem_0: -1812489411
+      UI_Menu_icon2-Sheet_0: -526225479
+      UI_Menu_icon2-Sheet_1: 52237448
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
