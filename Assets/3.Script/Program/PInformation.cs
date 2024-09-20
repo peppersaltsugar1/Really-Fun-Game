@@ -6,6 +6,7 @@ public class PInformation : MonoBehaviour
 {
     public string ProgramName;
     public string Explanation;
+    public string PowerExplanation;
     public int AddCoin = 0;
     public int HPHeal = 0;
     public int AttackPower = 0;

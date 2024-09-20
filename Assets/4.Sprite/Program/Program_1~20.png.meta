@@ -131,7 +131,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5188131e11e23bf419895ad49c6ba4c8
+      spriteID: a73d75667b2806f41a8936c306301340
       internalID: 1035329684
       vertices: []
       indices: 
@@ -152,7 +152,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fdfeffd36ef8a5b4cad9c8621018eca8
+      spriteID: f48204a0f73a99540b5dd70ea994c401
       internalID: -1969940872
       vertices: []
       indices: 
@@ -173,7 +173,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1f16fc790b6fd2e408a720841340dc9f
+      spriteID: 4ee73f7969942f746b170d6d4e3acb91
       internalID: 413926436
       vertices: []
       indices: 
@@ -194,7 +194,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c33abe28a65358e4eb0a7c470dd35b98
+      spriteID: 3404546f8f5a04f4a967ac8660df39ac
       internalID: 1856029568
       vertices: []
       indices: 
@@ -215,8 +215,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64df6524ac8ce244989e3a5397892d54
+      spriteID: 4f466bff502b4fb418f14e6c3b576bd2
       internalID: 1870782240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Program_1~20_5
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fa8a3d46c75997449c986f8f4d37f44
+      internalID: 834150880
       vertices: []
       indices: 
       edges: []
@@ -236,6 +257,7 @@ TextureImporter:
       Program_1~20_1: -1969940872
       Program_1~20_3: 1856029568
       Program_1~20_2: 413926436
+      Program_1~20_5: 834150880
       Program_1~20_4: 1870782240
   spritePackingTag: 
   pSDRemoveMatte: 0
