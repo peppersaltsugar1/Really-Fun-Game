@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5af6a15ea8776f74cbe6d12d0450daf7
+guid: 2178beb8b01c24e4bbce1b527d23a7f9
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 50
+  spritePixelsToUnits: 19
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: monster1-Sheet_0
+      name: monster2-Sheet_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 50
-        height: 50
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e47e333c5f0d7364fae32fa6bc2762f3
-      internalID: -1509175389
+      spriteID: 77bb0fc852084194e81ba4c9d558550c
+      internalID: 1735022629
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monster1-Sheet_1
+      name: monster2-Sheet_1
       rect:
         serializedVersion: 2
-        x: 51
+        x: 20
         y: 0
-        width: 50
-        height: 50
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,20 +152,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 675f8047e17d0a644ab2b5ff27f2214e
-      internalID: 408477830
+      spriteID: 7699bd4c6d7163d40963f8b078aeb4c6
+      internalID: -1654341182
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monster1-Sheet_2
+      name: monster2-Sheet_2
       rect:
         serializedVersion: 2
-        x: 102
+        x: 40
         y: 0
-        width: 50
-        height: 50
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -173,20 +173,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 453eac29cadb7604f9a9cb477154a6bc
-      internalID: -512874756
+      spriteID: 400f27d3a1365e44cbc4eb4a781c72e9
+      internalID: -1797558427
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: monster1-Sheet_3
+      name: monster2-Sheet_3
       rect:
         serializedVersion: 2
-        x: 153
+        x: 60
         y: 0
-        width: 50
-        height: 50
+        width: 19
+        height: 18
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,29 +194,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 509fbfccec130ac428f158e7eae05f73
-      internalID: 769548515
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: monster1-Sheet_4
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 0
-        width: 50
-        height: 50
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b651a783cf0ed114682c948796b482f5
-      internalID: -974548524
+      spriteID: f8a5aa2a22c9b284db3f6a042533b666
+      internalID: -1513615550
       vertices: []
       indices: 
       edges: []
@@ -232,11 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      monster1-Sheet_3: 769548515
-      monster1-Sheet_4: -974548524
-      monster1-Sheet_1: 408477830
-      monster1-Sheet_0: -1509175389
-      monster1-Sheet_2: -512874756
+      monster2-Sheet_3: -1513615550
+      monster2-Sheet_1: -1654341182
+      monster2-Sheet_0: 1735022629
+      monster2-Sheet_2: -1797558427
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
