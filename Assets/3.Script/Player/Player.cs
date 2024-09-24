@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] Weapon weapon;
     //플레이어 에임
     public Transform sPoint;
-    private float angleRange = 35f; // 최소 각도
+    public float angleRange = 35f; // 최소 각도
     //플레이어체력관련
     public float maxHp; // 최대 체력
     public float currentHp; // 현재 체력
@@ -58,7 +58,8 @@ public class Player : MonoBehaviour
         Move();
         RotateWeapon();
         RotatePlayer();
-        FDeleteMonster();
+        // 몬스터 강제삭제 알고리즘
+        // FDeleteMonster();
     }
 
     public void Move() //플레이어 이동
@@ -287,7 +288,7 @@ public class Player : MonoBehaviour
         this.moveSpeed += newSpeed;
     }
 
-    // 수정 중. 몬스터 삭제 알고리즘.
+    // ====== 몬스터 강제 삭제 알고리즘(수정 중) ======
     public void FDeleteMonster()
     {
         if (EnomyDelete)
@@ -323,4 +324,6 @@ public class Player : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
+
+    // ====== 몬스터 강제 삭제 알고리즘(수정 중) ======
 }

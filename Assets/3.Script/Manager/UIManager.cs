@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +18,56 @@ public class UIManager : MonoBehaviour
     private Canvas canvas;
     [SerializeField]
     private int interval;
+
+    // Window UI
+    public GameObject WindowUI;
+    public GameObject MyPC_UI;
+    public GameObject DownLoad_UI;
+    public GameObject My_Documents_UI;
+    public GameObject LocalDisk_UI;
+    public GameObject ControlOptions_UI;
+    public GameObject Help_UI;
+    // First Start Check
+    private GameObject Start_UI;
+
+    // Left_Button 
+    public Button MyPC_Button;
+    public Button DownLoad_Button;
+    public Button My_Documents_Button;
+    public Button LocalDisk_Button;
+    public Button ControlOptions_Buttonton;
+    public Button Help_Button;
+    public Button Desktop_Button;
+
+    // Top_Button 
+    public Button UnderBar_Button;
+    public Button X_Button;
+
+    // Status Text
+    public Text AttackText;
+    public Text AttackSpeedText;
+    public Text BulletVelocityText;
+    public Text RangeText;
+    public Text MoveSpeedText;
+
+    // BulletManger
+    private PoolingManager BInstance;
+
+    // Program UI Member
+    public GameObject Button_Program_Prefab;
+    public GameObject i_Program_Detail_Image_Prefab;
+    public Text t_Program_Detail_Name_Prefab;
+    public Text t_Program_Detail_Explanation_Prefab;
+    public Text t_Program_Detail_PowerExplanation_Prefab;
+
+    public Transform ContentGroup;
+
+    public Button DeleteButton;
+
+    private int CurrentProgram = -1;
+
+    // Status Manger
+    private StatusManager statusManager;
 
     private int hpNum = 0;
 
@@ -43,12 +97,45 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         HpBarSet();
+
+        player = FindObjectOfType<Player>();
+        BInstance = FindObjectOfType<PoolingManager>();
+
+        // UI Panel 비활성화 시작
+        WindowUI.SetActive(false);
+        UIDeactivation();
+        Start_UI = null;
+
+        // Left Button Setting
+        MyPC_Button.onClick.AddListener(FMyPC_Button);
+        DownLoad_Button.onClick.AddListener(FDownLoad_Button);
+        My_Documents_Button.onClick.AddListener(FMy_Documents_Button);
+        LocalDisk_Button.onClick.AddListener(FLocalDisk_Button);
+        ControlOptions_Buttonton.onClick.AddListener(FControlOptions_Button);
+        Help_Button.onClick.AddListener(FHelp_Button);
+        Desktop_Button.onClick.AddListener(FDesktop_Button);
+
+        // Top Button Setting
+        UnderBar_Button.onClick.AddListener(SetWindowUI);
+        X_Button.onClick.AddListener(SetWindowUI);
+
+        // ProgramList Setting
+        statusManager = StatusManager.Instance;  // StatusManager 싱글턴 참조
+        GenerateButtons();
+
+        // Delete Button Setting
+        DeleteButton.onClick.AddListener(FDelete_Button);
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
 
+            SetWindowUI();
+        }
     }
+
     public void HpBarSet()
     {
         Debug.Log("UI생성함");
@@ -121,7 +208,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
     public void HpBarPlus()
     {
 
@@ -300,6 +386,229 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
 
+    // ========== UI Section ==========
+
+    // Input ESC -> Show UI 
+    public void SetWindowUI()
+    {
+        if (WindowUI != null)
+        {
+            bool isActive = WindowUI.activeSelf;
+            if (isActive)
+            {
+                WindowUI.SetActive(false);
+                Time.timeScale = 1;
+            }
+            else
+            {
+                // 상태 최신화
+                UpdateStats();
+                GenerateButtons();
+
+                // UI를 활성화하고 게임을 일시 정지
+                if (Start_UI == null)
+                {
+                    Start_UI = MyPC_UI;
+                    Start_UI.SetActive(true);
+                }
+                WindowUI.SetActive(true);
+                Time.timeScale = 0;
+            }      
+        }
+    }
+
+    // Status Update Function
+    private void UpdateStats()
+    {
+        if (player != null)
+        {
+            AttackText.text = player.atk.ToString();
+            AttackSpeedText.text = player.atkSpeed.ToString();
+            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
+            RangeText.text = player.angleRange.ToString();
+            MoveSpeedText.text = player.moveSpeed.ToString();
+        }
+    }
+
+    // Program Update Funtion
+    public void GenerateButtons()
+    {
+        // 자손 제거
+        foreach (Transform child in ContentGroup)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        for (int i = 0; i < statusManager.ProgramList.Count; i++)
+        {
+            GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
+
+            PInformation programInfo = statusManager.ProgramList[i];
+            Image buttonImage = newButton.GetComponent<Image>();
+
+            if (buttonImage != null)
+            {
+                SetSpriteFromSheet(buttonImage, programInfo.spriteSheetName, programInfo.spriteIndex);
+            }
+            else
+            {
+                Debug.LogError("Error");
+            }
+
+            int index = i;
+            newButton.GetComponent<Button>().onClick.AddListener(() => OnButtonClick(newButton));
+        }
+
+        // Delete Button Activation
+        if (statusManager.ProgramList.Count == 0)
+            DeleteButton.gameObject.SetActive(false);
+    }
+
+    public void SetSpriteFromSheet(Image buttonImage, string spriteSheetName, int spriteIndex)
+    {
+        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+
+        if (sprites != null && spriteIndex >= 0 && spriteIndex < sprites.Length)
+        {
+            buttonImage.sprite = sprites[spriteIndex];
+            Debug.Log("Sprite loaded: " + sprites[spriteIndex].name);
+
+        }
+        else
+        {
+            Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + spriteSheetName);
+        }
+    }
+
+
+    public void OpenProgramDetail(int index)
+    {
+        CurrentProgram = index;
+        // Detail Setting
+        t_Program_Detail_Name_Prefab.text = statusManager.ProgramList[index].ProgramName;
+        t_Program_Detail_Explanation_Prefab.text = statusManager.ProgramList[index].Explanation;
+        t_Program_Detail_PowerExplanation_Prefab.text = statusManager.ProgramList[index].PowerExplanation;
+
+        // Image Setting
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(statusManager.ProgramList[index].spriteSheetName);
+
+            if (sprites != null && statusManager.ProgramList[index].spriteIndex >= 0 && statusManager.ProgramList[index].spriteIndex < sprites.Length)
+            {
+                detailImage.sprite = sprites[statusManager.ProgramList[index].spriteIndex];
+                Debug.Log("Detail Image sprite set: " + sprites[statusManager.ProgramList[index].spriteIndex].name);
+            }
+            else
+            {
+                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + statusManager.ProgramList[index].spriteSheetName);
+            }
+        }
+        else
+        {
+            Debug.LogError("i_Program_Detail_Image_Prefab does not have an Image component.");
+        }
+
+        DeleteButton.gameObject.SetActive(true);
+
+        Debug.Log("OpenProgramDetail");
+    }
+
+    public void FDelete_Button()
+    {
+        if(CurrentProgram != -1)
+        { 
+            statusManager.RemoveProgram(CurrentProgram);
+            CurrentProgram = -1;
+
+            // i_Program_Detail_Image_Prefab
+            t_Program_Detail_Name_Prefab.text = "";
+            t_Program_Detail_Explanation_Prefab.text = "";
+            t_Program_Detail_PowerExplanation_Prefab.text = "";
+
+            DeleteButton.gameObject.SetActive(false);
+
+            GenerateButtons();
+        }
+
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            detailImage.sprite = null;
+        }
+        else
+        {
+            Debug.LogError("Image component not found");
+        }
+    }
+
+    // UI Deactivation
+    public void UIDeactivation()
+    {
+        MyPC_UI.SetActive(false);
+        DownLoad_UI.SetActive(false);
+        My_Documents_UI.SetActive(false);
+        LocalDisk_UI.SetActive(false);
+        ControlOptions_UI.SetActive(false);
+        Help_UI.SetActive(false);
+    }
+
+    // Button OnClickFuction
+    public void FMyPC_Button()
+    {
+        UIDeactivation();
+        MyPC_UI.SetActive(true);
+    }
+
+    public void FDownLoad_Button()
+    {
+        UIDeactivation();
+        DownLoad_UI.SetActive(true);
+    }
+
+    public void FMy_Documents_Button()
+    {
+        UIDeactivation();
+        My_Documents_UI.SetActive(true);
+    }
+
+    public void FLocalDisk_Button()
+    {
+        UIDeactivation();
+        LocalDisk_UI.SetActive(true);
+    }
+
+    public void FControlOptions_Button()
+    {
+        UIDeactivation();
+        ControlOptions_UI.SetActive(true);
+    }
+
+    public void FHelp_Button()
+    {
+        UIDeactivation();
+        Help_UI.SetActive(true);
+    }
+
+    public void FDesktop_Button()
+    {
+        // PC 종료
+        Application.Quit();
+
+        // 에디터에서 종료
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+
+    void OnButtonClick(GameObject clickedButton)
+    {
+
+        int index = clickedButton.transform.GetSiblingIndex();
+        OpenProgramDetail(index);
+    }
 }

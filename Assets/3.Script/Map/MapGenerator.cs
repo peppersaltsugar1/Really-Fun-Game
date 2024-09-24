@@ -61,7 +61,7 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, firstMapPrefabList.Length);
+            int mapIndex = Random.Range(0, firstMapPrefabList.Length);
             if (firstMapPrefabList[mapIndex].Type == Map.MapType.Start)
             {
                 Map firstMap = Instantiate(firstMapPrefabList[mapIndex]);
@@ -77,7 +77,7 @@ public class MapGenerator : MonoBehaviour
                     case 1:
                         while (true)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum == 4)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -96,7 +96,7 @@ public class MapGenerator : MonoBehaviour
                     case 2:
                         for (int i = 0; i < 2; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum >= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -115,7 +115,7 @@ public class MapGenerator : MonoBehaviour
                     case 3:
                         for (int i = 0; i < 3; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum <= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -195,8 +195,8 @@ public class MapGenerator : MonoBehaviour
     }
     private void ConnectPortal()
     {
-        Debug.Log(portalList.Count+"포탈리스트 갯수");
-        Debug.Log(connectPortalList.Count+"연결할포탈리스트 갯수");
+        // Debug.Log(portalList.Count+"포탈리스트 갯수");
+        // Debug.Log(connectPortalList.Count+"연결할포탈리스트 갯수");
         portalList[0].connectPortal = connectPortalList[0];
         connectPortalList[0].connectPortal = portalList[0];
         portalList.RemoveAt(0);
@@ -249,7 +249,7 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+            int mapIndex = Random.Range(0, normalMapPrefabList.Length);
             if (normalMapPrefabList[mapIndex].PortalNum-1+currentMapNum <= maxMapNum)
             {
                 Map makeMap = Instantiate(firstMapPrefabList[mapIndex]);
@@ -270,7 +270,7 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, specialMapPrefabList.Length);
+            int mapIndex = Random.Range(0, specialMapPrefabList.Length);
             bool isDuplicate = false;  // 중복 여부를 확인할 변수
 
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
@@ -305,7 +305,7 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, randomSpecialMapPrefabList.Length);
+            int mapIndex = Random.Range(0, randomSpecialMapPrefabList.Length);
             bool isDuplicate = false;  // 중복 여부를 확인할 변수
 
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
