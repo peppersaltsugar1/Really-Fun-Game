@@ -21,18 +21,33 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("부딪힘");
+        GameObject moveMap = connectPortal.transform.parent.gameObject;
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("플레이어맞음");
-            collision.transform.position = connectPortal.transform.position;
-            Vector3 portalPos = new Vector3(transform.position.x, playerCamera.transform.position.y,playerCamera.transform.position.z);
-            playerCamera.transform.position = portalPos;
-            // 카메라 이동 코루틴 시작
-            StartCoroutine(MoveCameraSmoothly(connectPortal.transform.position));
+            Rigidbody2D playerRigidbody = collision.GetComponent<Rigidbody2D>();
+            if (playerRigidbody != null)
+            {
+                // 속도 벡터를 정규화하여 방향만 얻기
+                Vector2 moveDirection = playerRigidbody.velocity.normalized;
 
+                // 이동할 거리를 정한다. (예: 1.5f)
+                float distanceToMove = 1.5f;
+
+                // 캐릭터를 방향에 맞게 조금 이동시킨다
+                Vector3 newPosition = collision.transform.position + (Vector3)moveDirection * distanceToMove;
+                collision.transform.position = newPosition;
+
+                Debug.Log("플레이어맞음");
+                collision.transform.position = connectPortal.transform.position;
+                Vector3 portalPos = new Vector3(transform.position.x, playerCamera.transform.position.y, playerCamera.transform.position.z);
+                playerCamera.transform.position = portalPos;
+                // 카메라 이동 코루틴 시작
+                StartCoroutine(MoveCameraSmoothly(connectPortal.transform.position));
+
+
+            }
         }
     }
-
     private IEnumerator MoveCameraSmoothly(Vector3 targetPosition)
     {
         Vector3 cameraTargetPosition = new Vector3(targetPosition.x, targetPosition.y, playerCamera.transform.position.z);

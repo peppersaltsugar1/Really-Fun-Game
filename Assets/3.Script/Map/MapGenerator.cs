@@ -27,8 +27,9 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]
     private int randomSpeicalMapNum; //생성할 랜덤스페셜맵의 갯수
     //맵 생성 확률인수
-    private int middlePercent;
+    [SerializeField]
     private int specialPercent;
+    [SerializeField]
     private int randomSpecialPercent;
     //맵이가진   
     private List<Portal> portalList = new List<Portal>();
@@ -52,16 +53,18 @@ public class MapGenerator : MonoBehaviour
     {
         CreateFirstMap();
         int createmapnum = maxMapNum - mapList.Count;
-        for (int i = 0; i < createmapnum; i++)
+        while (mapList.Count < maxMapNum)
         {
-            CreateMiddleMap();
+            CreateNextMap();
         }
+
+
     }
     private void CreateFirstMap()
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, firstMapPrefabList.Length);
+            int mapIndex = Random.Range(0, firstMapPrefabList.Length);
             if (firstMapPrefabList[mapIndex].Type == Map.MapType.Start)
             {
                 Map firstMap = Instantiate(firstMapPrefabList[mapIndex]);
@@ -71,13 +74,13 @@ public class MapGenerator : MonoBehaviour
                 firstMap.transform.SetAsLastSibling();
                 mapList.Add(firstMap);
                 TakePortal(firstMap, portalList);
-                MapCheck(portalList);
+                MapCheck();
                 switch (portalList.Count)
                 {
                     case 1:
                         while (true)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum == 4)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -85,18 +88,14 @@ public class MapGenerator : MonoBehaviour
                                 mapList.Add(middleMap);
                                 TakePortal(middleMap, connectPortalList);
                                 ConnectPortal();
+                                break;
                             }
-                            else
-                            {
-                                return;
-                            }
-                            break;
                         }
                         break;
                     case 2:
                         for (int i = 0; i < 2; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum >= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -115,7 +114,7 @@ public class MapGenerator : MonoBehaviour
                     case 3:
                         for (int i = 0; i < 3; i++)
                         {
-                            int middleMapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
+                            int middleMapIndex = Random.Range(0, normalMapPrefabList.Length);
                             if (normalMapPrefabList[middleMapIndex].PortalNum <= 3)
                             {
                                 Map middleMap = Instantiate(normalMapPrefabList[middleMapIndex]);
@@ -137,17 +136,51 @@ public class MapGenerator : MonoBehaviour
         }
         currentMapNum = mapList.Count;
     }
+    private void CreateNextMap()
+    {
+        int createMapIndex = CheckPortal();
+        Debug.Log(createMapIndex);
+        for (int i = 0; i < createMapIndex; i++)
+        {
+            MapCheck();
+            int mapNum = PersentCheck();
+            if (AbleMapCheck(mapNum))
+            {
+                switch (mapNum)
+                {
+                    case 1: CreateRandomSpecialMap();
+                        continue;
+                    case 2: CreateSpecialMap();
+                        continue;
+                    case 3: CreateNomalMap();
+                        continue;
+                }
+            }
+            else
+            {
+                CreateNomalMap();
+            }
+        }
+    }
     private void CreateMiddleMap()
     {
-        for(int i = 0; i < mapList.Count; i++)
+        Debug.Log(makeMapNum);
+        int makemapnum = makeMapNum;
+        for (int i = 0; i < makemapnum; i++)
         {
+            Debug.Log(currentMapNum);
+            Debug.Log(mapList[i].name);
             TakePortal(mapList[i], portalList);
             if (portalList.Count >= 1)
             {
-                switch (PersentCheck())
+                int mapNum = PersentCheck();
+                bool canMake = AbleMapCheck(mapNum);
+                Debug.Log(mapNum);
+                Debug.Log(canMake);
+                switch (mapNum)
                 {
                     case 1:
-                        if (AbleMapCheck(PersentCheck()))
+                        if (canMake)
                         {
                             CreateRandomSpecialMap();
                         }
@@ -155,24 +188,38 @@ public class MapGenerator : MonoBehaviour
                         {
                             CreateNomalMap();
                         }
-
                         break;
                     case 2:
-                        if (AbleMapCheck(PersentCheck()))
-                        {
-                            CreateRandomSpecialMap();
-                        }
-                        else
+                        if (canMake)
                         {
                             CreateSpecialMap();
                         }
+                        else
+                        {
+                            CreateNomalMap();
+                        }
                         break;
-                    case 3: CreateNomalMap();
+                    case 3:
+                        CreateNomalMap();
                         break;
                 }
+
             }
 
         }
+        }
+
+    private int CheckPortal()
+    {
+        for (int i = 0; i < mapList.Count; i++)
+        {
+            TakePortal(mapList[i], portalList);
+            if (portalList.Count > 0)
+            {
+                return portalList.Count;
+            }
+        }
+        return 0;
     }
     private void TakePortal(Map map, List<Portal> portalList)
     {
@@ -183,31 +230,30 @@ public class MapGenerator : MonoBehaviour
         {
             portalList.Add(portal);
         }
-        for (int i = 0; i < portalList.Count; i++)
+        for (int i = portalList.Count - 1; i >= 0; i--)
         {
             if (portalList[i].connectPortal != null)
             {
                 portalList.RemoveAt(i);
-                i--;
             }
         }
         return;
     }
     private void ConnectPortal()
     {
-        Debug.Log(portalList.Count+"포탈리스트 갯수");
-        Debug.Log(connectPortalList.Count+"연결할포탈리스트 갯수");
+        Debug.Log(portalList.Count);
+        Debug.Log(connectPortalList.Count);
         portalList[0].connectPortal = connectPortalList[0];
         connectPortalList[0].connectPortal = portalList[0];
         portalList.RemoveAt(0);
         connectPortalList.RemoveAt(0);
-        MapCheck(connectPortalList);
+        MapCheck();
     }
 
-    private void MapCheck(List<Portal> portalList)
+    private void MapCheck()
     {
         currentMapNum = mapList.Count;
-        makeMapNum = currentMapNum;
+        makeMapNum = 0;
         for(int i = 0; i < mapList.Count; i++)
         {
             // 각 맵의 자식 객체로 있는 포탈 가져오기
@@ -249,42 +295,101 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, normalMapPrefabList.Length);
-            if (normalMapPrefabList[mapIndex].PortalNum-1+currentMapNum <= maxMapNum)
+            int mapIndex = Random.Range(0, normalMapPrefabList.Length);
+            if (makeMapNum + mapList.Count + normalMapPrefabList[mapIndex].PortalNum-1 <= maxMapNum)
             {
-                Map makeMap = Instantiate(firstMapPrefabList[mapIndex]);
-                // 생성된 Map 오브젝트를 map의 자식으로 추가
-                makeMap.transform.SetParent(map, false);
-                // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
-                makeMap.transform.SetAsLastSibling();
-                mapList.Add(makeMap);
-                TakePortal(makeMap, portalList);
-                MapCheck(portalList);
-                break;
+                if (normalMapPrefabList[mapIndex].PortalNum == 1)
+                {
+                    if (randomSpeicalMapNum > 0)
+                    {
+                        CreateRandomSpecialMap();
+                        break;
+                    }
+                    else if (specialMapNum > 0)
+                    {
+                        CreateSpecialMap();
+                        break;
+                    }
+                }
+                if (currentMapNum == 1)
+                {
+                    if (normalMapPrefabList[mapIndex].PortalNum >= 2)
+                    {
+                        Map makeMap = Instantiate(normalMapPrefabList[mapIndex]);
+                        // 생성된 Map 오브젝트를 map의 자식으로 추가
+                        makeMap.transform.SetParent(map, false);
+                        // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
+                        makeMap.transform.SetAsLastSibling();
+                        mapList.Add(makeMap);
+                        TakePortal(makeMap, connectPortalList);
+                        ConnectPortal();
+                        MapCheck();
+                        break;
+                    }
+                }
+                else if (normalMapPrefabList[mapIndex].PortalNum - 1 + currentMapNum <= maxMapNum)
+                {
+                    Map makeMap = Instantiate(normalMapPrefabList[mapIndex]);
+                    // 생성된 Map 오브젝트를 map의 자식으로 추가
+                    makeMap.transform.SetParent(map, false);
+                    // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
+                    makeMap.transform.SetAsLastSibling();
+                    mapList.Add(makeMap);
+                    TakePortal(makeMap, connectPortalList);
+                    ConnectPortal();
+                    MapCheck();
+                    break;
+                }
+                else if (mapList.Count + makeMapNum == maxMapNum)
+                {
+                    while (true)
+                    {
+                        int lastMapIndex = Random.Range(0, normalMapPrefabList.Length);
+                        if (normalMapPrefabList[lastMapIndex].PortalNum == 1)
+                        {
+                            Map makeMap = Instantiate(normalMapPrefabList[lastMapIndex]);
+                            // 생성된 Map 오브젝트를 map의 자식으로 추가
+                            makeMap.transform.SetParent(map, false);
+                            // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
+                            makeMap.transform.SetAsLastSibling();
+                            mapList.Add(makeMap);
+                            TakePortal(makeMap, connectPortalList);
+                            ConnectPortal();
+                            MapCheck();
+                            break;
+                        }
+                    }
+                }
             }
-           
+
         }
 
     }
     private void CreateSpecialMap()
     {
+        Debug.Log("스페셜맵생성은들어옴");
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, specialMapPrefabList.Length);
+            int mapIndex = Random.Range(0, specialMapPrefabList.Length);  
             bool isDuplicate = false;  // 중복 여부를 확인할 변수
 
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
             for (int i = 0; i < mapList.Count; i++)
             {
+                Debug.Log(isDuplicate);
+                Debug.Log(specialMapPrefabList[mapIndex].Type);
+                Debug.Log(mapList[i].Type);
                 if (specialMapPrefabList[mapIndex].Type == mapList[i].Type)
                 {
+                    Debug.Log("맵타입같나 체크함");
                     isDuplicate = true; // 같은 타입의 맵이 존재할 경우 true
-                    break; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
+                    i=mapList.Count; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
                 }
             }
             // 중복되지 않는 경우에만 맵을 생성
             if (!isDuplicate)
             {
+                Debug.Log("스페셜맵만들러들어옴");
                 Map makeMap = Instantiate(specialMapPrefabList[mapIndex]);
                 // 생성된 Map 오브젝트를 map의 자식으로 추가
                 makeMap.transform.SetParent(map, false);
@@ -293,11 +398,12 @@ public class MapGenerator : MonoBehaviour
                 // mapList에 새롭게 생성된 맵을 추가
                 mapList.Add(makeMap);
                 // 포탈 리스트 갱신 및 확인
-                TakePortal(makeMap, portalList);
-                MapCheck(portalList);
+                TakePortal(makeMap, connectPortalList);
+                ConnectPortal();
+                MapCheck();
+                specialMapNum--;
                 break; // 중복되지 않는 맵을 생성했으므로 while문 종료
             }
-
             // 중복되면 다시 while 문 반복
         }
     }
@@ -305,7 +411,7 @@ public class MapGenerator : MonoBehaviour
     {
         while (true)
         {
-            int mapIndex = Random.RandomRange(0, randomSpecialMapPrefabList.Length);
+            int mapIndex = Random.Range(0, randomSpecialMapPrefabList.Length);
             bool isDuplicate = false;  // 중복 여부를 확인할 변수
 
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
@@ -328,8 +434,10 @@ public class MapGenerator : MonoBehaviour
                 // mapList에 새롭게 생성된 맵을 추가
                 mapList.Add(makeMap);
                 // 포탈 리스트 갱신 및 확인
-                TakePortal(makeMap, portalList);
-                MapCheck(portalList);
+                TakePortal(makeMap, connectPortalList);
+                ConnectPortal();
+                MapCheck();
+                randomSpeicalMapNum--;
                 break; // 중복되지 않는 맵을 생성했으므로 while문 종료
             }
 
@@ -338,7 +446,11 @@ public class MapGenerator : MonoBehaviour
     }
     private bool AbleMapCheck(int i)
     {
-        if (currentMapNum + specialMapNum + randomSpeicalMapNum <= createMapNum)
+        if (makeMapNum == 1 && (specialMapNum == 0 || randomSpeicalMapNum == 0))
+        {
+            return false;
+        }
+        if (makeMapNum + mapList.Count <= maxMapNum)
         {
             switch (i)
             {
@@ -361,20 +473,14 @@ public class MapGenerator : MonoBehaviour
                         return false;
                     }
                 case 3:
-                    /*if (downloadMapNum > 0)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }*/
                     return true;
             }
-            return true;
+            return false;
         }
-        return false;
-
+        else
+        {
+            return false;
+        }
     }
     private void HideMap()
     {
