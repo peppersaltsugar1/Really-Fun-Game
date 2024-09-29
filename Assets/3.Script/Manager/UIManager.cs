@@ -66,6 +66,11 @@ public class UIManager : MonoBehaviour
 
     private int CurrentProgram = -1;
 
+    // Setting UI Member
+    public Dropdown screenModeDropdown;
+    public Dropdown resolutionDropdown;
+    public Dropdown qualityDropdown;
+
     // Status Manger
     private StatusManager statusManager;
 
@@ -125,7 +130,12 @@ public class UIManager : MonoBehaviour
 
         // Delete Button Setting
         DeleteButton.onClick.AddListener(FDelete_Button);
-    }
+
+        // ControllOptionUI Setting
+        screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
+        resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
+        qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
+}
 
     void Update()
     {
@@ -610,5 +620,67 @@ public class UIManager : MonoBehaviour
 
         int index = clickedButton.transform.GetSiblingIndex();
         OpenProgramDetail(index);
+    }
+
+    // Setting Function
+
+    // ScreenMode
+    public void ChangeScreenMode(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Debug.Log("전체화면 모드");
+                break;
+            case 1:
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Debug.Log("창모드");
+                break;
+            case 2:
+                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                Debug.Log("전체 창모드");
+                break;
+            default:
+                Debug.LogWarning("Error");
+                break;
+        }
+    }
+    
+    // Resolution
+    public void ChangeResolution(int index)
+    {
+        switch (index)
+        {
+            case 0: // 1920 x 1080
+                Screen.SetResolution(1920, 1080, Screen.fullScreen);
+                break;
+            case 1: // 1600 x 900
+                Screen.SetResolution(1600, 900, Screen.fullScreen);
+                break;
+            case 2: // 1280 x 720
+                Screen.SetResolution(1280, 720, Screen.fullScreen);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ChangeQuality(int index)
+    {
+        switch (index)
+        {
+            case 0: // 좋음
+                QualitySettings.SetQualityLevel(5, true); 
+                break;
+            case 1: // 중간
+                QualitySettings.SetQualityLevel(3, true);
+                break;
+            case 2: // 낮음
+                QualitySettings.SetQualityLevel(1, true);
+                break;
+            default:
+                break;
+        }
     }
 }

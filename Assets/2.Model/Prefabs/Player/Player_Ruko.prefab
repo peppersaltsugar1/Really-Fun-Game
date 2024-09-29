@@ -82,7 +82,7 @@ SpriteRenderer:
   m_Size: {x: 0.9, y: 1.0333333}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8918953922853441908
@@ -297,7 +297,7 @@ SpriteRenderer:
   m_Size: {x: 1.0666667, y: 1.3333334}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8918953924189731209
@@ -350,10 +350,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 8918953924189731210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a9202e771245b44a9f521004032e1d3, type: 3}
+  m_Script: {fileID: 11500000, guid: a2685074da31ae74cbc6f3b67a8c09ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  weapon: {fileID: 0}
+  sPoint: {fileID: 0}
+  angleRange: 35
+  maxHp: 0
+  currentHp: 0
+  temHp: 0
+  shield: 0
+  shieldHp: 0
+  elect: 0
+  atk: 0
+  atkSpeed: 0
+  pushPower: 0
+  moveSpeed: 0
+  coin: 0
+  weaponDistance: 0
+  playerCol: {fileID: 0}
+  camera: {fileID: 0}
+  EnomyDelete: 0
+  detectionRadius: 5
 --- !u!70 &8918953924189731204
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
