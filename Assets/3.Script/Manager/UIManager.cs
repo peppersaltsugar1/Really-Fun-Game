@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,19 +13,66 @@ public class UIManager : MonoBehaviour
     private Player player;
     [SerializeField]
     private List<GameObject> hpPrefabsList;
-    [SerializeField]
-    private List<GameObject> uiPortalList;
-    [SerializeField]
-    private List<GameObject> coinList;
     private List<GameObject> hpList = new();
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
-    private Canvas localDiskContent;
-    [SerializeField]
     private int interval;
-    [SerializeField]
-    MapGenerator mapGenerator;
+
+    // Window UI
+    public GameObject WindowUI;
+    public GameObject MyPC_UI;
+    public GameObject DownLoad_UI;
+    public GameObject My_Documents_UI;
+    public GameObject LocalDisk_UI;
+    public GameObject ControlOptions_UI;
+    public GameObject Help_UI;
+    // First Start Check
+    private GameObject Start_UI;
+
+    // Left_Button 
+    public Button MyPC_Button;
+    public Button DownLoad_Button;
+    public Button My_Documents_Button;
+    public Button LocalDisk_Button;
+    public Button ControlOptions_Buttonton;
+    public Button Help_Button;
+    public Button Desktop_Button;
+
+    // Top_Button 
+    public Button UnderBar_Button;
+    public Button X_Button;
+
+    // Status Text
+    public Text AttackText;
+    public Text AttackSpeedText;
+    public Text BulletVelocityText;
+    public Text RangeText;
+    public Text MoveSpeedText;
+
+    // BulletManger
+    private PoolingManager BInstance;
+
+    // Program UI Member
+    public GameObject Button_Program_Prefab;
+    public GameObject i_Program_Detail_Image_Prefab;
+    public Text t_Program_Detail_Name_Prefab;
+    public Text t_Program_Detail_Explanation_Prefab;
+    public Text t_Program_Detail_PowerExplanation_Prefab;
+
+    public Transform ContentGroup;
+
+    public Button DeleteButton;
+
+    private int CurrentProgram = -1;
+
+    // Setting UI Member
+    public Dropdown screenModeDropdown;
+    public Dropdown resolutionDropdown;
+    public Dropdown qualityDropdown;
+
+    // Status Manger
+    private StatusManager statusManager;
 
     private int hpNum = 0;
 
@@ -51,12 +102,50 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         HpBarSet();
-    }
+
+        player = FindObjectOfType<Player>();
+        BInstance = FindObjectOfType<PoolingManager>();
+
+        // UI Panel 비활성화 시작
+        WindowUI.SetActive(false);
+        UIDeactivation();
+        Start_UI = null;
+
+        // Left Button Setting
+        MyPC_Button.onClick.AddListener(FMyPC_Button);
+        DownLoad_Button.onClick.AddListener(FDownLoad_Button);
+        My_Documents_Button.onClick.AddListener(FMy_Documents_Button);
+        LocalDisk_Button.onClick.AddListener(FLocalDisk_Button);
+        ControlOptions_Buttonton.onClick.AddListener(FControlOptions_Button);
+        Help_Button.onClick.AddListener(FHelp_Button);
+        Desktop_Button.onClick.AddListener(FDesktop_Button);
+
+        // Top Button Setting
+        UnderBar_Button.onClick.AddListener(SetWindowUI);
+        X_Button.onClick.AddListener(SetWindowUI);
+
+        // ProgramList Setting
+        statusManager = StatusManager.Instance;  // StatusManager 싱글턴 참조
+        GenerateButtons();
+
+        // Delete Button Setting
+        DeleteButton.onClick.AddListener(FDelete_Button);
+
+        // ControllOptionUI Setting
+        screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
+        resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
+        qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
+}
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
 
+            SetWindowUI();
+        }
     }
+
     public void HpBarSet()
     {
         Debug.Log("UI생성함");
@@ -129,7 +218,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
     public void HpBarPlus()
     {
 
@@ -308,67 +396,291 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
-    public void RoomUISet()
-    {
-        int mapIndex = 0;
-        for(int i =0; i < mapGenerator.mapList.Count; i++)
-        {
-            Map map = mapGenerator.mapList[i];
 
-            // 현재 활성화된 맵인지 확인
-            if (map.transform.gameObject.activeSelf)
+    // ========== UI Section ==========
+
+    // Input ESC -> Show UI 
+    public void SetWindowUI()
+    {
+        if (WindowUI != null)
+        {
+            bool isActive = WindowUI.activeSelf;
+            if (isActive)
             {
-                mapIndex = i;
-                continue ; // 활성화된 맵의 인덱스 반환
+                WindowUI.SetActive(false);
+                Time.timeScale = 1;
             }
+            else
+            {
+                // 상태 최신화
+                UpdateStats();
+                GenerateButtons();
+
+                // UI를 활성화하고 게임을 일시 정지
+                if (Start_UI == null)
+                {
+                    Start_UI = MyPC_UI;
+                    Start_UI.SetActive(true);
+                }
+                WindowUI.SetActive(true);
+                Time.timeScale = 0;
+            }      
+        }
+    }
+
+    // Status Update Function
+    private void UpdateStats()
+    {
+        if (player != null)
+        {
+            AttackText.text = player.atk.ToString();
+            AttackSpeedText.text = player.atkSpeed.ToString();
+            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
+            RangeText.text = player.angleRange.ToString();
+            MoveSpeedText.text = player.moveSpeed.ToString();
+        }
+    }
+
+    // Program Update Funtion
+    public void GenerateButtons()
+    {
+        // 자손 제거
+        foreach (Transform child in ContentGroup)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        for (int i = 0; i < statusManager.ProgramList.Count; i++)
+        {
+            GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
+
+            PInformation programInfo = statusManager.ProgramList[i];
+            Image buttonImage = newButton.GetComponent<Image>();
+
+            if (buttonImage != null)
+            {
+                SetSpriteFromSheet(buttonImage, programInfo.spriteSheetName, programInfo.spriteIndex);
+            }
+            else
+            {
+                Debug.LogError("Error");
+            }
+
+            int index = i;
+            newButton.GetComponent<Button>().onClick.AddListener(() => OnButtonClick(newButton));
         }
 
-        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
-        if(mapIndex == 0)
+        // Delete Button Activation
+        if (statusManager.ProgramList.Count == 0)
+            DeleteButton.gameObject.SetActive(false);
+    }
+
+    public void SetSpriteFromSheet(Image buttonImage, string spriteSheetName, int spriteIndex)
+    {
+        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+
+        if (sprites != null && spriteIndex >= 0 && spriteIndex < sprites.Length)
         {
-            foreach (Transform child in currentMap.transform)
+            buttonImage.sprite = sprites[spriteIndex];
+            Debug.Log("Sprite loaded: " + sprites[spriteIndex].name);
+
+        }
+        else
+        {
+            Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + spriteSheetName);
+        }
+    }
+
+
+    public void OpenProgramDetail(int index)
+    {
+        CurrentProgram = index;
+        // Detail Setting
+        t_Program_Detail_Name_Prefab.text = statusManager.ProgramList[index].ProgramName;
+        t_Program_Detail_Explanation_Prefab.text = statusManager.ProgramList[index].Explanation;
+        t_Program_Detail_PowerExplanation_Prefab.text = statusManager.ProgramList[index].PowerExplanation;
+
+        // Image Setting
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(statusManager.ProgramList[index].spriteSheetName);
+
+            if (sprites != null && statusManager.ProgramList[index].spriteIndex >= 0 && statusManager.ProgramList[index].spriteIndex < sprites.Length)
             {
-                if (child.GetComponent<Portal>() != null)
-                {
-                    GameObject localDiscUI = Instantiate(uiPortalList[0]);
-                    localDiscUI.transform.SetParent(localDiskContent.transform);
-                    localDiscUI.transform.SetAsLastSibling();
-
-                }
-
+                detailImage.sprite = sprites[statusManager.ProgramList[index].spriteIndex];
+                Debug.Log("Detail Image sprite set: " + sprites[statusManager.ProgramList[index].spriteIndex].name);
             }
-            foreach (Transform child in currentMap.transform)
+            else
             {
-                if (child.GetComponent<item>() != null)
-                {
-                    // 자식 객체의 부모를 localDiskContent로 설정
-                    child.SetParent(localDiskContent.transform);
-                }
-
+                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + statusManager.ProgramList[index].spriteSheetName);
             }
         }
         else
         {
-            // 첫 번째 자식을 제외한 나머지 자식 처리
-            for (int i = 1; i < currentMap.transform.childCount; i++) // i = 1 로 시작하여 첫 번째 자식 제외
-            {
-                Transform child = currentMap.transform.GetChild(i);
-                if (child.GetComponent<Portal>() != null)
-                {
-                    // 자식 객체의 부모를 localDiskContent로 설정
-                    child.SetParent(localDiskContent.transform);
-                }
-            }
-            foreach (Transform child in currentMap.transform)
-            {
-                if (child.GetComponent<item>() != null)
-                {
-                    // 자식 객체의 부모를 localDiskContent로 설정
-                    child.SetParent(localDiskContent.transform);
-                }
+            Debug.LogError("i_Program_Detail_Image_Prefab does not have an Image component.");
+        }
 
-            }
+        DeleteButton.gameObject.SetActive(true);
+
+        Debug.Log("OpenProgramDetail");
+    }
+
+    public void FDelete_Button()
+    {
+        if(CurrentProgram != -1)
+        { 
+            statusManager.RemoveProgram(CurrentProgram);
+            CurrentProgram = -1;
+
+            // i_Program_Detail_Image_Prefab
+            t_Program_Detail_Name_Prefab.text = "";
+            t_Program_Detail_Explanation_Prefab.text = "";
+            t_Program_Detail_PowerExplanation_Prefab.text = "";
+
+            DeleteButton.gameObject.SetActive(false);
+
+            GenerateButtons();
+        }
+
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            detailImage.sprite = null;
+        }
+        else
+        {
+            Debug.LogError("Image component not found");
+        }
+    }
+
+    // UI Deactivation
+    public void UIDeactivation()
+    {
+        MyPC_UI.SetActive(false);
+        DownLoad_UI.SetActive(false);
+        My_Documents_UI.SetActive(false);
+        LocalDisk_UI.SetActive(false);
+        ControlOptions_UI.SetActive(false);
+        Help_UI.SetActive(false);
+    }
+
+    // Button OnClickFuction
+    public void FMyPC_Button()
+    {
+        UIDeactivation();
+        MyPC_UI.SetActive(true);
+    }
+
+    public void FDownLoad_Button()
+    {
+        UIDeactivation();
+        DownLoad_UI.SetActive(true);
+    }
+
+    public void FMy_Documents_Button()
+    {
+        UIDeactivation();
+        My_Documents_UI.SetActive(true);
+    }
+
+    public void FLocalDisk_Button()
+    {
+        UIDeactivation();
+        LocalDisk_UI.SetActive(true);
+    }
+
+    public void FControlOptions_Button()
+    {
+        UIDeactivation();
+        ControlOptions_UI.SetActive(true);
+    }
+
+    public void FHelp_Button()
+    {
+        UIDeactivation();
+        Help_UI.SetActive(true);
+    }
+
+    public void FDesktop_Button()
+    {
+        // PC 종료
+        Application.Quit();
+
+        // 에디터에서 종료
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+
+    void OnButtonClick(GameObject clickedButton)
+    {
+
+        int index = clickedButton.transform.GetSiblingIndex();
+        OpenProgramDetail(index);
+    }
+
+    // Setting Function
+
+    // ScreenMode
+    public void ChangeScreenMode(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Debug.Log("전체화면 모드");
+                break;
+            case 1:
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Debug.Log("창모드");
+                break;
+            case 2:
+                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
+                Debug.Log("전체 창모드");
+                break;
+            default:
+                Debug.LogWarning("Error");
+                break;
+        }
+    }
+    
+    // Resolution
+    public void ChangeResolution(int index)
+    {
+        switch (index)
+        {
+            case 0: // 1920 x 1080
+                Screen.SetResolution(1920, 1080, Screen.fullScreen);
+                break;
+            case 1: // 1600 x 900
+                Screen.SetResolution(1600, 900, Screen.fullScreen);
+                break;
+            case 2: // 1280 x 720
+                Screen.SetResolution(1280, 720, Screen.fullScreen);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ChangeQuality(int index)
+    {
+        switch (index)
+        {
+            case 0: // 좋음
+                QualitySettings.SetQualityLevel(5, true); 
+                break;
+            case 1: // 중간
+                QualitySettings.SetQualityLevel(3, true);
+                break;
+            case 2: // 낮음
+                QualitySettings.SetQualityLevel(1, true);
+                break;
+            default:
+                break;
         }
     }
 }

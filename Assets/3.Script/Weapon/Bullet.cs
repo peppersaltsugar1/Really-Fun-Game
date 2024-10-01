@@ -57,8 +57,13 @@ public class Bullet : MonoBehaviour
 
     public void SetBulletSpeed(float newspeed)
     {
-        // Debug.Log("ChangeSpeed");
         speed += newspeed;
+        Debug.Log("ChangeSpeed" + speed);
+    }
+
+    public float GetBulletSpeed()
+    {
+        return speed;
     }
 }
 

@@ -28,7 +28,7 @@ public class ProgramRoom : MonoBehaviour
 
             // 프로그램 이미지 띄우기
             // 임시 이미지 로더
-            SetProgramImage(1);
+            SetProgramImage(0);
             // 추후 이미지가 많아지면
             // SetProgramImage(ID);
             
