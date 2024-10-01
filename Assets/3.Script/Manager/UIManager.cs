@@ -9,11 +9,19 @@ public class UIManager : MonoBehaviour
     private Player player;
     [SerializeField]
     private List<GameObject> hpPrefabsList;
+    [SerializeField]
+    private List<GameObject> uiPortalList;
+    [SerializeField]
+    private List<GameObject> coinList;
     private List<GameObject> hpList = new();
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
+    private Canvas localDiskContent;
+    [SerializeField]
     private int interval;
+    [SerializeField]
+    MapGenerator mapGenerator;
 
     private int hpNum = 0;
 
@@ -301,5 +309,66 @@ public class UIManager : MonoBehaviour
         }
     }
     
+    public void RoomUISet()
+    {
+        int mapIndex = 0;
+        for(int i =0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
 
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue ; // 활성화된 맵의 인덱스 반환
+            }
+        }
+
+        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+        if(mapIndex == 0)
+        {
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<Portal>() != null)
+                {
+                    GameObject localDiscUI = Instantiate(uiPortalList[0]);
+                    localDiscUI.transform.SetParent(localDiskContent.transform);
+                    localDiscUI.transform.SetAsLastSibling();
+
+                }
+
+            }
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<item>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+
+            }
+        }
+        else
+        {
+            // 첫 번째 자식을 제외한 나머지 자식 처리
+            for (int i = 1; i < currentMap.transform.childCount; i++) // i = 1 로 시작하여 첫 번째 자식 제외
+            {
+                Transform child = currentMap.transform.GetChild(i);
+                if (child.GetComponent<Portal>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+            }
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<item>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+
+            }
+        }
+    }
 }

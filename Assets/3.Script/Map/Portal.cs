@@ -5,11 +5,24 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public Portal connectPortal;
-    public Camera playerCamera;
+    public GameObject currentMap;
+    public Collider2D portalCollider;
+    TeleportManager teleportManager;
+    CameraManager cameraManager;
+    public bool isUse;
+    bool isRightMove = true;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        portalCollider = GetComponent<Collider2D>();
+        
+    }
     void Start()
     {
-
+        currentMap = transform.parent.gameObject;
+        teleportManager = TeleportManager.Instance;
+        cameraManager = CameraManager.Instance;
+        isUse = true;
     }
 
     // Update is called once per frame
@@ -20,60 +33,57 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("부딪힘");
-        GameObject moveMap = connectPortal.transform.parent.gameObject;
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player")&& isUse)
         {
-            Rigidbody2D playerRigidbody = collision.GetComponent<Rigidbody2D>();
-            if (playerRigidbody != null)
+            portalCollider.enabled = false;
+            connectPortal.portalCollider.enabled = false;
+            Player player = collision.GetComponent<Player>();
+            //플레이어가 충돌할경우 이동할맵을 가져옴
+            GameObject moveMap = connectPortal.transform.parent.gameObject;
+            //플레이어가 충돌한 위치를 계산
+            if (collision.transform.position.x > 0 && transform.position.x > 0)
             {
-                // 속도 벡터를 정규화하여 방향만 얻기
-                Vector2 moveDirection = playerRigidbody.velocity.normalized;
-
-                // 이동할 거리를 정한다. (예: 1.5f)
-                float distanceToMove = 1.5f;
-
-                // 캐릭터를 방향에 맞게 조금 이동시킨다
-                Vector3 newPosition = collision.transform.position + (Vector3)moveDirection * distanceToMove;
-                collision.transform.position = newPosition;
-
-                Debug.Log("플레이어맞음");
-                collision.transform.position = connectPortal.transform.position;
-                Vector3 portalPos = new Vector3(transform.position.x, playerCamera.transform.position.y, playerCamera.transform.position.z);
-                playerCamera.transform.position = portalPos;
-                // 카메라 이동 코루틴 시작
-                StartCoroutine(MoveCameraSmoothly(connectPortal.transform.position));
-
-
+                if (collision.transform.position.x - transform.position.x > 0)
+                {
+                    isRightMove = false;
+                }
+                else
+                {
+                    isRightMove = true;
+                }
             }
+            else if (collision.transform.position.x > 0 && transform.position.x < 0)
+            {
+                isRightMove = false;
+            }
+            else if (collision.transform.position.x < 0 && transform.position.x > 0)
+            {
+                isRightMove = true;
+            }
+            else if (collision.transform.position.x > 0 && transform.position.x > 0)
+            {
+                if ((collision.transform.position.x * -1) - (transform.position.x * -1) > 0)
+                {
+                    isRightMove = false;
+                }
+                else
+                {
+                    isRightMove = true;
+                }
+            }
+            teleportManager.MapTeleportPortal(moveMap,isRightMove,transform.gameObject);
+            teleportManager.PlayerTeleport(player, this,connectPortal);
+            //cameraManager.PortalCameraMove(transform.gameObject,moveMap);
+            cameraManager.CameraLimit(moveMap);
+            currentMap.SetActive(false);
+
         }
     }
-    private IEnumerator MoveCameraSmoothly(Vector3 targetPosition)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        Vector3 cameraTargetPosition = new Vector3(targetPosition.x, targetPosition.y, playerCamera.transform.position.z);
-
-        // 카메라 이동 시간
-        float duration = 0.2f;
-        float elapsedTime = 0f;
-
-        // 현재 카메라 위치
-        Vector3 startingPosition = playerCamera.transform.position;
-
-        // 카메라를 부드럽게 이동시키기
-        while (elapsedTime < duration)
-        {
-            playerCamera.transform.position = Vector3.Lerp(startingPosition, cameraTargetPosition, elapsedTime / duration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // 최종적으로 목표 위치에 정확히 위치시키기
-        playerCamera.transform.position = cameraTargetPosition;
+        isUse = true;
     }
-    public void Connect(Portal coPotal)
-    {
-        connectPortal = coPotal;
-        coPotal.connectPortal = connectPortal;
-    }
+    
+    
 }
 

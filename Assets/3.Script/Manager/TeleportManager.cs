@@ -4,13 +4,38 @@ using UnityEngine;
 
 public class TeleportManager : MonoBehaviour
 {
+    private static TeleportManager instance = null;
+    CameraManager cameraManager;
+    private void Awake()
+    {
+        if (null == instance)
+        {
+            instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    public static TeleportManager Instance
+    {
+        get
+        {
+            if (null == instance)
+            {
+                return null;
+            }
+            return instance;
+        }
+    }
     MapGenerator mapGenerator;
     //맵을 이동시킬거리
     float distance;
     // Start is called before the first frame update
     void Start()
     {
-
+        cameraManager = CameraManager.Instance;
     }
 
     // Update is called once per frame
@@ -18,26 +43,48 @@ public class TeleportManager : MonoBehaviour
     {
 
     }
-    public void Teleport(GameObject map, Vector2 vec)
+    public void PlayerTeleport(Player player,Portal currentPortal,Portal connectPortal)
     {
-        Collider2D collider = map.GetComponent<Collider2D>();
-
-        // Collider2D가 있는지 확인
+        Debug.Log("텔레포트시킴");
+        StartCoroutine(PlayerTeleport_Co(currentPortal, connectPortal));
+        Vector2 newPosition = connectPortal.transform.position;
+        player.transform.position = newPosition;
+    }
+    public void MapTeleportPortal(GameObject moveMap,bool isRightMove,GameObject currentMap)
+    {
+        BoxCollider2D collider = moveMap.GetComponent<BoxCollider2D>();
         if (collider != null)
         {
-            // Collider2D의 bounds를 이용해 x 축 방향 크기를 가져옴
-            distance = collider.bounds.size.x;
-            distance = (float)(distance * 1.5);
-            if (vec.x > 0)
+            
+            float distance = collider.size.x;
+            distance *= 1.5f;
+            if (isRightMove)
             {
-                // 오른쪽으로 이동 (x축 양의 방향)
-                map.transform.position = new Vector2(map.transform.position.x + distance, map.transform.position.y);
+
+                moveMap.transform.position = new Vector2(currentMap.transform.position.x, currentMap.transform.position.y);
+                moveMap.transform.position = new Vector2(moveMap.transform.position.x + distance, moveMap.transform.position.y);
             }
-            else if (vec.x < 0)
+            else
             {
-                // 왼쪽으로 이동 (x축 음의 방향)
-                map.transform.position = new Vector2(map.transform.position.x - distance, map.transform.position.y);
+                moveMap.transform.position = new Vector2(currentMap.transform.position.x, currentMap.transform.position.y);
+                moveMap.transform.position = new Vector2(moveMap.transform.position.x - distance, moveMap.transform.position.y);
             }
+            Debug.Log(moveMap.transform.position);
         }
+        moveMap.SetActive(true);
     }
+    private IEnumerator PlayerTeleport_Co(Portal currentPortal, Portal connectPortal)
+    {
+        Debug.Log("코루틴사용");
+        currentPortal.isUse = false;
+        connectPortal.isUse = false;
+        yield return new WaitForSeconds(2f);  // 1초 후 다시 포탈 활성화
+        Debug.Log("코루틴종료");
+        currentPortal.portalCollider.enabled = true;
+        connectPortal.portalCollider.enabled = true;
+        currentPortal.isUse = true;
+        connectPortal.isUse = true;
+
+    }
+
 }
