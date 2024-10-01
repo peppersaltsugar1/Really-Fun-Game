@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2999923950280300711}
   - component: {fileID: 2999923950280300709}
   - component: {fileID: 2999923950280300708}
+  - component: {fileID: -9080843754027847917}
   m_Layer: 0
   m_Name: M_VE-1
   m_TagString: Untagged
@@ -132,3 +133,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.63, y: 1.06}
   m_EdgeRadius: 0
+--- !u!114 &-9080843754027847917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999923950280300728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d98920bc0a652449060053e64fc1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterType: 4
+  MoveSpeed: 10
+  AttackPower: 0
+  HP: 0
+  WaittingTime: 0
+  AttackDelayTime: 0
+  AttackCoolTime: 0
+  DetectingAreaR: 7
+  travelTime: 0.45
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  bulletSpeed: 10
+  CardPrefab1: {fileID: 0}
+  CardPrefab2: {fileID: 0}
+  CardPrefab3: {fileID: 0}
+  CardPrefab4: {fileID: 0}

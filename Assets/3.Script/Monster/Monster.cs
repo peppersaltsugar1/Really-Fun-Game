@@ -9,7 +9,12 @@ public class Monster : MonoBehaviour
         M_V1,
         M_V2,
         M_V3,
-        M_CardPack
+        M_CardPack,
+        M_VE_1,
+        M_VE_2,
+        M_SpiderCardPack,
+        Red_Spider,
+        White_Spider
     }
     // 몬스터 기본정보
     public MonsterType monsterType; // 몬스터 타입
@@ -24,7 +29,6 @@ public class Monster : MonoBehaviour
 
     private Transform player; // 플레이어의 위치
     private Vector3 targetPosition; // 탐지된 플레이어의 위치 저장
-    private bool isAttacking = false; // 공격 준비 상태인지 확인
     private bool DetectionSuccess = false; // 탐지 성공 여부
 
     // 3번 몬스터 점프이동 구현용 변수
@@ -41,6 +45,11 @@ public class Monster : MonoBehaviour
     public GameObject CardPrefab3;  // 발사할 총알 프리팹
     public GameObject CardPrefab4;  // 발사할 총알 프리팹
 
+    public GameObject SpiderPrefab1;
+    public GameObject SpiderPrefab2;
+    public GameObject SpiderPrefab3;
+    public GameObject SpiderPrefab4;
+
     // 기타 변수
     Animator animator; //애니메이터
     private GameManager gameManager;
@@ -50,11 +59,15 @@ public class Monster : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        if (monsterType != MonsterType.M_SpiderCardPack)
+            animator = GetComponent<Animator>();
 
-        Debug.Log("몬스터 확인, 루틴 시작");
+        if (monsterType == MonsterType.M_SpiderCardPack)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+        // Debug.Log("몬스터 확인, 루틴 시작");
         StartCoroutine(MonsterRoutine());
-
     }
 
     void Update()
@@ -126,18 +139,19 @@ public class Monster : MonoBehaviour
                         animator.SetBool("Move", false);
                         break;
                     case MonsterType.M_V2:
-                        yield return new WaitForSeconds(WaittingTime);
-                        yield return RandomMoveAfterSearchFail();
-                        Debug.Log("Move!!");
-                        break;
                     case MonsterType.M_V3:
+                    case MonsterType.White_Spider:
+                    case MonsterType.Red_Spider:
                         yield return new WaitForSeconds(WaittingTime);
                         yield return RandomMoveAfterSearchFail();
-                        Debug.Log("Move!!");
                         break;
                     case MonsterType.M_CardPack:
+                    case MonsterType.M_VE_1:
+                    case MonsterType.M_VE_2:
                         yield return new WaitForSeconds(WaittingTime);
-                        Debug.Log(" Not Move!!");
+                        break;
+                    case MonsterType.M_SpiderCardPack:
+                        yield return AttackPreparation(); // 무조건 미니 거미 소환
                         break;
                 }
 
@@ -151,6 +165,15 @@ public class Monster : MonoBehaviour
                 {
                 }
                 else if (monsterType == MonsterType.M_CardPack)
+                {
+                }
+                else if (monsterType == MonsterType.M_VE_1)
+                {
+                }
+                else if (monsterType == MonsterType.M_VE_2)
+                {
+                }
+                else if (monsterType == MonsterType.M_SpiderCardPack)
                 {
                 }
             }
@@ -169,10 +192,6 @@ public class Monster : MonoBehaviour
         {
             spriteRenderer.flipX = false;  // 오른쪽을 바라봄 (Flip X 비활성화)
         }
-
-
-        // 공격 준비 상태로 설정
-        isAttacking = true;
 
         // Debug.Log("공격 준비중");
 
@@ -219,10 +238,96 @@ public class Monster : MonoBehaviour
             // 공격 처리
             yield return CardFire();
         }
+        else if (monsterType == MonsterType.M_VE_1)
+        {
+            if (!animator.GetBool("Detected"))
+            {
+                animator.SetBool("Detected", true);
+                yield return new WaitForSeconds(1.30f);
+
+                DetectingAreaR = 30;
+
+                WaittingTime = 0;
+                AttackDelayTime = 0;
+                AttackCoolTime = 0;
+            }
+
+            // 실시간 추적
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        else if (monsterType == MonsterType.M_VE_2)
+        {
+            if (!animator.GetBool("Detected"))
+            {
+                animator.SetBool("Detected", true);
+                yield return new WaitForSeconds(1.30f);
+
+                WaittingTime = 1;
+                AttackDelayTime = 1;
+                AttackCoolTime = 1;
+            }
+
+            animator.SetTrigger("Shot");
+            yield return new WaitForSeconds(1.05f);
+            Fire();
+        }
+        else if (monsterType == MonsterType.M_SpiderCardPack)
+        {
+            int SpiderColor = Random.Range(0, 4); // 0, 1 흰색. 2, 3 빨강색
+            switch (SpiderColor)
+            {
+                case 0:
+                case 1:
+                    animator.SetTrigger("White_Spawn");
+                    Debug.Log("흰색 거미 소환!!");
+                    break;
+                case 2:
+                case 3:
+                    animator.SetTrigger("Red_Spawn");
+                    Debug.Log("빨간색 거미 소환!!");
+                    break;
+            }
+            // Animation Lodding
+            yield return new WaitForSeconds(10.6f);
+
+            switch (SpiderColor)
+            {
+                case 0:
+                    Instantiate(SpiderPrefab1, firePoint.position, firePoint.rotation);
+                    break;
+                case 1:
+                    Instantiate(SpiderPrefab2, firePoint.position, firePoint.rotation);
+                    break;
+                case 2:
+                    Instantiate(SpiderPrefab3, firePoint.position, firePoint.rotation);
+                    break;
+                case 3:
+                    Instantiate(SpiderPrefab4, firePoint.position, firePoint.rotation);
+                    break;
+            }
+        }
+        else if (monsterType == MonsterType.Red_Spider)
+        {
+            animator.SetTrigger("Move");
+            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
+        else if (monsterType == MonsterType.White_Spider)
+        {
+            animator.SetTrigger("Jump");
+            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
 
         // Debug.Log("Attack End, CoolTime Start");
         yield return new WaitForSeconds(AttackCoolTime);
-        isAttacking = false;
     }
 
     IEnumerator RandomMoveAfterSearchFail()
@@ -259,10 +364,6 @@ public class Monster : MonoBehaviour
         }
         else if (monsterType == MonsterType.M_V3)
         {
-            // 포물선 이동식(비활성화)
-            // StartCoroutine(MoveAlongCurve());
-
-            // 직선이동
             animator.SetTrigger("Jump");
             yield return new WaitForSeconds(1.7f);
             while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
@@ -273,6 +374,19 @@ public class Monster : MonoBehaviour
         }
         else if (monsterType == MonsterType.M_CardPack)
         {
+            while (Vector3.Distance(transform.position, targetPosition) > 0.1f && isMoving)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
+        else if (monsterType == MonsterType.Red_Spider || monsterType == MonsterType.White_Spider)
+        {
+            if (monsterType == MonsterType.Red_Spider)
+                animator.SetTrigger("Move");
+            else
+                animator.SetTrigger("Jump");
+
             while (Vector3.Distance(transform.position, targetPosition) > 0.1f && isMoving)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
@@ -319,6 +433,7 @@ public class Monster : MonoBehaviour
     // 공격 로직
     void Fire()
     {
+        Debug.Log("총알 발사~ ");
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Physics2D.IgnoreCollision(bullet.GetComponent<Collider2D>(), GetComponent<Collider2D>());
 
@@ -361,7 +476,7 @@ public class Monster : MonoBehaviour
                 break;
 
         }
-        
+
 
         yield return new WaitForSeconds(1.5f);
         if (CardNum == 0 || CardNum == 1)
