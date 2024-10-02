@@ -143,7 +143,7 @@ public class Player : MonoBehaviour
         direction.Normalize();
 
         // 무기 위치 설정
-        weapon.transform.position = transform.position + direction * weaponDistance;
+        weapon.transform.position = transform.position + direction * weaponDistance;    
     }
     public void TakeDamage(float atk)
     {

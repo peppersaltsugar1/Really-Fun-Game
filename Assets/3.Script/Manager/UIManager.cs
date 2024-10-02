@@ -141,7 +141,6 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
             SetWindowUI();
         }
     }
