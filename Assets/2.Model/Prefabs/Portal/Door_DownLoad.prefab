@@ -238,7 +238,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectPortal: {fileID: 0}
-  playerCamera: {fileID: 0}
+  currentMap: {fileID: 0}
+  portalCollider: {fileID: 0}
+  isUse: 0
 --- !u!1 &2846304964046959162
 GameObject:
   m_ObjectHideFlags: 0

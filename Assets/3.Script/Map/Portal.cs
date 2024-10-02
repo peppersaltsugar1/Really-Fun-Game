@@ -73,7 +73,7 @@ public class Portal : MonoBehaviour
             }
             teleportManager.MapTeleportPortal(moveMap,isRightMove,transform.gameObject);
             teleportManager.PlayerTeleport(player, this,connectPortal);
-            //cameraManager.PortalCameraMove(transform.gameObject,moveMap);
+            cameraManager.PortalCameraMove(transform.gameObject,moveMap);
             cameraManager.CameraLimit(moveMap);
             currentMap.SetActive(false);
 

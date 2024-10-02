@@ -11,14 +11,23 @@ public class UIManager : MonoBehaviour
     private static UIManager instance = null;
     [SerializeField]
     private Player player;
+    //Hp 체력바 프리펩 리스트
     [SerializeField]
     private List<GameObject> hpPrefabsList;
+    //Hp 체력바 리스트
     private List<GameObject> hpList = new();
+    //캔버스
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
     private int interval;
-
+    //포탈 이미지 리스트
+    [SerializeField]
+    private List<Sprite> portalUiList = new();
+    [SerializeField]
+    private MapGenerator mapGenerator;
+    [SerializeField]
+    private GameObject UIPortal;
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -27,6 +36,8 @@ public class UIManager : MonoBehaviour
     public GameObject LocalDisk_UI;
     public GameObject ControlOptions_UI;
     public GameObject Help_UI;
+    [SerializeField]
+    private GameObject localDiskContent;
     // First Start Check
     private GameObject Start_UI;
 
@@ -434,7 +445,7 @@ public class UIManager : MonoBehaviour
         {
             AttackText.text = player.atk.ToString();
             AttackSpeedText.text = player.atkSpeed.ToString();
-            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
+            /*BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();*/
             RangeText.text = player.angleRange.ToString();
             MoveSpeedText.text = player.moveSpeed.ToString();
         }
@@ -676,6 +687,72 @@ public class UIManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+    public void RoomUISet()
+    {
+        int mapIndex = 0;
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
+
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+
+        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+        if (mapIndex == 0)
+        {
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<Portal>() != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    Image portalImage = portalUI.GetComponent<Image>();
+                    portalImage.sprite = portalUiList[0];
+                    
+                    //이미지 변경하는 로직짜야함
+
+                }
+
+            }
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<item>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+
+            }
+        }
+        else
+        {
+            // 첫 번째 자식을 제외한 나머지 자식 처리
+            for (int i = 1; i < currentMap.transform.childCount; i++) // i = 1 로 시작하여 첫 번째 자식 제외
+            {
+                Transform child = currentMap.transform.GetChild(i);
+                if (child.GetComponent<Portal>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+            }
+            foreach (Transform child in currentMap.transform)
+            {
+                if (child.GetComponent<item>() != null)
+                {
+                    // 자식 객체의 부모를 localDiskContent로 설정
+                    child.SetParent(localDiskContent.transform);
+                }
+
+            }
         }
     }
 }
