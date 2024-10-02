@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1611052507010950091}
   - component: {fileID: 1611052507010950092}
   - component: {fileID: 1611052507010950093}
+  - component: {fileID: 3357665177315492421}
   m_Layer: 0
   m_Name: M_Spider_Spade
   m_TagString: Untagged
@@ -105,3 +106,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3357665177315492421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611052507010950094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d98920bc0a652449060053e64fc1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterType: 8
+  MoveSpeed: 7
+  AttackPower: 0
+  HP: 0
+  WaittingTime: 1
+  AttackDelayTime: 1
+  AttackCoolTime: 1
+  DetectingAreaR: 7
+  travelTime: 0.45
+  bulletPrefab: {fileID: 0}
+  firePoint: {fileID: 0}
+  bulletSpeed: 10
+  CardPrefab1: {fileID: 0}
+  CardPrefab2: {fileID: 0}
+  CardPrefab3: {fileID: 0}
+  CardPrefab4: {fileID: 0}
+  SpiderPrefab1: {fileID: 0}
+  SpiderPrefab2: {fileID: 0}
+  SpiderPrefab3: {fileID: 0}
+  SpiderPrefab4: {fileID: 0}

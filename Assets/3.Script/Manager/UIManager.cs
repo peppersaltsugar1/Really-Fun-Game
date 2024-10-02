@@ -636,10 +636,6 @@ public class UIManager : MonoBehaviour
                 Screen.fullScreenMode = FullScreenMode.Windowed;
                 Debug.Log("창모드");
                 break;
-            case 2:
-                Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
-                Debug.Log("전체 창모드");
-                break;
             default:
                 Debug.LogWarning("Error");
                 break;
