@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
     TeleportManager teleportManager;
     CameraManager cameraManager;
     public bool isUse;
+    public bool isLock;
     bool isRightMove = true;
     // Start is called before the first frame update
     private void Awake()
@@ -19,10 +20,10 @@ public class Portal : MonoBehaviour
     }
     void Start()
     {
-        currentMap = transform.parent.gameObject;
         teleportManager = TeleportManager.Instance;
         cameraManager = CameraManager.Instance;
         isUse = true;
+        isLock = false;
     }
 
     // Update is called once per frame
@@ -75,6 +76,7 @@ public class Portal : MonoBehaviour
             teleportManager.PlayerTeleport(player, this,connectPortal);
             cameraManager.PortalCameraMove(transform.gameObject,moveMap);
             cameraManager.CameraLimit(moveMap);
+            currentMap = transform.parent.gameObject;
             currentMap.SetActive(false);
 
         }

@@ -6,6 +6,7 @@ public class TeleportManager : MonoBehaviour
 {
     private static TeleportManager instance = null;
     CameraManager cameraManager;
+    GameManager gameManager;
     private void Awake()
     {
         if (null == instance)
@@ -36,6 +37,7 @@ public class TeleportManager : MonoBehaviour
     void Start()
     {
         cameraManager = CameraManager.Instance;
+        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame
@@ -86,5 +88,26 @@ public class TeleportManager : MonoBehaviour
         connectPortal.isUse = true;
 
     }
+    public void LocalDisckTel(int maplistIndex)
+    {
+        Transform telPos = mapGenerator.mapList[maplistIndex].transform.Find("TeleportPoint");
+        Debug.Log(telPos);
+        gameManager.player.transform.position = telPos.position;
+        int mapIndex = 0;
+        //현제 맵이 몇번째 index인지 확인
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
 
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+        mapGenerator.mapList[mapIndex].transform.gameObject.SetActive(false);
+        mapGenerator.mapList[maplistIndex].transform.gameObject.SetActive(true);
+
+    }
 }

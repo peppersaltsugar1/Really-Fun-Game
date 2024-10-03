@@ -14,6 +14,8 @@ public class MapGenerator : MonoBehaviour
     private Map[] randomSpecialMapPrefabList;
     [SerializeField]
     private Map[] bossMapPrefabList;
+    [SerializeField]
+    private List<Portal> portalPrefabList = new();
     public List<Map> mapList = new List<Map>();
     //맵 생성관련 인수
     public int maxMapNum; //맵최대갯수
@@ -59,7 +61,7 @@ public class MapGenerator : MonoBehaviour
             InfiniteLoopDetector.Run();
             CreateNextMap();
         }
-
+        PortalChange();
 
     }
     private void CreateFirstMap()//초기맵생성
@@ -424,7 +426,7 @@ public class MapGenerator : MonoBehaviour
                 if (randomSpecialMapPrefabList[mapIndex].name == mapList[i].name)
                 {
                     isDuplicate = true; // 같은 타입의 맵이 존재할 경우 true
-                    break; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
+                    continue; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
                 }
             }
             // 중복되지 않는 경우에만 맵을 생성
@@ -498,5 +500,162 @@ public class MapGenerator : MonoBehaviour
             mapList[i].gameObject.SetActive(false);
         }
         mapList[0].gameObject.SetActive(true);
+    }
+    
+    private void PortalChange()
+    {
+        for(int i = 0; i<mapList.Count; i++)
+        {
+            Map currentMap = mapList[i];
+           
+            Portal[] curretPortaList = currentMap.GetComponentsInChildren<Portal>();
+            if (curretPortaList != null)
+            {
+                for(int j = 0; j < curretPortaList.Length; j++)
+                {
+                    Map connectMap = curretPortaList[j].connectPortal.GetComponentInParent<Map>();
+                    if(connectMap.Type != Map.MapType.Middle)
+                    {
+                        Portal changePortal = new();
+                        switch (connectMap.Type) 
+                        {
+                            
+                            case Map.MapType.Download: 
+                                changePortal = Instantiate(portalPrefabList[0],currentMap.transform);
+                                changePortal.transform.position = curretPortaList[j].transform.position;
+                                changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                Destroy(curretPortaList[j].gameObject);
+                                break;
+                            case Map.MapType.Shop:
+                                changePortal = Instantiate(portalPrefabList[1], currentMap.transform);
+                                changePortal.transform.position = curretPortaList[j].transform.position;
+                                changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                Destroy(curretPortaList[j].gameObject);
+                                break;
+                            case Map.MapType.Boss:
+                                changePortal = Instantiate(portalPrefabList[2], currentMap.transform);
+                                changePortal.transform.position = curretPortaList[j].transform.position;
+                                changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                Destroy(curretPortaList[j].gameObject);
+                                break;
+                             case Map.MapType.RandomSpecial:
+                                switch (connectMap.mapName) 
+                                {
+                                    case "전원 옵션":
+                                        changePortal = Instantiate(portalPrefabList[3], currentMap.transform);
+                                        changePortal.transform.position = curretPortaList[j].transform.position;
+                                        changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                        changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                        curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                        Destroy(curretPortaList[j].gameObject);
+                                        break;
+                                    case "Window 방화벽":
+                                        changePortal = Instantiate(portalPrefabList[4], currentMap.transform);
+                                        changePortal.transform.position = curretPortaList[j].transform.position;
+                                        changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                        changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                        curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                        Destroy(curretPortaList[j].gameObject);
+                                        break;
+                                    case "JuvaCafe":
+                                        changePortal = Instantiate(portalPrefabList[5], currentMap.transform);
+                                        changePortal.transform.position = curretPortaList[j].transform.position;
+                                        changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                        changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                        curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                        Destroy(curretPortaList[j].gameObject);
+                                        break;
+                                    case "휴지통":
+                                        changePortal = Instantiate(portalPrefabList[6], currentMap.transform);
+                                        changePortal.transform.position = curretPortaList[j].transform.position;
+                                        changePortal.transform.SetSiblingIndex(curretPortaList[j].transform.GetSiblingIndex());
+                                        changePortal.connectPortal = curretPortaList[j].connectPortal;
+                                        curretPortaList[j].connectPortal.connectPortal = changePortal;
+                                        Destroy(curretPortaList[j].gameObject);
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+            // 현재 Map의 모든 자식 Transform을 가져오기
+            /*foreach (Transform child in currentMap.transform)
+            {
+                // 자식 객체에서 Portal 컴포넌트를 가져오기
+                Portal portal = child.GetComponent<Portal>();
+
+                // Portal이 null이 아니면 (즉, Portal 컴포넌트가 존재하면)
+                if (portal != null)
+                {
+                    Map connectMap = portal.connectPortal.transform.GetComponentInParent<Map>();
+                    Portal connectPortal = portal.connectPortal;
+                    if (connectMap.Type != Map.MapType.Middle)
+                    {
+                        switch (connectMap.Type) 
+                        {
+                            case Map.MapType.Download:
+                                Vector2 portalPos = portal.transform.position;
+                                int portalIndex = portal.transform.GetSiblingIndex();
+                                Destroy(portal);
+                                Portal downloadPortal = Instantiate(portalPrefabList[0]);
+                                downloadPortal.transform.parent = currentMap.transform;
+                                downloadPortal.transform.SetSiblingIndex(portalIndex);
+                                downloadPortal.connectPortal = connectPortal;
+                                connectPortal.connectPortal = portal;
+                                break;
+                            case Map.MapType.Shop:
+                                Portal shopPortal = Instantiate(portalPrefabList[1], portal.transform);
+                                shopPortal.connectPortal = connectPortal;
+                                connectPortal.connectPortal = shopPortal;
+                                Destroy(portal);
+                                break;
+                            case Map.MapType.Boss:
+                                Portal bossPortal = Instantiate(portalPrefabList[2], portal.transform);
+                                bossPortal.connectPortal = connectPortal;
+                                connectPortal.connectPortal = bossPortal;
+                                Destroy(portal);
+                                break;
+                            case Map.MapType.RandomSpecial:
+                                switch (connectMap.mapName) 
+                                {
+                                    case "전원 옵션":
+                                        Portal chargePortal = Instantiate(portalPrefabList[3], portal.transform);
+                                        chargePortal.connectPortal = connectPortal;
+                                        connectPortal.connectPortal = chargePortal;
+                                        Destroy(portal);
+                                        break;
+                                    case "Window 방화벽":
+                                        Portal gaurdPortal = Instantiate(portalPrefabList[4], portal.transform);
+                                        gaurdPortal.connectPortal = connectPortal;
+                                        connectPortal.connectPortal = gaurdPortal;
+                                        Destroy(portal);
+                                        break;
+                                    case "JuvaCafe":
+                                        Portal juvaPortal = Instantiate(portalPrefabList[5], portal.transform);
+                                        juvaPortal.connectPortal = connectPortal;
+                                        connectPortal.connectPortal = juvaPortal;
+                                        Destroy(portal);
+                                        break;
+                                    case "휴지통":
+                                        Portal trashPortal = Instantiate(portalPrefabList[6], portal.transform);
+                                        trashPortal.connectPortal = connectPortal;
+                                        connectPortal.connectPortal = trashPortal;
+                                        Destroy(portal);
+                                        break;
+                                }
+                                break;
+
+                        }
+                    }
+                }
+            }*/
+        }
     }
 }
