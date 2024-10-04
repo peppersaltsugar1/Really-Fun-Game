@@ -5,13 +5,14 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public Portal connectPortal;
+    public Collider2D portalCollider;
     public Camera playerCamera;
     public bool isUse;
     public bool isLock;
     // Start is called before the first frame update
     void Start()
     {
-
+        portalCollider = GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
