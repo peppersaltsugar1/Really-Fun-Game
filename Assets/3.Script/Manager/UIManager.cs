@@ -18,6 +18,18 @@ public class UIManager : MonoBehaviour
     private Canvas canvas;
     [SerializeField]
     private int interval;
+    [SerializeField]
+    GameObject localDiskContent;
+    [SerializeField]
+    MapGenerator mapGenerator;
+    [SerializeField]
+    GameObject UIPortal;
+    [SerializeField]
+    List<Sprite> portalUiList = new();
+    [SerializeField]
+    List<Sprite> closePortalUiList = new();
+    [SerializeField]
+    List<GameObject> itemImageList = new();
 
     // Window UI
     public GameObject WindowUI;
@@ -677,6 +689,387 @@ public class UIManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+    public void RoomUISet()
+    {
+        //UI에 남아있는요소 확인후 삭제
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
+        //맵 index초기화
+        int mapIndex = 0;
+        //현제 맵이 몇번째 index인지 확인
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
+
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+        /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
+        //맵list에서 현제맵을 가져옴
+        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+        Map currentPortalMap = currentMap.GetComponent<Map>();
+        if (mapIndex == 0)
+        {
+            //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        mapName.text = connectedMap.mapName;
+
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            //0번째 방일때 현제맵의 아이템을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                item fildItem = child.GetComponent<item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case item.ItemType.Coin:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue;
+                        case item.ItemType.Heal:
+                            GameObject healUI = Instantiate(itemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.TemHp:
+                            GameObject itemUI = Instantiate(itemImageList[0]);
+                            itemUI.transform.SetParent(localDiskContent.transform);
+                            itemUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(itemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(itemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+
+                }
+
+            }
+        }
+        else
+        {
+            List<GameObject> currentPortalList = new();
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    currentPortalList.Add(portalUI);
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        Debug.Log(connectedMap.name);
+                        mapName.text = connectedMap.mapName;
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            Destroy(currentPortalList[0].gameObject);
+            currentPortalList.RemoveAt(0);
+            foreach (Transform child in currentMap.transform)
+            {
+                item fildItem = child.GetComponent<item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case item.ItemType.Coin:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue;
+                        case item.ItemType.Heal:
+                            GameObject healUI = Instantiate(itemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.TemHp:
+                            GameObject itemUI = Instantiate(itemImageList[0]);
+                            itemUI.transform.SetParent(localDiskContent.transform);
+                            itemUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(itemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(itemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+
+                }
+
+            }
         }
     }
 }

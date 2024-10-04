@@ -8,10 +8,10 @@ public class item : MonoBehaviour
     {
         Coin, Heal, TemHp, Shiled, Spark
     }
-    private int itemScore;
+    public int itemScore;
     private GameManager gameManager;
     private StatusManager statusManager;
-    private ItemType itemType;
+    public ItemType itemType;
     //아이템종
     // Start is called before the first frame update
     void Start()

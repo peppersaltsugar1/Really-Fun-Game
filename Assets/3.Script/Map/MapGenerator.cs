@@ -14,7 +14,7 @@ public class MapGenerator : MonoBehaviour
     private Map[] randomSpecialMapPrefabList;
     [SerializeField]
     private Map[] bossMapPrefabList;
-    private List<Map> mapList = new List<Map>();
+    public List<Map> mapList = new List<Map>();
     //¸Ê »ı¼º°ü·Ã ÀÎ¼ö
     public int maxMapNum; //¸ÊÃÖ´ë°¹¼ö
     private Transform map;

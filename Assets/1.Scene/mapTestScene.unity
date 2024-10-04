@@ -5987,6 +5987,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de5b83650ecddf4f901bea92a31b30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 0}
+  teleportManager: {fileID: 0}
   currentLocakDiskMapIndex: 0
 --- !u!114 &511861096
 MonoBehaviour:
@@ -6675,9 +6677,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_vcamOwner: {fileID: 533282424}
   m_BoundingShape2D: {fileID: 0}
   m_Damping: 0.5
   m_MaxWindowSize: -1
+  m_MaxComputationTimePerFrameInSeconds: 0.008333334
 --- !u!114 &533282424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6693,9 +6697,25 @@ MonoBehaviour:
   m_ExcludedPropertiesInInspector:
   - m_Script
   m_LockStageInInspector: 
+  m_ValidatingStreamVersion: 20170927
+  m_OnValidateCalled: 1
   m_StreamingVersion: 20170927
   m_Priority: 10
+  m_ActivationId: 1
   m_StandbyUpdate: 2
+  <mExtensions>k__BackingField:
+  - {fileID: 533282423}
+  <PreviousStateIsValid>k__BackingField: 1
+  m_WasStarted: 1
+  mSlaveStatusUpdated: 1
+  m_parentVcam: {fileID: 0}
+  m_QueuePriority: 10
+  m_CachedFollowTarget: {fileID: 978386260}
+  m_CachedFollowTargetVcam: {fileID: 0}
+  m_CachedLookAtTarget: {fileID: 0}
+  m_CachedLookAtTargetVcam: {fileID: 0}
+  <FollowTargetChanged>k__BackingField: 0
+  <LookAtTargetChanged>k__BackingField: 0
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 978386260}
   m_Lens:
@@ -6708,14 +6728,23 @@ MonoBehaviour:
     LensShift: {x: 0, y: 0}
     GateFit: 2
     m_SensorSize: {x: 1, y: 1}
+    m_OrthoFromCamera: 1
+    m_PhysicalFromCamera: 0
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
     m_OnCameraLive:
       m_PersistentCalls:
         m_Calls: []
+      m_CallsDirty: 1
   m_LegacyBlendHint: 0
+  m_UserIsDragging: 0
+  m_ComponentPipeline:
+  - {fileID: 833823681}
+  - {fileID: 833823682}
   m_ComponentOwner: {fileID: 833823680}
+  mCachedLookAtTarget: {fileID: 0}
+  mCachedLookAtTargetVcam: {fileID: 0}
 --- !u!4 &533282425
 Transform:
   m_ObjectHideFlags: 0
@@ -10012,6 +10041,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_vcamOwner: {fileID: 533282424}
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 0, z: -10}
   m_XDamping: 1
@@ -10022,6 +10052,12 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
+  <HideOffsetInInspector>k__BackingField: 0
+  m_PreviousTargetPosition: {x: -3.34, y: -0.96, z: 0}
+  m_PreviousReferenceOrientation: {x: 0, y: 0, z: 0, w: 1}
+  m_targetOrientationOnAssign: {x: -0, y: -0, z: -0, w: 1}
+  m_PreviousOffset: {x: 0, y: 0, z: -10}
+  m_previousTarget: {fileID: 978386260}
 --- !u!114 &833823682
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -10034,6 +10070,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_vcamOwner: {fileID: 533282424}
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
@@ -10049,6 +10086,11 @@ MonoBehaviour:
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1
+  <TrackedPoint>k__BackingField: {x: 0, y: 0, z: 0}
+  m_CameraPosPrevFrame: {x: 0, y: 0, z: 0}
+  m_LookAtPrevFrame: {x: 0, y: 0, z: 0}
+  m_ScreenOffsetPrevFrame: {x: 0, y: 0}
+  m_CameraOrientationPrevFrame: {x: 0, y: 0, z: 0, w: 1}
 --- !u!114 &833823683
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -10579,22 +10621,11 @@ MonoBehaviour:
   - {fileID: 2256108425953875611, guid: 156249d20f0c2e24ea4e29923cbbeab6, type: 3}
   - {fileID: 2181439996956237118, guid: e127d15087262d34595a9f7d6dbf71ca, type: 3}
   bossMapPrefabList: []
-  portalPrefabList:
-  - {fileID: 2554538583856762247, guid: 0328078c8f30b804da17712600d95a95, type: 3}
-  - {fileID: 8303808779349550239, guid: 34c2dfa19af76124283ce7c33e19d71d, type: 3}
-  - {fileID: 3529152069431595123, guid: 799c9624e5fb03f47b3ac039538e6662, type: 3}
-  - {fileID: 4825538207673262357, guid: a0f61db65f9c3664290f41942d31463f, type: 3}
-  - {fileID: 5936649236964455238, guid: d78b42b8d4b8c834e8bf7dc1dfbaf3f0, type: 3}
-  - {fileID: 6797944182036261166, guid: 3732d411a8f9fd94a9bd7beceee3cf5f, type: 3}
-  - {fileID: 5823486852280305826, guid: c9a604dcfdcdfc14cb19101af3bd6f0a, type: 3}
   mapList: []
   maxMapNum: 13
-  map: {fileID: 1454042613}
   createMapNum: 0
   specialMapNum: 2
   randomSpeicalMapNum: 2
-  specialPercent: 30
-  randomSpecialPercent: 30
 --- !u!4 &870397612
 Transform:
   m_ObjectHideFlags: 0
@@ -12249,18 +12280,23 @@ MonoBehaviour:
     m_Style: 1
     m_Time: 2
     m_CustomCurve:
-      serializedVersion: 2
       m_Curve: []
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
   m_CustomBlends: {fileID: 0}
+  m_OutputCamera: {fileID: 978386262}
   m_CameraCutEvent:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+    m_CallsDirty: 1
+  m_LastFrameUpdated: 38
+  mNextFrameId: 1
+  mActiveCameraPreviousFrameGameObject: {fileID: 533282422}
 --- !u!114 &978386266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12299,24 +12335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 978386266}
-  sPoint: {fileID: 0}
-  angleRange: 35
-  maxHp: 5
-  currentHp: 3
-  temHp: 3
-  shield: 0
-  shieldHp: 1
-  elect: 1
-  atk: 0
-  atkSpeed: 6
-  pushPower: 0
-  moveSpeed: 5.5
-  coin: 0
-  weaponDistance: 0.75
-  playerCol: {fileID: 0}
   camera: {fileID: 0}
-  EnomyDelete: 0
-  detectionRadius: 5
 --- !u!70 &978386269
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -16342,8 +16361,6 @@ GameObject:
   - component: {fileID: 1292627440}
   - component: {fileID: 1292627439}
   - component: {fileID: 1292627438}
-  - component: {fileID: 1292627437}
-  - component: {fileID: 1292627436}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -16351,32 +16368,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1292627436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292627435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ce7da07bebaa5a44829f934f4440b33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 978386262}
-  cinemachine: {fileID: 533282423}
---- !u!114 &1292627437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1292627435}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb465740d2dd50a4285e66df5b7241ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1292627438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16410,38 +16401,12 @@ MonoBehaviour:
   - {fileID: 3585480957747634437, guid: 4e9cb7256d12cc94d9fa3dfcecc8797c, type: 3}
   canvas: {fileID: 822881369}
   interval: 48
-  portalUiList:
-  - {fileID: 1127124907, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -915068727, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: 1822713184, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1583352473, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -396369561, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: 826647242, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1867870008, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1674180315, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  closePortalUiList:
-  - {fileID: 2000000841, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -860560246, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -655639855, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -702670396, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 1521753489, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -980278564, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -60972639, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 368143465, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 1534443574, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -1595032775, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  itemImageList:
-  - {fileID: 3423725725789717936, guid: 38f766fdd8684d34184a7566a3190685, type: 3}
-  - {fileID: 2478164979377904780, guid: bc9c968931856e24ba41dfa94bcfea60, type: 3}
-  - {fileID: 9094977245965592326, guid: 00d2e7341d53d5f4b92cfaa822ee4718, type: 3}
-  - {fileID: 7579776746063252086, guid: 43f4b7b6e03477442b787c498100a66d, type: 3}
-  - {fileID: 9076891888275537370, guid: e004b4ed8529f0146a0218529aa20b2c, type: 3}
-  - {fileID: 6373448218444625031, guid: f67c1d1ff4fc9e54e94d17607702bfa2, type: 3}
-  - {fileID: 1319037289536431814, guid: 1d12e0ccf25aa2345b04cda2ec9af977, type: 3}
-  - {fileID: 4932652989490891281, guid: 16174db8c45ef194495fa271785ada1f, type: 3}
-  - {fileID: 2268406408196885557, guid: e4c2d82758dc9294cb10adf867568f9a, type: 3}
+  localDiskContent: {fileID: 1698967379}
   mapGenerator: {fileID: 870397611}
   UIPortal: {fileID: 3377475705501524865, guid: 606e54738333aad48874f4ec0b675868, type: 3}
+  portalUiList: []
+  closePortalUiList: []
+  itemImageList: []
   WindowUI: {fileID: 741603571}
   MyPC_UI: {fileID: 557264121}
   DownLoad_UI: {fileID: 574811380}
@@ -16449,7 +16414,6 @@ MonoBehaviour:
   LocalDisk_UI: {fileID: 511861093}
   ControlOptions_UI: {fileID: 262249191}
   Help_UI: {fileID: 1664319028}
-  localDiskContent: {fileID: 1698967379}
   MyPC_Button: {fileID: 914547131}
   DownLoad_Button: {fileID: 198790952}
   My_Documents_Button: {fileID: 1380182374}
