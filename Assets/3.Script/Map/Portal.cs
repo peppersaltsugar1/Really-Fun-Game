@@ -5,25 +5,11 @@ using UnityEngine;
 public class Portal : MonoBehaviour
 {
     public Portal connectPortal;
-    public GameObject currentMap;
-    public Collider2D portalCollider;
-    TeleportManager teleportManager;
-    CameraManager cameraManager;
-    public bool isUse;
-    public bool isLock;
-    bool isRightMove = true;
+    public Camera playerCamera;
     // Start is called before the first frame update
-    private void Awake()
-    {
-        portalCollider = GetComponent<Collider2D>();
-        
-    }
     void Start()
     {
-        teleportManager = TeleportManager.Instance;
-        cameraManager = CameraManager.Instance;
-        isUse = true;
-        isLock = false;
+
     }
 
     // Update is called once per frame
@@ -34,58 +20,45 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")&& isUse)
+        Debug.Log("부딪힘");
+        if (collision.gameObject.CompareTag("Player"))
         {
-            portalCollider.enabled = false;
-            connectPortal.portalCollider.enabled = false;
-            Player player = collision.GetComponent<Player>();
-            //플레이어가 충돌할경우 이동할맵을 가져옴
-            GameObject moveMap = connectPortal.transform.parent.gameObject;
-            //플레이어가 충돌한 위치를 계산
-            if (collision.transform.position.x > 0 && transform.position.x > 0)
-            {
-                if (collision.transform.position.x - transform.position.x > 0)
-                {
-                    isRightMove = false;
-                }
-                else
-                {
-                    isRightMove = true;
-                }
-            }
-            else if (collision.transform.position.x > 0 && transform.position.x < 0)
-            {
-                isRightMove = false;
-            }
-            else if (collision.transform.position.x < 0 && transform.position.x > 0)
-            {
-                isRightMove = true;
-            }
-            else if (collision.transform.position.x > 0 && transform.position.x > 0)
-            {
-                if ((collision.transform.position.x * -1) - (transform.position.x * -1) > 0)
-                {
-                    isRightMove = false;
-                }
-                else
-                {
-                    isRightMove = true;
-                }
-            }
-            teleportManager.MapTeleportPortal(moveMap,isRightMove,transform.gameObject);
-            teleportManager.PlayerTeleport(player, this,connectPortal);
-            cameraManager.PortalCameraMove(transform.gameObject,moveMap);
-            cameraManager.CameraLimit(moveMap);
-            currentMap = transform.parent.gameObject;
-            currentMap.SetActive(false);
+            Debug.Log("플레이어맞음");
+            collision.transform.position = connectPortal.transform.position;
+            Vector3 portalPos = new Vector3(transform.position.x, playerCamera.transform.position.y,playerCamera.transform.position.z);
+            playerCamera.transform.position = portalPos;
+            // 카메라 이동 코루틴 시작
+            StartCoroutine(MoveCameraSmoothly(connectPortal.transform.position));
 
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+
+    private IEnumerator MoveCameraSmoothly(Vector3 targetPosition)
     {
-        isUse = true;
+        Vector3 cameraTargetPosition = new Vector3(targetPosition.x, targetPosition.y, playerCamera.transform.position.z);
+
+        // 카메라 이동 시간
+        float duration = 0.2f;
+        float elapsedTime = 0f;
+
+        // 현재 카메라 위치
+        Vector3 startingPosition = playerCamera.transform.position;
+
+        // 카메라를 부드럽게 이동시키기
+        while (elapsedTime < duration)
+        {
+            playerCamera.transform.position = Vector3.Lerp(startingPosition, cameraTargetPosition, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 최종적으로 목표 위치에 정확히 위치시키기
+        playerCamera.transform.position = cameraTargetPosition;
     }
-    
-    
+    public void Connect(Portal coPotal)
+    {
+        connectPortal = coPotal;
+        coPotal.connectPortal = connectPortal;
+    }
 }
 
