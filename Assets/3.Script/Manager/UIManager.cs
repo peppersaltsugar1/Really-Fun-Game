@@ -11,14 +11,28 @@ public class UIManager : MonoBehaviour
     private static UIManager instance = null;
     [SerializeField]
     private Player player;
+    //Hp 체력바 프리펩 리스트
     [SerializeField]
     private List<GameObject> hpPrefabsList;
+    //Hp 체력바 리스트
     private List<GameObject> hpList = new();
+    //캔버스
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
     private int interval;
-
+    //포탈 이미지 리스트
+    [SerializeField]
+    private List<Sprite> portalUiList = new();
+    [SerializeField]
+    private List<Sprite> closePortalUiList = new();
+    //아이템 이미지 리스트
+    [SerializeField]
+    private List<GameObject> itemImageList = new();
+    [SerializeField]
+    private MapGenerator mapGenerator;
+    [SerializeField]
+    private GameObject UIPortal;
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -27,6 +41,8 @@ public class UIManager : MonoBehaviour
     public GameObject LocalDisk_UI;
     public GameObject ControlOptions_UI;
     public GameObject Help_UI;
+    [SerializeField]
+    private GameObject localDiskContent;
     // First Start Check
     private GameObject Start_UI;
 
@@ -61,7 +77,9 @@ public class UIManager : MonoBehaviour
     public Text t_Program_Detail_PowerExplanation_Prefab;
 
     public Transform ContentGroup;
+
     public Button DeleteButton;
+
     private int CurrentProgram = -1;
 
     // Setting UI Member
@@ -69,10 +87,7 @@ public class UIManager : MonoBehaviour
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
 
-    // Program Manger
-    private ProgramManager programManager;
-
-    // Status Manager
+    // Status Manger
     private StatusManager statusManager;
 
     private int hpNum = 0;
@@ -102,11 +117,10 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
+        HpBarSet();
+
         player = FindObjectOfType<Player>();
         BInstance = FindObjectOfType<PoolingManager>();
-        statusManager = StatusManager.Instance;
-
-        HpBarSet();
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
@@ -127,7 +141,7 @@ public class UIManager : MonoBehaviour
         X_Button.onClick.AddListener(SetWindowUI);
 
         // ProgramList Setting
-        programManager = ProgramManager.Instance;  // ProgramManager 싱글턴 참조
+        statusManager = StatusManager.Instance;  // StatusManager 싱글턴 참조
         GenerateButtons();
 
         // Delete Button Setting
@@ -143,13 +157,13 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
             SetWindowUI();
         }
     }
 
     public void HpBarSet()
     {
+        Debug.Log("UI생성함");
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
@@ -162,10 +176,10 @@ public class UIManager : MonoBehaviour
             hpNum = 0;
         }
         //플레이어의 체력 상황에따라 체력바 재생성
-        if (statusManager.MaxHp > 0)
+        if (player.maxHp > 0)
         {
             //최대체력 3당 체력베터리 1개 생성후 리스트에 추가
-            for (int i = 0; i < statusManager.MaxHp / 3; i++)
+            for (int i = 0; i < player.maxHp / 3; i++)
             {
                 GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
                 newHp.transform.SetParent(canvas.transform, false);
@@ -175,9 +189,9 @@ public class UIManager : MonoBehaviour
                 hpNum += 1;
             }
             //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
-            if (statusManager.TemHp > 0)
+            if (player.temHp > 0)
             {
-                for (int i = 0; i < statusManager.TemHp / 3; i++)
+                for (int i = 0; i < player.temHp / 3; i++)
                 {
                     GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
                     newTemHp.transform.SetParent(canvas.transform, false);
@@ -190,9 +204,9 @@ public class UIManager : MonoBehaviour
             }
             //전기1 전기베터리 1개 생성후 리스트에 추가
 
-            if (statusManager.Elect > 0)
+            if (player.elect > 0)
             {
-                for (int i = 0; i < statusManager.Elect; i++)
+                for (int i = 0; i < player.elect; i++)
                 {
                     GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
                     spark.transform.SetParent(canvas.transform, false);
@@ -204,9 +218,9 @@ public class UIManager : MonoBehaviour
                 }
             }
             //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
-            if (statusManager.ShieldHp > 0)
+            if (player.shieldHp > 0)
             {
-                for (int i = 0; i < statusManager.ShieldHp; i++)
+                for (int i = 0; i < player.shieldHp; i++)
                 {
                     GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
                     newShildHp.transform.SetParent(canvas.transform, false);
@@ -228,6 +242,7 @@ public class UIManager : MonoBehaviour
         //쉴드체력이 소모될때 쉴드체력을 삭제
         for (int i = hpNum - 1; i >= 0; i--)
         {
+            Debug.Log("여기들어옴");
             if (hpList[i].name == "Shield_Heart(Clone)")
             {
                 GameObject removeHp = hpList[i];
@@ -258,7 +273,7 @@ public class UIManager : MonoBehaviour
     public void ShiledOff()
     {
         //hp체력바의 쉴드를 비활성화
-        for (int i = hpNum - 1; i >= statusManager.Shield; i--)
+        for (int i = hpNum - 1; i >= player.shield; i--)
         {
             if (hpList[i].name == "R_Heart(Clone)" && hpList[i].transform.GetChild(0).gameObject.activeSelf)
             {
@@ -269,9 +284,9 @@ public class UIManager : MonoBehaviour
     }
     public void HpSet()
     {
-        if (statusManager.CurrentHp <= 3)
+        if (player.currentHp <= 3)
         {
-            switch (statusManager.CurrentHp)
+            switch (player.currentHp)
             {
                 case 1:
                     hpList[0].transform.GetChild(1).gameObject.SetActive(true);
@@ -291,16 +306,16 @@ public class UIManager : MonoBehaviour
                     return;
             }
         }
-        switch (statusManager.CurrentHp % 3)
+        switch (player.currentHp % 3)
         {
             case 0:
-                for (int i = 0; i < statusManager.MaxHp / 3; i++)
+                for (int i = 0; i < player.maxHp / 3; i++)
                 {
                     hpList[i].transform.GetChild(1).gameObject.SetActive(false);
                     hpList[i].transform.GetChild(2).gameObject.SetActive(false);
                     hpList[i].transform.GetChild(3).gameObject.SetActive(false);
                 }
-                for (int i = 0; i < statusManager.CurrentHp / 3; i++)
+                for (int i = 0; i < player.currentHp / 3; i++)
                 {
                     hpList[i].transform.GetChild(1).gameObject.SetActive(true);
                     hpList[i].transform.GetChild(2).gameObject.SetActive(true);
@@ -308,15 +323,15 @@ public class UIManager : MonoBehaviour
                 }
                 break;
             case 1:
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(2).gameObject.SetActive(false);
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(2).gameObject.SetActive(false);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
 
                 break;
             case 2:
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(2).gameObject.SetActive(true);
-                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(2).gameObject.SetActive(true);
+                hpList[((int)player.currentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
 
                 break;
         }
@@ -329,7 +344,7 @@ public class UIManager : MonoBehaviour
         {
             if (hpList[i].name == "RDis_Heart(Clone)")
             {
-                switch (statusManager.TemHp % 3)
+                switch (player.temHp % 3)
                 {
                     case 0:
                         hpList[i].transform.GetChild(0).gameObject.SetActive(true);
@@ -433,11 +448,11 @@ public class UIManager : MonoBehaviour
     {
         if (player != null)
         {
-            AttackText.text = statusManager.AttackPower.ToString();
-            AttackSpeedText.text = statusManager.AttackSpeed.ToString();
-            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
-            RangeText.text = statusManager.AngleRange.ToString();
-            MoveSpeedText.text = statusManager.MoveSpeed.ToString();
+            AttackText.text = player.atk.ToString();
+            AttackSpeedText.text = player.atkSpeed.ToString();
+            /*BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();*/
+            RangeText.text = player.angleRange.ToString();
+            MoveSpeedText.text = player.moveSpeed.ToString();
         }
     }
 
@@ -450,11 +465,11 @@ public class UIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        for (int i = 0; i < programManager.ProgramList.Count; i++)
+        for (int i = 0; i < statusManager.ProgramList.Count; i++)
         {
             GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
 
-            PInformation programInfo = programManager.ProgramList[i];
+            PInformation programInfo = statusManager.ProgramList[i];
             Image buttonImage = newButton.GetComponent<Image>();
 
             if (buttonImage != null)
@@ -471,7 +486,7 @@ public class UIManager : MonoBehaviour
         }
 
         // Delete Button Activation
-        if (programManager.ProgramList.Count == 0)
+        if (statusManager.ProgramList.Count == 0)
             DeleteButton.gameObject.SetActive(false);
     }
 
@@ -496,25 +511,25 @@ public class UIManager : MonoBehaviour
     {
         CurrentProgram = index;
         // Detail Setting
-        t_Program_Detail_Name_Prefab.text = programManager.ProgramList[index].ProgramName;
-        t_Program_Detail_Explanation_Prefab.text = programManager.ProgramList[index].Explanation;
-        t_Program_Detail_PowerExplanation_Prefab.text = programManager.ProgramList[index].PowerExplanation;
+        t_Program_Detail_Name_Prefab.text = statusManager.ProgramList[index].ProgramName;
+        t_Program_Detail_Explanation_Prefab.text = statusManager.ProgramList[index].Explanation;
+        t_Program_Detail_PowerExplanation_Prefab.text = statusManager.ProgramList[index].PowerExplanation;
 
         // Image Setting
         Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
 
         if (detailImage != null)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(programManager.ProgramList[index].spriteSheetName);
+            Sprite[] sprites = Resources.LoadAll<Sprite>(statusManager.ProgramList[index].spriteSheetName);
 
-            if (sprites != null && programManager.ProgramList[index].spriteIndex >= 0 && programManager.ProgramList[index].spriteIndex < sprites.Length)
+            if (sprites != null && statusManager.ProgramList[index].spriteIndex >= 0 && statusManager.ProgramList[index].spriteIndex < sprites.Length)
             {
-                detailImage.sprite = sprites[programManager.ProgramList[index].spriteIndex];
-                Debug.Log("Detail Image sprite set: " + sprites[programManager.ProgramList[index].spriteIndex].name);
+                detailImage.sprite = sprites[statusManager.ProgramList[index].spriteIndex];
+                Debug.Log("Detail Image sprite set: " + sprites[statusManager.ProgramList[index].spriteIndex].name);
             }
             else
             {
-                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + programManager.ProgramList[index].spriteSheetName);
+                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + statusManager.ProgramList[index].spriteSheetName);
             }
         }
         else
@@ -531,7 +546,7 @@ public class UIManager : MonoBehaviour
     {
         if(CurrentProgram != -1)
         { 
-            programManager.RemoveProgram(CurrentProgram);
+            statusManager.RemoveProgram(CurrentProgram);
             CurrentProgram = -1;
 
             // i_Program_Detail_Image_Prefab
@@ -677,6 +692,387 @@ public class UIManager : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+    public void RoomUISet()
+    {
+        //UI에 남아있는요소 확인후 삭제
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
+        //맵 index초기화
+        int mapIndex = 0;
+        //현제 맵이 몇번째 index인지 확인
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
+
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+        LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;
+        //맵list에서 현제맵을 가져옴
+        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+        Map currentPortalMap = currentMap.GetComponent<Map>();
+        if (mapIndex == 0)
+        {
+            //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        mapName.text = connectedMap.mapName;
+
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name) 
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                         }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            //0번째 방일때 현제맵의 아이템을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                item fildItem = child.GetComponent<item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case item.ItemType.Coin:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue; 
+                        case item.ItemType.Heal:
+                            GameObject healUI = Instantiate(itemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue; 
+                        case item.ItemType.TemHp:
+                            GameObject itemUI = Instantiate(itemImageList[0]);
+                            itemUI.transform.SetParent(localDiskContent.transform);
+                            itemUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(itemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue; 
+                        case item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(itemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+                    
+                }
+
+            }
+        }
+        else
+        {
+            List<GameObject> currentPortalList = new();
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    currentPortalList.Add(portalUI);
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        Debug.Log(connectedMap.name);
+                        mapName.text = connectedMap.mapName;
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                switch (currentPortalMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (currentPortalMap.name)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            Destroy(currentPortalList[0].gameObject);
+            currentPortalList.RemoveAt(0);
+            foreach (Transform child in currentMap.transform)
+            {
+                item fildItem = child.GetComponent<item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case item.ItemType.Coin:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue;
+                        case item.ItemType.Heal:
+                            GameObject healUI = Instantiate(itemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.TemHp:
+                            GameObject itemUI = Instantiate(itemImageList[0]);
+                            itemUI.transform.SetParent(localDiskContent.transform);
+                            itemUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(itemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue;
+                        case item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(itemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+
+                }
+
+            }
         }
     }
 }
