@@ -5987,9 +5987,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de5b83650ecddf4f901bea92a31b30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 0}
-  teleportManager: {fileID: 0}
-  currentLocakDiskMapIndex: 0
 --- !u!114 &511861096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16311,6 +16308,7 @@ GameObject:
   - component: {fileID: 1292627440}
   - component: {fileID: 1292627439}
   - component: {fileID: 1292627438}
+  - component: {fileID: 1292627443}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -16453,6 +16451,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1292627443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292627435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03c45829d7f6b3a4bb1318ded6735c30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHp: 0
+  CurrentHp: 0
+  TemHp: 0
+  Shield: 0
+  ShieldHp: 0
+  Elect: 0
+  player_coroutine: {fileID: 0}
+  AttackPower: 0
+  AttackSpeed: 0
+  AttackPushPower: 0
+  WeaponDistance: 0
+  AngleRange: 35
+  MoveSpeed: 0
+  Coin: 0
 --- !u!1 &1302083344
 GameObject:
   m_ObjectHideFlags: 0
