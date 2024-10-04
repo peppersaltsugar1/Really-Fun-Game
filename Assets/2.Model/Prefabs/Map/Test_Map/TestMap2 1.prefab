@@ -15720,9 +15720,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652792321557847144}
     m_Modifications:
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.65
+      objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158312, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_Name
       value: Door_Normal (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158317, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_RootOrder
@@ -15782,9 +15798,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652792321557847144}
     m_Modifications:
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.65
+      objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158312, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_Name
       value: Door_Normal
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158317, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_RootOrder
@@ -15844,9 +15876,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 652792321557847144}
     m_Modifications:
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771237068345362976, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.65
+      objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158312, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_Name
       value: Door_Normal (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 7751288568014158314, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
+      propertyPath: m_Size.y
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158317, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
       propertyPath: m_RootOrder
