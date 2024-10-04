@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 2999923950280300710}
   - component: {fileID: 2999923950280300711}
   - component: {fileID: 2999923950280300709}
+  - component: {fileID: 2104047189133363659}
   - component: {fileID: 2999923950280300708}
-  - component: {fileID: -9080843754027847917}
+  - component: {fileID: 5183331793804981537}
+  - component: {fileID: 1552696442177827463}
   m_Layer: 0
   m_Name: M_VE-1
   m_TagString: Untagged
@@ -107,6 +109,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &2104047189133363659
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999923950280300728}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 100
+  m_LinearDrag: 100
+  m_AngularDrag: 100
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!61 &2999923950280300708
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -133,7 +156,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.63, y: 1.06}
   m_EdgeRadius: 0
---- !u!114 &-9080843754027847917
+--- !u!61 &5183331793804981537
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2999923950280300728}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.04, y: -0.11}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1.1666666}
+    newSize: {x: 1, y: 1.1666666}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.5}
+  m_EdgeRadius: 0
+--- !u!114 &1552696442177827463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,22 +191,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2999923950280300728}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d98920bc0a652449060053e64fc1a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 870a0b7d0d984ee438e430974d25a166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 4
-  MoveSpeed: 10
-  AttackPower: 0
-  HP: 0
-  WaittingTime: 0
+  MoveSpeed: 6.5
+  AttackPower: 1
+  HP: 20
+  SearchingCoolTime: 1
   AttackDelayTime: 0
   AttackCoolTime: 0
-  DetectingAreaR: 7
-  travelTime: 0.45
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
-  bulletSpeed: 10
-  CardPrefab1: {fileID: 0}
-  CardPrefab2: {fileID: 0}
-  CardPrefab3: {fileID: 0}
-  CardPrefab4: {fileID: 0}
+  DetectingAreaR: 6

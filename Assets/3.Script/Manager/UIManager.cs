@@ -61,9 +61,7 @@ public class UIManager : MonoBehaviour
     public Text t_Program_Detail_PowerExplanation_Prefab;
 
     public Transform ContentGroup;
-
     public Button DeleteButton;
-
     private int CurrentProgram = -1;
 
     // Setting UI Member
@@ -71,7 +69,10 @@ public class UIManager : MonoBehaviour
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
 
-    // Status Manger
+    // Program Manger
+    private ProgramManager programManager;
+
+    // Status Manager
     private StatusManager statusManager;
 
     private int hpNum = 0;
@@ -101,10 +102,11 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        HpBarSet();
-
         player = FindObjectOfType<Player>();
         BInstance = FindObjectOfType<PoolingManager>();
+        statusManager = StatusManager.Instance;
+
+        HpBarSet();
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
@@ -125,7 +127,7 @@ public class UIManager : MonoBehaviour
         X_Button.onClick.AddListener(SetWindowUI);
 
         // ProgramList Setting
-        statusManager = StatusManager.Instance;  // StatusManager 싱글턴 참조
+        programManager = ProgramManager.Instance;  // ProgramManager 싱글턴 참조
         GenerateButtons();
 
         // Delete Button Setting
@@ -148,7 +150,6 @@ public class UIManager : MonoBehaviour
 
     public void HpBarSet()
     {
-        Debug.Log("UI생성함");
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
@@ -161,10 +162,10 @@ public class UIManager : MonoBehaviour
             hpNum = 0;
         }
         //플레이어의 체력 상황에따라 체력바 재생성
-        if (player.maxHp > 0)
+        if (statusManager.MaxHp > 0)
         {
             //최대체력 3당 체력베터리 1개 생성후 리스트에 추가
-            for (int i = 0; i < player.maxHp / 3; i++)
+            for (int i = 0; i < statusManager.MaxHp / 3; i++)
             {
                 GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
                 newHp.transform.SetParent(canvas.transform, false);
@@ -174,9 +175,9 @@ public class UIManager : MonoBehaviour
                 hpNum += 1;
             }
             //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
-            if (player.temHp > 0)
+            if (statusManager.TemHp > 0)
             {
-                for (int i = 0; i < player.temHp / 3; i++)
+                for (int i = 0; i < statusManager.TemHp / 3; i++)
                 {
                     GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
                     newTemHp.transform.SetParent(canvas.transform, false);
@@ -189,9 +190,9 @@ public class UIManager : MonoBehaviour
             }
             //전기1 전기베터리 1개 생성후 리스트에 추가
 
-            if (player.elect > 0)
+            if (statusManager.Elect > 0)
             {
-                for (int i = 0; i < player.elect; i++)
+                for (int i = 0; i < statusManager.Elect; i++)
                 {
                     GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
                     spark.transform.SetParent(canvas.transform, false);
@@ -203,9 +204,9 @@ public class UIManager : MonoBehaviour
                 }
             }
             //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
-            if (player.shieldHp > 0)
+            if (statusManager.ShieldHp > 0)
             {
-                for (int i = 0; i < player.shieldHp; i++)
+                for (int i = 0; i < statusManager.ShieldHp; i++)
                 {
                     GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
                     newShildHp.transform.SetParent(canvas.transform, false);
@@ -227,7 +228,6 @@ public class UIManager : MonoBehaviour
         //쉴드체력이 소모될때 쉴드체력을 삭제
         for (int i = hpNum - 1; i >= 0; i--)
         {
-            Debug.Log("여기들어옴");
             if (hpList[i].name == "Shield_Heart(Clone)")
             {
                 GameObject removeHp = hpList[i];
@@ -258,7 +258,7 @@ public class UIManager : MonoBehaviour
     public void ShiledOff()
     {
         //hp체력바의 쉴드를 비활성화
-        for (int i = hpNum - 1; i >= player.shield; i--)
+        for (int i = hpNum - 1; i >= statusManager.Shield; i--)
         {
             if (hpList[i].name == "R_Heart(Clone)" && hpList[i].transform.GetChild(0).gameObject.activeSelf)
             {
@@ -269,9 +269,9 @@ public class UIManager : MonoBehaviour
     }
     public void HpSet()
     {
-        if (player.currentHp <= 3)
+        if (statusManager.CurrentHp <= 3)
         {
-            switch (player.currentHp)
+            switch (statusManager.CurrentHp)
             {
                 case 1:
                     hpList[0].transform.GetChild(1).gameObject.SetActive(true);
@@ -291,16 +291,16 @@ public class UIManager : MonoBehaviour
                     return;
             }
         }
-        switch (player.currentHp % 3)
+        switch (statusManager.CurrentHp % 3)
         {
             case 0:
-                for (int i = 0; i < player.maxHp / 3; i++)
+                for (int i = 0; i < statusManager.MaxHp / 3; i++)
                 {
                     hpList[i].transform.GetChild(1).gameObject.SetActive(false);
                     hpList[i].transform.GetChild(2).gameObject.SetActive(false);
                     hpList[i].transform.GetChild(3).gameObject.SetActive(false);
                 }
-                for (int i = 0; i < player.currentHp / 3; i++)
+                for (int i = 0; i < statusManager.CurrentHp / 3; i++)
                 {
                     hpList[i].transform.GetChild(1).gameObject.SetActive(true);
                     hpList[i].transform.GetChild(2).gameObject.SetActive(true);
@@ -308,15 +308,15 @@ public class UIManager : MonoBehaviour
                 }
                 break;
             case 1:
-                hpList[((int)player.currentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
-                hpList[((int)player.currentHp / 3)].transform.GetChild(2).gameObject.SetActive(false);
-                hpList[((int)player.currentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(2).gameObject.SetActive(false);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
 
                 break;
             case 2:
-                hpList[((int)player.currentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
-                hpList[((int)player.currentHp / 3)].transform.GetChild(2).gameObject.SetActive(true);
-                hpList[((int)player.currentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(1).gameObject.SetActive(true);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(2).gameObject.SetActive(true);
+                hpList[((int)statusManager.CurrentHp / 3)].transform.GetChild(3).gameObject.SetActive(false);
 
                 break;
         }
@@ -329,7 +329,7 @@ public class UIManager : MonoBehaviour
         {
             if (hpList[i].name == "RDis_Heart(Clone)")
             {
-                switch (player.temHp % 3)
+                switch (statusManager.TemHp % 3)
                 {
                     case 0:
                         hpList[i].transform.GetChild(0).gameObject.SetActive(true);
@@ -433,11 +433,11 @@ public class UIManager : MonoBehaviour
     {
         if (player != null)
         {
-            AttackText.text = player.atk.ToString();
-            AttackSpeedText.text = player.atkSpeed.ToString();
+            AttackText.text = statusManager.AttackPower.ToString();
+            AttackSpeedText.text = statusManager.AttackSpeed.ToString();
             BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
-            RangeText.text = player.angleRange.ToString();
-            MoveSpeedText.text = player.moveSpeed.ToString();
+            RangeText.text = statusManager.AngleRange.ToString();
+            MoveSpeedText.text = statusManager.MoveSpeed.ToString();
         }
     }
 
@@ -450,11 +450,11 @@ public class UIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
         
-        for (int i = 0; i < statusManager.ProgramList.Count; i++)
+        for (int i = 0; i < programManager.ProgramList.Count; i++)
         {
             GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
 
-            PInformation programInfo = statusManager.ProgramList[i];
+            PInformation programInfo = programManager.ProgramList[i];
             Image buttonImage = newButton.GetComponent<Image>();
 
             if (buttonImage != null)
@@ -471,7 +471,7 @@ public class UIManager : MonoBehaviour
         }
 
         // Delete Button Activation
-        if (statusManager.ProgramList.Count == 0)
+        if (programManager.ProgramList.Count == 0)
             DeleteButton.gameObject.SetActive(false);
     }
 
@@ -496,25 +496,25 @@ public class UIManager : MonoBehaviour
     {
         CurrentProgram = index;
         // Detail Setting
-        t_Program_Detail_Name_Prefab.text = statusManager.ProgramList[index].ProgramName;
-        t_Program_Detail_Explanation_Prefab.text = statusManager.ProgramList[index].Explanation;
-        t_Program_Detail_PowerExplanation_Prefab.text = statusManager.ProgramList[index].PowerExplanation;
+        t_Program_Detail_Name_Prefab.text = programManager.ProgramList[index].ProgramName;
+        t_Program_Detail_Explanation_Prefab.text = programManager.ProgramList[index].Explanation;
+        t_Program_Detail_PowerExplanation_Prefab.text = programManager.ProgramList[index].PowerExplanation;
 
         // Image Setting
         Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
 
         if (detailImage != null)
         {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(statusManager.ProgramList[index].spriteSheetName);
+            Sprite[] sprites = Resources.LoadAll<Sprite>(programManager.ProgramList[index].spriteSheetName);
 
-            if (sprites != null && statusManager.ProgramList[index].spriteIndex >= 0 && statusManager.ProgramList[index].spriteIndex < sprites.Length)
+            if (sprites != null && programManager.ProgramList[index].spriteIndex >= 0 && programManager.ProgramList[index].spriteIndex < sprites.Length)
             {
-                detailImage.sprite = sprites[statusManager.ProgramList[index].spriteIndex];
-                Debug.Log("Detail Image sprite set: " + sprites[statusManager.ProgramList[index].spriteIndex].name);
+                detailImage.sprite = sprites[programManager.ProgramList[index].spriteIndex];
+                Debug.Log("Detail Image sprite set: " + sprites[programManager.ProgramList[index].spriteIndex].name);
             }
             else
             {
-                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + statusManager.ProgramList[index].spriteSheetName);
+                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + programManager.ProgramList[index].spriteSheetName);
             }
         }
         else
@@ -531,7 +531,7 @@ public class UIManager : MonoBehaviour
     {
         if(CurrentProgram != -1)
         { 
-            statusManager.RemoveProgram(CurrentProgram);
+            programManager.RemoveProgram(CurrentProgram);
             CurrentProgram = -1;
 
             // i_Program_Detail_Image_Prefab

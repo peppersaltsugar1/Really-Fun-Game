@@ -54,10 +54,12 @@ public class Monster : MonoBehaviour
     Animator animator; //애니메이터
     private GameManager gameManager;
     private SpriteRenderer spriteRenderer;
+    private StatusManager statusManager;
 
     void Start()
     {
         gameManager = GameManager.Instance;
+        statusManager = StatusManager.Instance;
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (monsterType != MonsterType.M_SpiderCardPack)
             animator = GetComponent<Animator>();
@@ -79,15 +81,14 @@ public class Monster : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player player = collision.gameObject.GetComponent<Player>();
-            if (player != null)
+            if (statusManager != null)
             {
                 Debug.Log("Monster OnTriggerEnter2D : Take Damage");
-                player.TakeDamage(AttackPower);
+                statusManager.TakeDamage(AttackPower);
             }
             else
             {
-                Debug.Log("Monster OnTriggerEnter2D : Player Not Found");
+                Debug.Log("Monster OnTriggerEnter2D : statusManager Not Found");
             }
         }
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 5f; // 총알 속도
-    public int damage = 10; // 총알 데미지
+    public int damage = 1; // 총알 데미지
     public Rigidbody2D rb;
     public float lifetime = 10f; // 총알이 활성화된 상태를 유지할 시간
     private PoolingManager pool;
@@ -43,10 +43,9 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false); // 비활성화
         pool.bulletPool.Enqueue(this);
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionTrigger2D(Collision2D collision)
     {
         gameObject.SetActive(false); // 비활성화
-
     }
 
     public void SetAttackPower(int power)

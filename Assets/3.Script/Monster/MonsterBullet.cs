@@ -23,11 +23,14 @@ public class MonsterBullet : MonoBehaviour
     // 충돌 처리
     void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        Player player = hitInfo.GetComponent<Player>();
-        if (player != null)
+        if (hitInfo.gameObject.CompareTag("Player"))
         {
-            player.TakeDamage(damage);
+            StatusManager statusManager = StatusManager.Instance;
+            if (statusManager != null)
+            {
+                statusManager.TakeDamage(damage);
+            }
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }

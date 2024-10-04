@@ -42,16 +42,16 @@ public class PInformation : MonoBehaviour
         // 충돌한 오브젝트가 Player 인 경우에만 이벤트 처리
         if (!isProgramBeingAdded)
         {
-            isProgramBeingAdded = true;
             if (other.CompareTag("Player"))
             {
-                if (StatusManager.Instance != null)
+                isProgramBeingAdded = true;
+                if (ProgramManager.Instance != null)
                 {
-                    StatusManager.Instance.AddProgramList(this);
+                    ProgramManager.Instance.AddProgramList(this);
                 }
                 else
                 {
-                    Debug.LogError("StatusManager instance not found.");
+                    Debug.LogError("ProgramManager instance not found.");
                 }
 
                 Destroy(gameObject);
@@ -66,11 +66,10 @@ public class PInformation : MonoBehaviour
         if (sprites != null && spriteIndex >= 0 && spriteIndex < sprites.Length)
         {
            spriteRenderer.sprite = sprites[spriteIndex];
-            // Debug.Log("Sprite loaded: " + sprites[spriteIndex].name);
         }
         else
         {
-            //   Debug.LogError("Sprite not found or invalid index.");
+            Debug.LogError("Sprite not found or invalid index.");
         }
     }
 

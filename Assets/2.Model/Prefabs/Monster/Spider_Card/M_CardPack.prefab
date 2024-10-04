@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3719410122128694474}
   - component: {fileID: 3719410122128694473}
   - component: {fileID: 3719410122128694472}
-  - component: {fileID: 2661904335193896522}
   - component: {fileID: 5040107131933429092}
   - component: {fileID: 4544868874550038419}
+  - component: {fileID: 6576561229613636719}
+  - component: {fileID: 6648793467688548782}
   m_Layer: 0
   m_Name: M_CardPack
   m_TagString: Untagged
@@ -108,34 +109,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2661904335193896522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3719410122128694479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d98920bc0a652449060053e64fc1a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterType: 3
-  MoveSpeed: 5
-  AttackPower: 1
-  HP: 0
-  WaittingTime: 2
-  AttackDelayTime: 2
-  AttackCoolTime: 2
-  DetectingAreaR: 2
-  travelTime: 0.45
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 3719410122128694474}
-  bulletSpeed: 10
-  CardPrefab1: {fileID: 121062196166947722, guid: 3bf4869672cc6b345a3c77ce93caa22e, type: 3}
-  CardPrefab2: {fileID: 6320851205985993213, guid: 5b1b2ef765ea2dc4fbcd30f141acf1f6, type: 3}
-  CardPrefab3: {fileID: 4161296659828347394, guid: dae137e24bce0984fa9b666070224edb, type: 3}
-  CardPrefab4: {fileID: 4507326238269180134, guid: d8f45f9cd9aba874984c1f7fb5f17150, type: 3}
 --- !u!50 &5040107131933429092
 Rigidbody2D:
   serializedVersion: 4
@@ -183,3 +156,55 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.75, y: 1}
   m_EdgeRadius: 0
+--- !u!61 &6576561229613636719
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719410122128694479}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.93333334, y: 1}
+    newSize: {x: 0.93333334, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.63, y: 1.06}
+  m_EdgeRadius: 0
+--- !u!114 &6648793467688548782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3719410122128694479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f4e483e2ced9f4f8f0a856a626c17b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterType: 3
+  MoveSpeed: 5
+  AttackPower: 1
+  HP: 10
+  SearchingCoolTime: 1.5
+  AttackDelayTime: 1.5
+  AttackCoolTime: 0
+  DetectingAreaR: 6
+  FirePoint: {fileID: 3719410122128694474}
+  BulletSpeed: 10
+  CardPrefab1: {fileID: 121062196166947722, guid: 3bf4869672cc6b345a3c77ce93caa22e, type: 3}
+  CardPrefab2: {fileID: 6320851205985993213, guid: 5b1b2ef765ea2dc4fbcd30f141acf1f6, type: 3}
+  CardPrefab3: {fileID: 4161296659828347394, guid: dae137e24bce0984fa9b666070224edb, type: 3}
+  CardPrefab4: {fileID: 4507326238269180134, guid: d8f45f9cd9aba874984c1f7fb5f17150, type: 3}

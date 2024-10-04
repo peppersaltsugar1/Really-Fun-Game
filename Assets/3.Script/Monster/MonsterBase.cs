@@ -10,7 +10,12 @@ public class MonsterBase : MonoBehaviour
         M_V1,
         M_V2,
         M_V3,
-        M_CardPack
+        M_CardPack,
+        M_VE_1,
+        M_VE_2,
+        M_SpiderCardPack,
+        Red_Spider,
+        White_Spider
     }
     // Monster Base Info
     public MonsterType monsterType;
@@ -21,23 +26,27 @@ public class MonsterBase : MonoBehaviour
     public float AttackDelayTime; // Attack Ready Animation Time
     public float AttackCoolTime;
     public float DetectingAreaR;
-    private bool isMoving = true;
+    protected bool isMoving = true;
 
     // Target Info
-    private Transform player; // 플레이어의 위치
-    private Vector3 TargetPosition; // 탐지된 플레이어의 위치 저장
-    private bool DetectionSuccess = false; // 탐지 성공 여부
+    protected Transform player; // 플레이어의 위치
+    protected Vector3 TargetPosition; // 탐지된 플레이어의 위치 저장
+    protected bool DetectionSuccess = false; // 탐지 성공 여부
 
-    private GameManager GameManager;
-    private SpriteRenderer SpriteRenderer;
-    Animator Animator;
+    protected GameManager GameManager;
+    protected StatusManager statusManager;
+    protected SpriteRenderer SpriteRenderer;
+    protected Animator MAnimator;
+    protected Rigidbody2D rb;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         GameManager = GameManager.Instance;
+        statusManager = StatusManager.Instance;
         SpriteRenderer = GetComponent<SpriteRenderer>();
-        Animator = GetComponent<Animator>();
+        MAnimator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -46,27 +55,26 @@ public class MonsterBase : MonoBehaviour
 
     }
 
-
-    protected IEnumerator MonsterRoutine()
+    public virtual IEnumerator MonsterRoutine()
     {
         Debug.Log("\"MonsterRoutine \"함수를 재정의하지 않음.");
         yield return null;
     }
 
-    protected virtual IEnumerator AttackPreparation()
+    public virtual IEnumerator AttackPreparation()
     {
-        Debug.Log("\"AttackPreparation \"함수를 재정의하지 않음."); 
+        Debug.Log("\"AttackPreparation \"함수를 재정의하지 않음.");
         yield return null;
     }
 
-    protected virtual IEnumerator RandomMoveAfterSearchFail()
+    public virtual IEnumerator RandomMoveAfterSearchFail()
     {
         Debug.Log("\"RandomMoveAfterSearchFail \"함수를 재정의하지 않음.");
         yield return null;
     }
 
     // Return RandomPosition
-    protected Vector3 GetRanomPositionAround()
+    protected virtual Vector3 GetRanomPositionAround()
     {
         float randomAngle = Random.Range(0f, 360f);
         float randomDistance = Random.Range(0f, DetectingAreaR);
@@ -95,29 +103,48 @@ public class MonsterBase : MonoBehaviour
      * Collision Handling Section
      */
     // Player Collision
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player player = collision.gameObject.GetComponent<Player>();
-            if (player != null)
+            if (statusManager != null)
             {
-                player.TakeDamage(AttackPower);
+                statusManager.TakeDamage(AttackPower);
             }
             else
             {
                 Debug.Log("Monster OnTriggerEnter2D : Player Not Found");
             }
+            if (monsterType != MonsterType.M_SpiderCardPack)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = 0f;
+            }
+        }
+
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Debug.Log("Monster Take Damage");
+            this.HP -= statusManager.AttackPower;
+            Destroy(collision.gameObject);
+
+            if (HP < 0)
+            {
+                Die();
+            }
         }
     }
 
-    // Boundery Check
-    void OnCollisionEnter2D(Collision2D collision)
+    private void Die()
     {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            isMoving = false;
-            Animator.SetBool("Move", false);
-        }
+        Destroy(this.gameObject);
+    }
+
+    // ========== 탐색범위 표시용 ==========
+    // 탐지 범위를 시각적으로 표시 (에디터 전용)
+    protected void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, DetectingAreaR);
     }
 }

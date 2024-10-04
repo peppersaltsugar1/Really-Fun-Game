@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4507326238269180135}
   - component: {fileID: 4507326238269180132}
-  - component: {fileID: 2539100244448250221}
   - component: {fileID: 3531151768116160453}
+  - component: {fileID: 2539100244448250221}
+  - component: {fileID: 4322655989575144934}
   m_Layer: 0
   m_Name: Dia_Card
   m_TagString: Untagged
@@ -86,6 +87,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &3531151768116160453
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507326238269180134}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 2
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!61 &2539100244448250221
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112,24 +134,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.47, y: 0.66}
   m_EdgeRadius: 0
---- !u!50 &3531151768116160453
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!114 &4322655989575144934
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4507326238269180134}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 421a2f27ea9dbeb49b9cc5a860daa820, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletPower: 1

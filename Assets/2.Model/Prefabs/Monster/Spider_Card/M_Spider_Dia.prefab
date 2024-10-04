@@ -11,7 +11,10 @@ GameObject:
   - component: {fileID: 1717403730601567500}
   - component: {fileID: 1717403730601567499}
   - component: {fileID: 1717403730601567498}
-  - component: {fileID: 1689569461163709040}
+  - component: {fileID: 8985248681292252823}
+  - component: {fileID: 2599750166925213}
+  - component: {fileID: 2686630571755012864}
+  - component: {fileID: 7885459182886899190}
   m_Layer: 0
   m_Name: M_Spider_Dia
   m_TagString: Untagged
@@ -106,7 +109,60 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1689569461163709040
+--- !u!50 &8985248681292252823
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717403730601567497}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 100
+  m_LinearDrag: 100
+  m_AngularDrag: 100
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 2
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
+--- !u!58 &2599750166925213
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717403730601567497}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.47
+--- !u!58 &2686630571755012864
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717403730601567497}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
+--- !u!114 &7885459182886899190
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,26 +171,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1717403730601567497}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3d98920bc0a652449060053e64fc1a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 64af0601401623d4aafd478d9e971786, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 7
-  MoveSpeed: 5
-  AttackPower: 0
-  HP: 0
-  WaittingTime: 1
-  AttackDelayTime: 1
-  AttackCoolTime: 1
-  DetectingAreaR: 7
-  travelTime: 0.45
-  bulletPrefab: {fileID: 0}
-  firePoint: {fileID: 0}
-  bulletSpeed: 10
-  CardPrefab1: {fileID: 0}
-  CardPrefab2: {fileID: 0}
-  CardPrefab3: {fileID: 0}
-  CardPrefab4: {fileID: 0}
-  SpiderPrefab1: {fileID: 0}
-  SpiderPrefab2: {fileID: 0}
-  SpiderPrefab3: {fileID: 0}
-  SpiderPrefab4: {fileID: 0}
+  MoveSpeed: 3
+  AttackPower: 1
+  HP: 10
+  SearchingCoolTime: 0.5
+  AttackDelayTime: 0.5
+  AttackCoolTime: 0.5
+  DetectingAreaR: 3
