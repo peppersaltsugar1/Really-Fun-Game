@@ -147,7 +147,7 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 4, y: 4, z: 28, w: 11}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -168,7 +168,7 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 3, y: 3, z: 3, w: 3}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -189,7 +189,7 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 3, y: 3, z: 3, w: 3}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -210,7 +210,7 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 4, y: 3, z: 11, w: 12}
+      border: {x: 5, y: 5, z: 11, w: 11}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -231,13 +231,55 @@ TextureImporter:
         height: 64
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 3, y: 3, z: 3, w: 3}
+      border: {x: 5, y: 3, z: 5, w: 5}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
       spriteID: 7f8ec3f8a80e43a41a89d956f458df92
       internalID: 1560980723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Window_Mate_6
+      rect:
+        serializedVersion: 2
+        x: 390
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5b966f2ad82cd64f93fd6464e962a28
+      internalID: -1488985207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_Window_Mate_7
+      rect:
+        serializedVersion: 2
+        x: 455
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b3b89703765a6043aa82226c448c616
+      internalID: 84183810
       vertices: []
       indices: 
       edges: []
@@ -254,11 +296,13 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       UI_Window_Mate_4: 902548990
+      UI_Window_Mate_6: -1488985207
       UI_Window_Mate_3: 505047314
       UI_Window_Mate_0: -536468512
       UI_Window_Mate_5: 1560980723
       UI_Window_Mate_1: 1674255390
       UI_Window_Mate_2: 140948802
+      UI_Window_Mate_7: 84183810
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
