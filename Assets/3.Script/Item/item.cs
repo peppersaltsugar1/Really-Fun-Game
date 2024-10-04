@@ -8,14 +8,16 @@ public class item : MonoBehaviour
     {
         Coin, Heal, TemHp, Shiled, Spark
     }
-    public int itemScore;
+    private int itemScore;
     private GameManager gameManager;
-    public ItemType itemType;
+    private StatusManager statusManager;
+    private ItemType itemType;
     //아이템종
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.Instance;
+        statusManager = StatusManager.Instance;
     }
 
     // Update is called once per frame
@@ -50,23 +52,23 @@ public class item : MonoBehaviour
 
     private void HealItem()
     {
-        gameManager.player.Heal(itemScore);
+        statusManager.Heal(itemScore);
     }
     private void CoinItem()
     {
-        gameManager.player.CoinUp(itemScore);
+        statusManager.CoinUp(itemScore);
     }
 
     private void TemHpItem()
     {
-        gameManager.player.TemHpUp(itemScore);
+        statusManager.TemHpUp(itemScore);
     }
     private void ShiledItem()
     {
-        gameManager.player.TemHpUp(itemScore);
+        statusManager.TemHpUp(itemScore);
     }
     private void SparkItem()
     {
-        gameManager.player.ElectUp(itemScore);
+        statusManager.ElectUp(itemScore);
     }
 }
