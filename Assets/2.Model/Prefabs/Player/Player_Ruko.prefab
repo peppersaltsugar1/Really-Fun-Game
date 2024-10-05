@@ -222,7 +222,6 @@ GameObject:
   - component: {fileID: 8918953924189731208}
   - component: {fileID: 8918953924189731209}
   - component: {fileID: 8918953924189731205}
-  - component: {fileID: 8918953924189731206}
   - component: {fileID: 8918953924189731204}
   m_Layer: 0
   m_Name: Player_Ruko
@@ -341,37 +340,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8918953924189731206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8918953924189731210}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2685074da31ae74cbc6f3b67a8c09ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 0}
-  sPoint: {fileID: 0}
-  angleRange: 35
-  maxHp: 0
-  currentHp: 0
-  temHp: 0
-  shield: 0
-  shieldHp: 0
-  elect: 0
-  atk: 0
-  atkSpeed: 0
-  pushPower: 0
-  moveSpeed: 0
-  coin: 0
-  weaponDistance: 0
-  playerCol: {fileID: 0}
-  camera: {fileID: 0}
-  EnomyDelete: 0
-  detectionRadius: 5
 --- !u!70 &8918953924189731204
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

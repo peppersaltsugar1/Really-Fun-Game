@@ -12131,8 +12131,7 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8918953924189731206, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
 --- !u!4 &978386260 stripped
 Transform:
@@ -16369,7 +16368,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292627435}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee962296e01b2454f9f7c83843ba8c9d, type: 3}
   m_Name: 
@@ -16407,20 +16406,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03c45829d7f6b3a4bb1318ded6735c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHp: 0
-  CurrentHp: 0
+  MaxHp: 12
+  CurrentHp: 12
   TemHp: 0
   Shield: 0
   ShieldHp: 0
   Elect: 0
   player_coroutine: {fileID: 0}
-  AttackPower: 0
-  AttackSpeed: 0
+  AttackPower: 3
+  AttackSpeed: 3
   AttackPushPower: 0
-  WeaponDistance: 0
+  WeaponDistance: 1
   AngleRange: 35
-  MoveSpeed: 0
-  Coin: 0
+  MoveSpeed: 5
+  Coin: 1
 --- !u!1 &1302083344
 GameObject:
   m_ObjectHideFlags: 0
