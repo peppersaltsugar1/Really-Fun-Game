@@ -31,6 +31,18 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     List<GameObject> itemImageList = new();
 
+    // Basic UI
+    public GameObject FirstStartUI;
+    public Button StartButton;
+    public GameObject Start_Back;
+    public GameObject Start_Line;
+
+    public GameObject DeathUI;
+    public Button ReStartButton;
+    public Button GoToDesktop;
+
+    public bool HPUIActive;
+
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -39,6 +51,7 @@ public class UIManager : MonoBehaviour
     public GameObject LocalDisk_UI;
     public GameObject ControlOptions_UI;
     public GameObject Help_UI;
+
     // First Start Check
     private GameObject Start_UI;
 
@@ -101,6 +114,7 @@ public class UIManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
     public static UIManager Instance
     {
         get
@@ -112,19 +126,17 @@ public class UIManager : MonoBehaviour
             return instance;
         }
     }
+
     void Start()
     {
         player = FindObjectOfType<Player>();
         BInstance = FindObjectOfType<PoolingManager>();
         statusManager = StatusManager.Instance;
-
-        HpBarSet();
-
+        HPUIActive = true;
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
         UIDeactivation();
         Start_UI = null;
-
         // Left Button Setting
         MyPC_Button.onClick.AddListener(FMyPC_Button);
         DownLoad_Button.onClick.AddListener(FDownLoad_Button);
@@ -149,7 +161,13 @@ public class UIManager : MonoBehaviour
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
-}
+
+        // Basic UI Setting
+        FirstStartFunc();
+        StartButton.onClick.AddListener(FStartButton);
+        ReStartButton.onClick.AddListener(FReStartButton);
+        GoToDesktop.onClick.AddListener(FDesktop_Button);
+    }
 
     void Update()
     {
@@ -180,18 +198,21 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < statusManager.MaxHp / 3; i++)
             {
                 GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
+                newHp.SetActive(true);
                 newHp.transform.SetParent(canvas.transform, false);
                 RectTransform rectTransform = newHp.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
                 hpList.Add(newHp);
                 hpNum += 1;
             }
+
             //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
             if (statusManager.TemHp > 0)
             {
                 for (int i = 0; i < statusManager.TemHp / 3; i++)
                 {
                     GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
+                    newTemHp.SetActive(true);
                     newTemHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
@@ -200,13 +221,14 @@ public class UIManager : MonoBehaviour
 
                 }
             }
-            //전기1 전기베터리 1개 생성후 리스트에 추가
 
+            //전기1 전기베터리 1개 생성후 리스트에 추가
             if (statusManager.Elect > 0)
             {
                 for (int i = 0; i < statusManager.Elect; i++)
                 {
                     GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
+                    spark.SetActive(true);
                     spark.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = spark.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
@@ -221,6 +243,7 @@ public class UIManager : MonoBehaviour
                 for (int i = 0; i < statusManager.ShieldHp; i++)
                 {
                     GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
+                    newShildHp.SetActive(true);
                     newShildHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
@@ -231,10 +254,12 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     public void HpBarPlus()
     {
 
     }
+
     public void ShiledSet()
     {
         //쉴드체력이 소모될때 쉴드체력을 삭제
@@ -251,6 +276,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     private void ShiledOn()
     {
         //Hp체력바의 쉴드를 활성화
@@ -279,6 +305,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     public void HpSet()
     {
         if (statusManager.CurrentHp <= 3)
@@ -379,6 +406,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
     public void HpDel()
     {
         for (int i = hpNum - 1; i >= 0; i--)
@@ -410,6 +438,93 @@ public class UIManager : MonoBehaviour
     }
 
     // ========== UI Section ==========
+    public void FirstStartFunc()
+    {
+        if (FirstStartUI != null)
+        {
+            FirstStartUI.SetActive(true);
+
+            Start_Back.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+            Start_Line.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+            Start_Back.GetComponent<Animator>().SetTrigger("Start");
+            Start_Line.GetComponent<Animator>().SetTrigger("Start");
+
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Debug.Log("FirstStartUI is not allocated");
+        }
+    }
+
+    public void FStartButton()
+    {
+        if (FirstStartUI != null)
+        {
+            // 소리 재생
+
+            StartCoroutine(DelayUIAndGameStart(3.0f));
+        }
+        else
+        {
+            Debug.Log("FirstStartUI is not allocated");
+        }
+    }
+
+    private IEnumerator DelayUIAndGameStart(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        FirstStartUI.SetActive(false);
+        Time.timeScale = 1;
+        HpBarSet();
+    }
+
+    public void PlayerIsDead()
+    {
+        Time.timeScale = 0;
+        StartCoroutine(DelayUIAndGameOver(2.0f));
+    }
+
+    private IEnumerator DelayUIAndGameOver(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        DeathUI.SetActive(true);
+        HPUIActiveSetting();
+    }
+
+    public void HPUIActiveSetting()
+    {
+        if(HPUIActive)
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(false);
+            }
+
+            HPUIActive = false;
+        }
+        else
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(true);
+            }
+
+            HPUIActive = true;
+        }
+    }
+    
+    public void FReStartButton()
+    {
+        DeathUI.SetActive(false);
+        Time.timeScale = 1;
+        Debug.Log("게임 시작 설정을 만들어줘야 함.");
+
+       //  GameManager GMInstance = FindObjectOfType<GameManager>();
+       // GMInstance.RestartGame();
+    }
 
     // Input ESC -> Show UI 
     public void SetWindowUI()
@@ -420,10 +535,12 @@ public class UIManager : MonoBehaviour
             if (isActive)
             {
                 WindowUI.SetActive(false);
+                HPUIActiveSetting();
                 Time.timeScale = 1;
             }
             else
             {
+                HPUIActiveSetting();
                 // 상태 최신화
                 UpdateStats();
                 GenerateButtons();
@@ -436,7 +553,7 @@ public class UIManager : MonoBehaviour
                 }
                 WindowUI.SetActive(true);
                 Time.timeScale = 0;
-            }      
+            }
         }
     }
 
@@ -461,7 +578,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
+
         for (int i = 0; i < programManager.ProgramList.Count; i++)
         {
             GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
@@ -503,7 +620,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     public void OpenProgramDetail(int index)
     {
         CurrentProgram = index;
@@ -541,8 +657,8 @@ public class UIManager : MonoBehaviour
 
     public void FDelete_Button()
     {
-        if(CurrentProgram != -1)
-        { 
+        if (CurrentProgram != -1)
+        {
             programManager.RemoveProgram(CurrentProgram);
             CurrentProgram = -1;
 
@@ -622,9 +738,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
 
         // 에디터에서 종료
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#endif
     }
 
     void OnButtonClick(GameObject clickedButton)
@@ -654,7 +770,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    
+
     // Resolution
     public void ChangeResolution(int index)
     {
@@ -679,7 +795,7 @@ public class UIManager : MonoBehaviour
         switch (index)
         {
             case 0: // 좋음
-                QualitySettings.SetQualityLevel(5, true); 
+                QualitySettings.SetQualityLevel(5, true);
                 break;
             case 1: // 중간
                 QualitySettings.SetQualityLevel(3, true);
@@ -691,6 +807,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
     public void RoomUISet()
     {
         //UI에 남아있는요소 확인후 삭제

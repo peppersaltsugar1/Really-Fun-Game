@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatusManager : MonoBehaviour
@@ -23,6 +24,7 @@ public class StatusManager : MonoBehaviour
     private Collider2D player_coroutine;
     private float HitCoolTime = 2.0f;
     private bool IsHit = false;
+
 
     // Player Attack Status
     public float AttackPower; // 공격력
@@ -61,75 +63,91 @@ public class StatusManager : MonoBehaviour
     // =============================== Fixed Section ===============================
     public void TakeDamage(float damage)
     {
-        Debug.Log("Player Take Damage");
+        if (!IsHit)
+        {
+            StartCoroutine(Hit_Coroutine(damage));
+        }
+    }
 
-        if (HandleDefense(ref ShieldHp, damage, uiManager.ShiledSet, uiManager.ShiledOff)) return;
+    private IEnumerator Hit_Coroutine(float damage)
+    {
+        IsHit = true;
 
-        if (HandleDefense(ref Elect, damage, uiManager.ElectDel)) return;
+        if (ShieldHp > 0)
+        {
+            ShieldHp -= damage;
+            uiManager.ShiledSet();
 
-        if (HandleDefense(ref TemHp, damage, uiManager.TemHpSet, uiManager.TemHpDel)) return;
+            if (ShieldHp <= 0)
+            {
+                ShieldHp = 0;
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break; 
+        }
+
+        if (Elect > 0)
+        {
+            Elect -= damage;
+            uiManager.ElectDel();
+
+            if (Elect <= 0)
+            {
+                Elect = 0;
+                ElectShieldExplode();
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
+        }
+
+        if (TemHp > 0)
+        {
+            TemHp -= damage;
+            uiManager.HpSet();
+
+            if (TemHp <= 0)
+            {
+                uiManager.TemHpDel();
+                TemHp = 0;
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
+        }
 
         if (Shield > 0 && Shield * 3 >= CurrentHp)
         {
             Shield -= 1;
-            uiManager.ShiledOff(); 
-            
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-            }
+            uiManager.ShiledOff();
 
-            if (Shield < 0)
+            if (Shield <= 0)
             {
                 Shield = 0;
             }
-            return;
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
         }
 
+        
         if (CurrentHp > 0)
         {
-
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-                CurrentHp -= damage;
-                uiManager.HpSet();
-            }
+            CurrentHp -= damage;
+            uiManager.HpSet();
 
             if (CurrentHp <= 0)
             {
-                // Die(); // 사망 처리
+                Die(); // 사망 처리
             }
+
+            yield return new WaitForSeconds(HitCoolTime);
         }
-    }
-
-    private bool HandleDefense(ref float defenseValue, float damage, System.Action onHitAction, System.Action onDepleteAction = null)
-    {
-        if (defenseValue > 0)
-        {
-            defenseValue -= damage;
-            onHitAction.Invoke(); 
-            
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-            }
-
-            if (defenseValue <= 0)
-            {
-                defenseValue = 0;
-                onDepleteAction?.Invoke(); // 방어 수단이 다 소진되었을 때 처리
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private IEnumerator Hit_Coroutine()
-    {
-        IsHit = true;
-
-        yield return new WaitForSeconds(HitCoolTime);
 
         IsHit = false;
     }
@@ -188,8 +206,7 @@ public class StatusManager : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player Is Dead");
-        Debug.Log("Die Function is not defined");
+        uiManager.PlayerIsDead();
     }
 
     public void ElectShieldExplode()

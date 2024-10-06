@@ -24,6 +24,8 @@ public class Portal : MonoBehaviour
         cameraManager = CameraManager.Instance;
         isUse = true;
         isLock = false;
+
+
     }
 
     // Update is called once per frame
