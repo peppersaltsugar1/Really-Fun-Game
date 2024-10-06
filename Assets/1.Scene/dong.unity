@@ -5947,6 +5947,7 @@ GameObject:
   - component: {fileID: 511861097}
   - component: {fileID: 511861096}
   - component: {fileID: 511861095}
+  - component: {fileID: 511861098}
   m_Layer: 5
   m_Name: LocalDisk_UI
   m_TagString: Untagged
@@ -6025,6 +6026,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 511861093}
   m_CullTransparentMesh: 1
+--- !u!114 &511861098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511861093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c48b4963e5bcbcb4b8350491b3729be6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &512913979
 GameObject:
   m_ObjectHideFlags: 0
@@ -12242,6 +12255,11 @@ CapsuleCollider2D:
   m_Offset: {x: 0.04, y: -0.28}
   m_Size: {x: 0.89, y: 0.75}
   m_Direction: 0
+--- !u!20 &978386273 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8918953923853300624, guid: a763300da54f0b24f891bdcb68c15c49, type: 3}
+  m_PrefabInstance: {fileID: 978386259}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &983668310
 GameObject:
   m_ObjectHideFlags: 0
@@ -16252,6 +16270,8 @@ GameObject:
   - component: {fileID: 1292627439}
   - component: {fileID: 1292627438}
   - component: {fileID: 1292627443}
+  - component: {fileID: 1292627445}
+  - component: {fileID: 1292627444}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -16420,6 +16440,32 @@ MonoBehaviour:
   AngleRange: 35
   MoveSpeed: 5
   Coin: 1
+--- !u!114 &1292627444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292627435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ce7da07bebaa5a44829f934f4440b33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 978386273}
+  cinemachine: {fileID: 533282423}
+--- !u!114 &1292627445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292627435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb465740d2dd50a4285e66df5b7241ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1302083344
 GameObject:
   m_ObjectHideFlags: 0
