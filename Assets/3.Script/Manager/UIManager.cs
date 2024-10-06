@@ -750,6 +750,7 @@ public class UIManager : MonoBehaviour
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = portalUiList[0];
+                                        Debug.Log("¿©±â");
                                         continue;
 
                                     case Map.MapType.Boss:

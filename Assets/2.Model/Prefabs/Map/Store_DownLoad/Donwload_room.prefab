@@ -5037,7 +5037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   PortalNum: 1
-  mapName: 
+  mapName: Download
   isClear: 0
 --- !u!61 &5385974689665318923
 BoxCollider2D:

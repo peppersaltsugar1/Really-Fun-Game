@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   PortalNum: 1
-  mapName: 
+  mapName: Shop
   isClear: 0
 --- !u!61 &8938617695204674662
 BoxCollider2D:
