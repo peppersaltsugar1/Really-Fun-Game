@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -40,6 +40,7 @@ public class UIManager : MonoBehaviour
     public GameObject DeathUI;
     public Button ReStartButton;
     public Button GoToDesktop;
+    public Text PlayTimeText;
 
     public bool HPUIActive;
 
@@ -93,6 +94,22 @@ public class UIManager : MonoBehaviour
     public Dropdown screenModeDropdown;
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
+    public Slider masterSlider;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+
+
+    public Button MasterButton;
+    public GameObject MasterVolumeBaseImage;
+    public GameObject MasterVolumeMuteImage;
+
+    public Button BGMButton;
+    public GameObject BGMVolumeBaseImage;
+    public GameObject BGMVolumeMuteImage;
+
+    public Button SFXButton;
+    public GameObject SFXVolumeBaseImage;
+    public GameObject SFXVolumeMuteImage;
 
     // Program Manger
     private ProgramManager programManager;
@@ -160,7 +177,20 @@ public class UIManager : MonoBehaviour
         // ControllOptionUI Setting
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
+        
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
+        masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        bgmSlider.onValueChanged.AddListener(SetBGMVolume);
+        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+
+        MasterButton.onClick.AddListener(FMasterButton);
+        MasterVolumeMuteImage.SetActive(false);
+
+        BGMButton.onClick.AddListener(FBGMButton);
+        BGMVolumeMuteImage.SetActive(false);
+
+        SFXButton.onClick.AddListener(FSFXButton);
+        SFXVolumeMuteImage.SetActive(false);
 
         // Basic UI Setting
         FirstStartFunc();
@@ -462,7 +492,7 @@ public class UIManager : MonoBehaviour
         if (FirstStartUI != null)
         {
             // 소리 재생
-
+            SoundManager.Instance.StartButtonSound();
             StartCoroutine(DelayUIAndGameStart(3.0f));
         }
         else
@@ -489,7 +519,13 @@ public class UIManager : MonoBehaviour
     private IEnumerator DelayUIAndGameOver(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
-
+        
+        float playTime = Time.time;
+        int hours = Mathf.FloorToInt(playTime / 3600);
+        int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
+        int seconds = Mathf.FloorToInt(playTime % 60);
+        PlayTimeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+        
         DeathUI.SetActive(true);
         HPUIActiveSetting();
     }
@@ -790,6 +826,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Quality
     public void ChangeQuality(int index)
     {
         switch (index)
@@ -806,6 +843,70 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    // Audio
+    public void SetMasterVolume(float volume)
+    {
+        SoundManager.Instance.SetMasterVolume(volume);
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        SoundManager.Instance.SetBGMVolume(volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        SoundManager.Instance.SetSFXVolume(volume);
+    }
+
+    public void FMasterButton()
+    {
+        if(!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
+        {
+            MasterVolumeBaseImage.SetActive(false);
+            MasterVolumeMuteImage.SetActive(true); 
+        }
+        else
+        {
+            MasterVolumeBaseImage.SetActive(true);
+            MasterVolumeMuteImage.SetActive(false); 
+        }
+        SoundManager.Instance.MasterVolumeMute = !SoundManager.Instance.MasterVolumeMute;
+        SetMasterVolume(SoundManager.Instance.MasterVolume);
+    }
+
+    public void FBGMButton()
+    {
+        if (!SoundManager.Instance.BGMVolumeMute) // 음소거 상태 아닐때
+        {
+            BGMVolumeBaseImage.SetActive(false);
+            BGMVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            BGMVolumeBaseImage.SetActive(true);
+            BGMVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.BGMVolumeMute = !SoundManager.Instance.BGMVolumeMute;
+        SetBGMVolume(SoundManager.Instance.BGMVolume);
+    }
+
+    public void FSFXButton()
+    {
+        if (!SoundManager.Instance.SFXVolumeMute) // 음소거 상태 아닐때
+        {
+            SFXVolumeBaseImage.SetActive(false);
+            SFXVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            SFXVolumeBaseImage.SetActive(true);
+            SFXVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.SFXVolumeMute = !SoundManager.Instance.SFXVolumeMute;
+        SetSFXVolume(SoundManager.Instance.BGMVolume);
     }
 
     public void RoomUISet()

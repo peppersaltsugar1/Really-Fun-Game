@@ -48,8 +48,4 @@ public class GameManager : MonoBehaviour
         playerPoint = player.transform;
     }
 
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 }

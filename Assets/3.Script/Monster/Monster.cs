@@ -31,10 +31,6 @@ public class Monster : MonoBehaviour
     private Vector3 targetPosition; // 탐지된 플레이어의 위치 저장
     private bool DetectionSuccess = false; // 탐지 성공 여부
 
-    // 3번 몬스터 점프이동 구현용 변수
-    private Vector3 controlPoint;        // 곡선을 그리기 위한 제어점
-    public float travelTime = 0.45f;    // 이동하는 데 걸리는 총 시간 (0.45초)
-
     // 공격 관련 변수들
     public GameObject bulletPrefab;  // 발사할 총알 프리팹
     public Transform firePoint;      // 총알 발사 위치
@@ -217,9 +213,6 @@ public class Monster : MonoBehaviour
         }
         else if (monsterType == MonsterType.M_V3)
         {
-            // 포물선 이동식(비활성화)
-            // StartCoroutine(MoveAlongCurve());
-
             // 직선이동
             animator.SetTrigger("Jump");
             yield return new WaitForSeconds(1.7f);
@@ -408,28 +401,6 @@ public class Monster : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-    IEnumerator MoveAlongCurve()
-    {
-        animator.SetTrigger("Jump");
-        yield return new WaitForSeconds(1.7f);
-        float t = 0f;
-        Vector3 startPosition = transform.position;
-
-        while (t < 1f)
-        {
-            t += Time.deltaTime / travelTime;
-
-            Vector3 newPosition = (1 - t) * (1 - t) * startPosition +
-                                  2 * (1 - t) * t * controlPoint +
-                                  t * t * targetPosition;
-
-            transform.position = newPosition;
-
-            yield return null;
-        }
-
-        transform.position = targetPosition;
-    }
 
     // 공격 로직
     void Fire()
