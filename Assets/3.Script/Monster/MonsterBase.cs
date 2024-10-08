@@ -17,6 +17,20 @@ public class MonsterBase : MonoBehaviour
         Red_Spider,
         White_Spider
     }
+
+    public static Dictionary<MonsterType, string> MonsterNameDict = new Dictionary<MonsterType, string>
+    {
+        { MonsterType.M_V1, "M_V1이름이름" },
+        { MonsterType.M_V2, "M_V2이름이름" },
+        { MonsterType.M_V3, "M_V3이름이름" },
+        { MonsterType.M_CardPack, "M_CardPack이름이름" },
+        { MonsterType.M_VE_1, "M_VE_1이름이름" },
+        { MonsterType.M_VE_2, "M_VE_2이름이름" },
+        { MonsterType.M_SpiderCardPack, "M_SpiderCardPack이름이름" },
+        { MonsterType.Red_Spider, "Red_Spider이름이름" },
+        { MonsterType.White_Spider, "White_Spider이름이름" }
+    };
+
     // Monster Base Info
     public MonsterType monsterType;
     public float MoveSpeed;
@@ -109,7 +123,7 @@ public class MonsterBase : MonoBehaviour
         {
             if (statusManager != null)
             {
-                statusManager.TakeDamage(AttackPower);
+                statusManager.TakeDamage(AttackPower, monsterType);
             }
             else
             {

@@ -15,13 +15,13 @@ public class StatusManager : MonoBehaviour
     public float Shield; // 공격 막아주는 것
     public float ShieldHp;
     public float Elect;
-
+    public MonsterBase.MonsterType DeathSign; // 사망원인
     private float HealCoolTime = 0.2f;
     private Coroutine healing_coroutine;
 
     // Take Damage
-    [SerializeField]
-    private Collider2D player_coroutine;
+    //[SerializeField]
+    //private Collider2D player_coroutine;
     private float HitCoolTime = 2.0f;
     private bool IsHit = false;
 
@@ -61,10 +61,11 @@ public class StatusManager : MonoBehaviour
     }
 
     // =============================== Fixed Section ===============================
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, MonsterBase.MonsterType deathSign)
     {
         if (!IsHit)
         {
+            DeathSign = deathSign;
             StartCoroutine(Hit_Coroutine(damage));
         }
     }

@@ -202,6 +202,6 @@ MonoBehaviour:
   AttackDelayTime: 0
   AttackCoolTime: 2
   DetectingAreaR: 6
-  BulletPrefab: {fileID: 6926711150965903544, guid: af9f5b071b2348a47b91912d8f8b30eb, type: 3}
+  BulletPrefab: {fileID: 6926711150965903544, guid: 71c62784b81aa1e49a748852b9fa4162, type: 3}
   FirePoint: {fileID: 3845500156771145051}
   BulletSpeed: 10

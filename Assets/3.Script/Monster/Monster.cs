@@ -80,7 +80,7 @@ public class Monster : MonoBehaviour
             if (statusManager != null)
             {
                 Debug.Log("Monster OnTriggerEnter2D : Take Damage");
-                statusManager.TakeDamage(AttackPower);
+                // statusManager.TakeDamage(AttackPower, monsterType);
             }
             else
             {

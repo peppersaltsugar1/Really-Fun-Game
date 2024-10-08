@@ -22,7 +22,7 @@ public class CardBullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            StatusManager.Instance.TakeDamage(BulletPower);
+            StatusManager.Instance.TakeDamage(BulletPower, MonsterBase.MonsterType.M_CardPack);
             // gameObject.SetActive(false); // ÆÄ±«
         }
     }

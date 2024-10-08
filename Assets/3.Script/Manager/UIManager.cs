@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     public Button ReStartButton;
     public Button GoToDesktop;
     public Text PlayTimeText;
-
+    public Text DeathSign;
     public bool HPUIActive;
 
     // Window UI
@@ -525,7 +525,18 @@ public class UIManager : MonoBehaviour
         int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
         int seconds = Mathf.FloorToInt(playTime % 60);
         PlayTimeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
-        
+
+        MonsterBase.MonsterType monsterType = statusManager.DeathSign;
+        if (MonsterBase.MonsterNameDict.TryGetValue(monsterType, out string monsterName))
+        {
+            DeathSign.text = monsterName + "한테 죽음.";
+        }
+        else
+        {
+            DeathSign.text = "알 수 없는 몬스터한테 죽음.";
+        }
+
+
         DeathUI.SetActive(true);
         HPUIActiveSetting();
     }
