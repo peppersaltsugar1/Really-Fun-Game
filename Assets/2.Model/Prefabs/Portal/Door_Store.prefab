@@ -124,7 +124,7 @@ MonoBehaviour:
   currentMap: {fileID: 0}
   portalCollider: {fileID: 0}
   isUse: 0
-  isLock: 0
+  isLock: 1
 --- !u!61 &7124717223973905352
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour
     private Camera playerCamera;  // 주 카메라
     [SerializeField]
     private CinemachineConfiner2D cinemachine;
+    GameManager gameManager;
 
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class CameraManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        gameManager = GameManager.Instance;
     }
 
     // Update is called once per frame
@@ -69,7 +70,6 @@ public class CameraManager : MonoBehaviour
     {
         PolygonCollider2D collider = map.GetComponent<PolygonCollider2D>();
         cinemachine.m_BoundingShape2D = collider;
-        Debug.Log(cinemachine.m_BoundingShape2D);
 
         /*Bounds bounds = collider.bounds;
         float halfHeight = playerCamera.orthographicSize;
@@ -86,6 +86,11 @@ public class CameraManager : MonoBehaviour
         cameraPosition.y = Mathf.Clamp(cameraPosition.y, minY, maxY);
         playerCamera.transform.position = cameraPosition;*/
 
+    }
+    public void CameraPlayerSet()
+    {
+        playerCamera.transform.position = 
+            new Vector3(gameManager.player.transform.position.x,gameManager.player.transform.position.y,playerCamera.transform.position.z);
     }
 }
 

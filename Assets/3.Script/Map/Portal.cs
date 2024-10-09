@@ -16,6 +16,7 @@ public class Portal : MonoBehaviour
     private void Awake()
     {
         portalCollider = GetComponent<Collider2D>();
+        currentMap = transform.parent.gameObject;
         
     }
     void Start()
@@ -23,7 +24,7 @@ public class Portal : MonoBehaviour
         teleportManager = TeleportManager.Instance;
         cameraManager = CameraManager.Instance;
         isUse = true;
-        isLock = false;
+        
     }
 
     // Update is called once per frame

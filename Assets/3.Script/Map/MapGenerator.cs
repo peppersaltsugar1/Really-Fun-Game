@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     public List<Map> mapList = new List<Map>();
     //¸Ê »ý¼º°ü·Ã ÀÎ¼ö
     public int maxMapNum; //¸ÊÃÖ´ë°¹¼ö
+    //ºÎ¸ð°´Ã¼ ¸Ê
     [SerializeField]
     public Transform map;
     [SerializeField]

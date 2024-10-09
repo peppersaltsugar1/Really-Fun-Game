@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     GameObject localDiskContent;
     [SerializeField]
     MapGenerator mapGenerator;
+    //포탈 Ui관련
     [SerializeField]
     GameObject UIPortal;
     [SerializeField]
@@ -30,6 +31,11 @@ public class UIManager : MonoBehaviour
     List<Sprite> closePortalUiList = new();
     [SerializeField]
     List<GameObject> itemImageList = new();
+
+    //주소관련
+    public List<Map> addressList = new();
+    [SerializeField]
+    GameObject address;
 
     // Window UI
     public GameObject WindowUI;
@@ -719,8 +725,23 @@ public class UIManager : MonoBehaviour
         }
         /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
         //맵list에서 현제맵을 가져옴
+        LocalDisckUISet(mapIndex);
+    }
+
+    public void LocalDisckUISet(int mapIndex)
+    {
+        AddressSet(mapIndex);
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
         GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
-        Map currentPortalMap = currentMap.GetComponent<Map>();
+        
         if (mapIndex == 0)
         {
             //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
@@ -732,6 +753,7 @@ public class UIManager : MonoBehaviour
                     GameObject portalUI = Instantiate(UIPortal);
                     portalUI.transform.SetParent(localDiskContent.transform);
                     portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
                     Text mapName = portalUI.GetComponentInChildren<Text>();
                     Image[] images = portalUI.GetComponentsInChildren<Image>(true);
                     Image portalImage = images[1];
@@ -739,18 +761,21 @@ public class UIManager : MonoBehaviour
                     if (curretnportal.connectPortal != null)
                     {
                         Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        // 맵 이름을 설정합니다.
                         mapName.text = connectedMap.mapName;
+                        // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap = 
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
 
                         if (connectedMap != null)
                         {
                             // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
                             if (connectedMap.isClear)
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = portalUiList[0];
-                                        Debug.Log("여기");
                                         continue;
 
                                     case Map.MapType.Boss:
@@ -764,7 +789,7 @@ public class UIManager : MonoBehaviour
                                         portalImage.sprite = portalUiList[3];
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = portalUiList[4];
@@ -784,7 +809,8 @@ public class UIManager : MonoBehaviour
                             }
                             else
                             {
-                                switch (currentPortalMap.Type)
+                                Debug.Log("여기");
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = closePortalUiList[0];
@@ -813,7 +839,7 @@ public class UIManager : MonoBehaviour
                                         }
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = closePortalUiList[6];
@@ -907,6 +933,7 @@ public class UIManager : MonoBehaviour
                     GameObject portalUI = Instantiate(UIPortal);
                     portalUI.transform.SetParent(localDiskContent.transform);
                     portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
                     currentPortalList.Add(portalUI);
                     Text mapName = portalUI.GetComponentInChildren<Text>();
                     Image[] images = portalUI.GetComponentsInChildren<Image>(true);
@@ -915,14 +942,15 @@ public class UIManager : MonoBehaviour
                     if (curretnportal.connectPortal != null)
                     {
                         Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-                        Debug.Log(connectedMap.name);
                         mapName.text = connectedMap.mapName;
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
                         if (connectedMap != null)
                         {
                             // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
                             if (connectedMap.isClear)
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = portalUiList[0];
@@ -939,7 +967,7 @@ public class UIManager : MonoBehaviour
                                         portalImage.sprite = portalUiList[3];
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = portalUiList[4];
@@ -959,7 +987,7 @@ public class UIManager : MonoBehaviour
                             }
                             else
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = closePortalUiList[0];
@@ -988,7 +1016,7 @@ public class UIManager : MonoBehaviour
                                         }
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = closePortalUiList[6];
@@ -1072,5 +1100,58 @@ public class UIManager : MonoBehaviour
 
             }
         }
+        /*AddressSet(mapIndex);*/
     }
+    public void AddressSet(int mapIndex)
+    {
+        addressList.Clear();
+        List<Map> temList = new();
+        Map currentMap = mapGenerator.mapList[mapIndex];
+        //반복시켜야함
+        if (currentMap != null)
+        {
+           
+            while (true)
+            {
+                Debug.Log("반복은함");
+                InfiniteLoopDetector.Run();
+                if (currentMap.Type == Map.MapType.Start)
+                {
+                    break;
+                }
+                //현재 맵을 가져와서 연결된맵을 리스트에 추가
+                int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
+                Debug.Log(siblingIndex);
+                if (siblingIndex != 0)
+                {
+                    //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
+                    Transform nowMap = mapGenerator.map.transform.GetChild(siblingIndex);
+                    Portal currentMapPortal = nowMap.GetComponentInChildren<Portal>();
+                    Portal connectPortal = currentMapPortal.connectPortal;
+                    Map connectMap = connectPortal.currentMap.GetComponent<Map>();
+                    temList.Add(currentMap);
+                    currentMap = connectMap;
+                }
+                
+            }
+            
+        }
+        
+        temList.Add(mapGenerator.mapList[0]);
+        
+        for (int i = temList.Count-1; i >=0; i--)
+        {
+            addressList.Add(temList[i]);
+        }
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "C:\\";
+        for(int i = 0; i < addressList.Count; i++)
+        {
+            addressText.text += addressList[i].mapName + " > ";
+        }
+        addressText.text = addressText.text.TrimEnd('>');
+
+    }
+    
+
 }

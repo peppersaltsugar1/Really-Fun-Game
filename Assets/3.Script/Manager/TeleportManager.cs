@@ -7,6 +7,8 @@ public class TeleportManager : MonoBehaviour
     private static TeleportManager instance = null;
     CameraManager cameraManager;
     GameManager gameManager;
+    [SerializeField]
+    MapGenerator mapGenerator;
     private void Awake()
     {
         if (null == instance)
@@ -30,9 +32,6 @@ public class TeleportManager : MonoBehaviour
             return instance;
         }
     }
-    MapGenerator mapGenerator;
-    //맵을 이동시킬거리
-    float distance;
     // Start is called before the first frame update
     void Start()
     {
@@ -71,7 +70,6 @@ public class TeleportManager : MonoBehaviour
                 moveMap.transform.position = new Vector2(currentMap.transform.position.x, currentMap.transform.position.y);
                 moveMap.transform.position = new Vector2(moveMap.transform.position.x - distance, moveMap.transform.position.y);
             }
-            Debug.Log(moveMap.transform.position);
         }
         moveMap.SetActive(true);
     }
@@ -88,13 +86,9 @@ public class TeleportManager : MonoBehaviour
         connectPortal.isUse = true;
 
     }
-    public void LocalDisckTel(int maplistIndex)
+    public void LocalDisckTel(GameObject telMap)
     {
-        Transform telPos = mapGenerator.mapList[maplistIndex].transform.Find("TeleportPoint");
-        Debug.Log(telPos);
-        gameManager.player.transform.position = telPos.position;
-        int mapIndex = 0;
-        //현제 맵이 몇번째 index인지 확인
+        int currentMapIndex =0;
         for (int i = 0; i < mapGenerator.mapList.Count; i++)
         {
             Map map = mapGenerator.mapList[i];
@@ -102,12 +96,17 @@ public class TeleportManager : MonoBehaviour
             // 현재 활성화된 맵인지 확인
             if (map.transform.gameObject.activeSelf)
             {
-                mapIndex = i;
+                currentMapIndex = i;
                 continue; // 활성화된 맵의 인덱스 반환
             }
         }
-        mapGenerator.mapList[mapIndex].transform.gameObject.SetActive(false);
-        mapGenerator.mapList[maplistIndex].transform.gameObject.SetActive(true);
-
+        int telMapIndex = mapGenerator.mapList.IndexOf(telMap.GetComponent<Map>());
+        if(currentMapIndex != telMapIndex)
+        {
+            mapGenerator.mapList[currentMapIndex].gameObject.SetActive(false);
+            telMap.SetActive(true);
+            gameManager.player.transform.position = telMap.transform.position;
+            cameraManager.CameraLimit(telMap);
+        }
     }
 }
