@@ -590,18 +590,24 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         MyPC_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 PC";
     }
 
     public void FDownLoad_Button()
     {
         UIDeactivation();
         DownLoad_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "다운로드";
     }
 
     public void FMy_Documents_Button()
     {
         UIDeactivation();
         My_Documents_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 문서";
     }
 
     public void FLocalDisk_Button()
@@ -614,12 +620,16 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         ControlOptions_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "제어판";
     }
 
     public void FHelp_Button()
     {
         UIDeactivation();
         Help_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "도움말";
     }
 
     public void FDesktop_Button()
