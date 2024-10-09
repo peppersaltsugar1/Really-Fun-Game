@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 30
+  spritePixelsToUnits: 18
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,9 +121,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 105
-        width: 22
-        height: 20
+        y: 56
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,10 +141,10 @@ TextureImporter:
       name: use_Coin_1
       rect:
         serializedVersion: 2
-        x: 23
-        y: 105
-        width: 22
-        height: 20
+        x: 14
+        y: 56
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,10 +162,10 @@ TextureImporter:
       name: use_Coin_2
       rect:
         serializedVersion: 2
-        x: 46
-        y: 105
-        width: 22
-        height: 20
+        x: 28
+        y: 56
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +183,10 @@ TextureImporter:
       name: use_Coin_3
       rect:
         serializedVersion: 2
-        x: 69
-        y: 105
-        width: 22
-        height: 20
+        x: 42
+        y: 56
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,10 +204,10 @@ TextureImporter:
       name: use_Coin_4
       rect:
         serializedVersion: 2
-        x: 92
-        y: 105
-        width: 22
-        height: 20
+        x: 56
+        y: 56
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,10 +225,10 @@ TextureImporter:
       name: use_Coin_5
       rect:
         serializedVersion: 2
-        x: 115
-        y: 105
-        width: 22
-        height: 20
+        x: 0
+        y: 42
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,10 +246,10 @@ TextureImporter:
       name: use_Coin_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 84
-        width: 22
-        height: 20
+        x: 14
+        y: 42
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: use_Coin_7
       rect:
         serializedVersion: 2
-        x: 23
-        y: 84
-        width: 22
-        height: 20
+        x: 28
+        y: 42
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -288,10 +288,10 @@ TextureImporter:
       name: use_Coin_8
       rect:
         serializedVersion: 2
-        x: 46
-        y: 84
-        width: 22
-        height: 20
+        x: 42
+        y: 42
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -309,10 +309,10 @@ TextureImporter:
       name: use_Coin_9
       rect:
         serializedVersion: 2
-        x: 69
-        y: 84
-        width: 22
-        height: 20
+        x: 56
+        y: 42
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -330,10 +330,10 @@ TextureImporter:
       name: use_Coin_10
       rect:
         serializedVersion: 2
-        x: 92
-        y: 84
-        width: 22
-        height: 20
+        x: 0
+        y: 28
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -351,10 +351,10 @@ TextureImporter:
       name: use_Coin_11
       rect:
         serializedVersion: 2
-        x: 115
-        y: 84
-        width: 22
-        height: 20
+        x: 14
+        y: 28
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -372,10 +372,10 @@ TextureImporter:
       name: use_Coin_12
       rect:
         serializedVersion: 2
-        x: 0
-        y: 63
-        width: 22
-        height: 20
+        x: 28
+        y: 28
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -393,10 +393,10 @@ TextureImporter:
       name: use_Coin_13
       rect:
         serializedVersion: 2
-        x: 23
-        y: 63
-        width: 22
-        height: 20
+        x: 42
+        y: 28
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -414,10 +414,10 @@ TextureImporter:
       name: use_Coin_14
       rect:
         serializedVersion: 2
-        x: 46
-        y: 63
-        width: 22
-        height: 20
+        x: 56
+        y: 28
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -435,10 +435,10 @@ TextureImporter:
       name: use_Coin_15
       rect:
         serializedVersion: 2
-        x: 69
-        y: 63
-        width: 22
-        height: 20
+        x: 0
+        y: 14
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -456,10 +456,10 @@ TextureImporter:
       name: use_Coin_16
       rect:
         serializedVersion: 2
-        x: 92
-        y: 63
-        width: 22
-        height: 20
+        x: 14
+        y: 14
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -477,10 +477,10 @@ TextureImporter:
       name: use_Coin_17
       rect:
         serializedVersion: 2
-        x: 115
-        y: 63
-        width: 22
-        height: 20
+        x: 28
+        y: 14
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -498,10 +498,10 @@ TextureImporter:
       name: use_Coin_18
       rect:
         serializedVersion: 2
-        x: 0
-        y: 42
-        width: 22
-        height: 20
+        x: 42
+        y: 14
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -519,10 +519,10 @@ TextureImporter:
       name: use_Coin_19
       rect:
         serializedVersion: 2
-        x: 23
-        y: 42
-        width: 22
-        height: 20
+        x: 56
+        y: 14
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -540,10 +540,10 @@ TextureImporter:
       name: use_Coin_20
       rect:
         serializedVersion: 2
-        x: 46
-        y: 42
-        width: 22
-        height: 20
+        x: 0
+        y: 0
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -561,10 +561,10 @@ TextureImporter:
       name: use_Coin_21
       rect:
         serializedVersion: 2
-        x: 69
-        y: 42
-        width: 22
-        height: 20
+        x: 14
+        y: 0
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -582,10 +582,10 @@ TextureImporter:
       name: use_Coin_22
       rect:
         serializedVersion: 2
-        x: 92
-        y: 42
-        width: 22
-        height: 20
+        x: 28
+        y: 0
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -603,10 +603,10 @@ TextureImporter:
       name: use_Coin_23
       rect:
         serializedVersion: 2
-        x: 115
-        y: 42
-        width: 22
-        height: 20
+        x: 42
+        y: 0
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -616,237 +616,6 @@ TextureImporter:
       bones: []
       spriteID: bc85794e9e4ec6144b46de0b8de9897c
       internalID: 760203594
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_24
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ce30d84b443ab95428f9edde3b488eac
-      internalID: -2099816031
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_25
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ab25b18af7c67b4fb83611f4b31dbd6
-      internalID: 877415664
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_26
-      rect:
-        serializedVersion: 2
-        x: 46
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 636117024639c5e419ede637ce18e9a5
-      internalID: 1543124171
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_27
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 05f15d8807ed06b449a446d1d1d29b4f
-      internalID: -541368327
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_28
-      rect:
-        serializedVersion: 2
-        x: 92
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ebd695f2fa3f6974a95c79dde0ff16c0
-      internalID: -1187936467
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_29
-      rect:
-        serializedVersion: 2
-        x: 115
-        y: 21
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f621ccd28f9cddd4bb004f80b65bc58b
-      internalID: 1364332735
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_30
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bf67d1548d0084441bfceac40bd082b0
-      internalID: 278019506
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_31
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8c957fe4eb9d4e14d89e5d0bdc65a3ae
-      internalID: -543556934
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_32
-      rect:
-        serializedVersion: 2
-        x: 46
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7d77d56d6d422e54580ef1dbee96df97
-      internalID: 708716290
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_33
-      rect:
-        serializedVersion: 2
-        x: 69
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9cd999ff55309f47a4df312ebe828aa
-      internalID: 922120654
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: use_Coin_34
-      rect:
-        serializedVersion: 2
-        x: 92
-        y: 0
-        width: 22
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 53f555ac4b1a4b04985e31d7016700b5
-      internalID: -1944385736
       vertices: []
       indices: 
       edges: []
@@ -862,15 +631,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      use_Coin_24: -2099816031
-      use_Coin_31: -543556934
-      use_Coin_27: -541368327
-      use_Coin_26: 1543124171
       use_Coin_20: -1414446735
       use_Coin_15: 1850559393
-      use_Coin_25: 877415664
-      use_Coin_32: 708716290
-      use_Coin_34: -1944385736
       use_Coin_0: -1855914995
       use_Coin_13: 1854719879
       use_Coin_11: 1507758796
@@ -878,7 +640,6 @@ TextureImporter:
       use_Coin_9: 409895750
       use_Coin_21: -1885801872
       use_Coin_23: 760203594
-      use_Coin_30: 278019506
       use_Coin_8: 2078734516
       use_Coin_7: -1802075703
       use_Coin_10: 1991468420
@@ -889,12 +650,9 @@ TextureImporter:
       use_Coin_1: -1774716599
       use_Coin_4: 1388984015
       use_Coin_5: -2082462230
-      use_Coin_33: 922120654
       use_Coin_2: 1061780574
       use_Coin_12: 1985388359
       use_Coin_16: 1611093424
-      use_Coin_29: 1364332735
-      use_Coin_28: -1187936467
       use_Coin_14: 191641718
       use_Coin_22: 1636362344
   spritePackingTag: 

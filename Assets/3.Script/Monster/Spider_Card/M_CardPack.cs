@@ -109,7 +109,7 @@ public class M_CardPack : MonsterBase
 
         }
         // 장전 애니메이션 재생시간
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         if (CardNum == 0 || CardNum == 1)
         {
@@ -126,7 +126,7 @@ public class M_CardPack : MonsterBase
                 if (rb != null)
                 {
                     Vector2 fireDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    rb.velocity = fireDirection * BulletSpeed;
+                    rb.velocity = fireDirection * (BulletSpeed*2/5);
                 }
             }
         }
