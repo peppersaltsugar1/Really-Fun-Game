@@ -9,7 +9,10 @@ public class Map : MonoBehaviour
     public int PortalNum;
     public string mapName;
     public bool isClear;
-    void Start()
+
+    public float nowPosition;
+
+    void Awake()
     {
         if (Type == MapType.Start)
         {
@@ -20,10 +23,14 @@ public class Map : MonoBehaviour
             isClear = false;
         }
     }
+    void Start()
+    {
+
+    }
 
     // Update is called once per frame
     void Update()
     {
-        
+        nowPosition = transform.position.x;
     }
 }
