@@ -155,7 +155,9 @@ public class UIManager : MonoBehaviour
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
-}
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "³» PC";
+    }
 
     void Update()
     {

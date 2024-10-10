@@ -46,8 +46,9 @@ public class TeleportManager : MonoBehaviour
     }
     public void PlayerTeleport(Player player,Portal currentPortal,Portal connectPortal)
     {
-        Debug.Log("텔레포트시킴");
-        StartCoroutine(PlayerTeleport_Co(currentPortal, connectPortal));
+        /*StartCoroutine(PlayerTeleport_Co(currentPortal, connectPortal));*/
+        currentPortal.isUse = false;
+        connectPortal.isUse = false;
         Vector2 newPosition = connectPortal.transform.position;
         player.transform.position = newPosition;
     }
@@ -73,17 +74,11 @@ public class TeleportManager : MonoBehaviour
         }
         moveMap.SetActive(true);
     }
-    private IEnumerator PlayerTeleport_Co(Portal currentPortal, Portal connectPortal)
+    private IEnumerator PlayerTeleport_Co(Portal currentPortal)
     {
-        Debug.Log("코루틴사용");
-        currentPortal.isUse = false;
-        connectPortal.isUse = false;
-        yield return new WaitForSeconds(2f);  // 1초 후 다시 포탈 활성화
-        Debug.Log("코루틴종료");
-        currentPortal.portalCollider.enabled = true;
-        connectPortal.portalCollider.enabled = true;
+        
+        yield return new WaitForSeconds(1f);  // 1초 후 다시 포탈 활성화
         currentPortal.isUse = true;
-        connectPortal.isUse = true;
 
     }
     public void LocalDisckTel(GameObject telMap)
@@ -108,5 +103,9 @@ public class TeleportManager : MonoBehaviour
             gameManager.player.transform.position = telMap.transform.position;
             cameraManager.CameraLimit(telMap);
         }
+    }
+    public void PortalUse_co(Portal currentPortal)
+    {
+        StartCoroutine(PlayerTeleport_Co(currentPortal));
     }
 }

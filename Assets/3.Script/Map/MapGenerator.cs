@@ -40,10 +40,12 @@ public class MapGenerator : MonoBehaviour
     private List<Portal> connectPortalList = new List<Portal>();
     private List<List<Portal>> temPortalList = new List<List<Portal>>();
 
+    CameraManager cameraManager;
     // Start is called before the first frame update
     void Start()
     {
         currentMapNum = 0;
+        cameraManager = CameraManager.Instance;
         CreateMap();
         HideMap();
     }
@@ -63,6 +65,7 @@ public class MapGenerator : MonoBehaviour
             CreateNextMap();
         }
         PortalChange();
+        cameraManager.CameraLimit(mapList[0].gameObject);
 
     }
     private void CreateFirstMap()//초기맵생성
@@ -424,7 +427,7 @@ public class MapGenerator : MonoBehaviour
             // 현재 mapList에 같은 타입의 맵이 있는지 확인
             for (int i = 0; i < mapList.Count; i++)
             {
-                if (randomSpecialMapPrefabList[mapIndex].name == mapList[i].name)
+                if (randomSpecialMapPrefabList[mapIndex].mapName == mapList[i].mapName)
                 {
                     isDuplicate = true; // 같은 타입의 맵이 존재할 경우 true
                     continue; // 중복이 발견되면 더 이상 체크하지 않고 반복문 종료
