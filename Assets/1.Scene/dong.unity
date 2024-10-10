@@ -8827,7 +8827,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 2127303045}
   cinemachine: {fileID: 1311487367}
-  mapGenerator: {fileID: 760236444}
+  cinemachineVir: {fileID: 1311487365}
 --- !u!114 &598970840
 MonoBehaviour:
   m_ObjectHideFlags: 0

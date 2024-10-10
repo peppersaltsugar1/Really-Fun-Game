@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour
     private Camera playerCamera;  // 주 카메라
     [SerializeField]
     private CinemachineConfiner2D cinemachine;
+    [SerializeField]
     private CinemachineVirtualCamera cinemachineVir;
     GameManager gameManager;
     
