@@ -6,7 +6,9 @@ using UnityEngine;
 
 public class M_V1 : MonsterBase
 {
- 
+    public float AttackCoolTime;
+    public float AttackDuration;
+
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -25,36 +27,18 @@ public class M_V1 : MonsterBase
     {
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-                    // Debug.Log("플레이어 탐색 성공");
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {
+                Debug.Log("Player 탐지 완료");
+                DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
-                DetectionSuccess = false;
-            }
-            else
-            {
-                isMoving = true;
-
-                yield return RandomMoveAfterSearchFail();
-                MAnimator.SetBool("Move", false);
+                yield return new WaitForSeconds(AttackCoolTime);
             }
 
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
     }
 
@@ -63,66 +47,31 @@ public class M_V1 : MonsterBase
         // 방향 설정
         SpriteFlipSetting();
 
-        // 공격 준비 대기 시간
-        yield return new WaitForSeconds(AttackDelayTime);
-
         var speed = MoveSpeed * Time.deltaTime;
-        float maxMoveDuration = 1.0f;
         float elapsedTime = 0f;
+
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
+        rb.bodyType = RigidbodyType2D.Dynamic;
 
         while (Vector3.Distance(transform.position, TargetPosition) > speed)
         {
+            DetectionPlayerPosition();
             elapsedTime += Time.deltaTime;
 
-            // 지정된 시간을 초과하면 이동 중지
-            if (elapsedTime >= maxMoveDuration)
+            // Move during DurationTime
+            if (elapsedTime >= AttackDuration)
             {
                 MAnimator.SetBool("Move", false);
-
-                yield break; // 코루틴 종료
+                yield break;
             }
 
             MAnimator.SetBool("Move", true);
 
-            // Rigidbody2D를 사용하여 이동
             rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
-
-            yield return new WaitForFixedUpdate(); // 물리 업데이트 프레임에 맞춰서 대기
+            
+            yield return new WaitForFixedUpdate(); 
         }
-
         MAnimator.SetBool("Move", false);
-    }
 
-    public override IEnumerator RandomMoveAfterSearchFail()
-    {
-        TargetPosition = GetRanomPositionAround();
-
-        // 방향 설정
-        SpriteFlipSetting();
-
-        var speed = MoveSpeed * Time.deltaTime;
-        float maxMoveDuration = 1.0f;  // 이동을 허용할 최대 시간 (예: 3초)
-        float elapsedTime = 0f;        // 경과 시간
-
-        while (Vector3.Distance(transform.position, TargetPosition) > speed && isMoving)
-        {
-            elapsedTime += Time.deltaTime;
-
-            // 지정된 시간을 초과하면 이동 중지
-            if (elapsedTime >= maxMoveDuration)
-            {
-                MAnimator.SetBool("Move", false);
-                yield break; // 코루틴 종료
-            }
-
-            MAnimator.SetBool("Move", true);
-
-            // Rigidbody2D를 사용하여 이동
-            rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
-
-            yield return new WaitForFixedUpdate(); // 물리 업데이트 프레임에 맞춰서 대기
-        }
-
-        MAnimator.SetBool("Move", false);
     }
 }

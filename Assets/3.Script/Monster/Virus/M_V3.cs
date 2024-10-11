@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class M_V3 : MonsterBase
 {
+    public float SearchingCoolTime;
+
     // Start is called before the first frame update
     protected override void Start()
     {

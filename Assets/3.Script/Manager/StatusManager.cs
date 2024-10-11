@@ -8,7 +8,33 @@ public class StatusManager : MonoBehaviour
     public static StatusManager Instance;
     private UIManager uiManager;
 
+    // When game is started, this base status used to Initializing Status based on this list.
     // Player Base Status
+    public float B_MaxHp;
+    public float B_CurrentHp;
+    public float B_TemHp;
+    public float B_Shield;
+    public float B_ShieldHp;
+    public float B_Elect;
+    private float B_HealCoolTime = 0.2f; // Playher Heal CoolTime
+    private float B_HitCoolTime = 2.0f; // Player Attacked CoolTime
+
+    // Player Attack Status
+    public float B_AttackPower; // Player Attack Power
+    public float B_AttackSpeed;  // Player Attack Speed
+    public float B_AttackPushPower; // When Player Attacking, Push Power
+    public float B_WeaponDistance; // Distance Between Player and Weapon
+    public float B_AngleRange = 35f; // Player Weapon Angle Range
+
+    // Other Status
+    public float B_MoveSpeed; // 이동속도
+    public int B_Coin; // 코인 개수
+    public int B_CurrentStorage;
+
+
+    // When player in game, playing with this status
+    // This status are no need to reset.
+    // Player Dynamic Status
     public float MaxHp; // 최대 체력
     public float CurrentHp; // 현재 체력
     public float TemHp; // 임시 체력(아이템)
@@ -16,30 +42,19 @@ public class StatusManager : MonoBehaviour
     public float ShieldHp;
     public float Elect;
     public MonsterBase.MonsterType DeathSign; // 사망원인
-    private float HealCoolTime = 0.2f;
+    private float HealCoolTime;
     private Coroutine healing_coroutine;
-
-    // Take Damage
-    //[SerializeField]
-    //private Collider2D player_coroutine;
-    private float HitCoolTime = 2.0f;
+    private float HitCoolTime;
     private bool IsHit = false;
-
-
-    // Player Attack Status
     public float AttackPower; // 공격력
     public float AttackSpeed;  // 공격속도
     public float AttackPushPower; // 어택시 밀격
     public float WeaponDistance; // 캐릭터~무기 거리
-
-    // public Transform sPoint;    // 공격 시작 포인트
-    public float AngleRange = 35f; // 캐릭터 무기 각도 범위
-
-    //플레이어 이동속도
+    public float AngleRange; // 캐릭터 무기 각도 범위
     public float MoveSpeed;
-
-    // 기타 스텟
     public int Coin;
+    public int CurrentStorage;
+
 
     void Awake()
     {
@@ -57,7 +72,27 @@ public class StatusManager : MonoBehaviour
     void Start()
     {
         uiManager = UIManager.Instance;
-        CurrentHp = MaxHp;
+        InitializeStatus();
+    }
+
+    public void InitializeStatus()
+    {
+        MaxHp = B_MaxHp;
+        CurrentHp = B_CurrentHp;
+        TemHp = B_TemHp;
+        Shield = B_Shield;
+        B_ShieldHp = ShieldHp;
+        Elect = B_Elect;
+        HealCoolTime = B_HealCoolTime;
+        HitCoolTime = B_HitCoolTime;
+        AttackPower = B_AttackPower;
+        AttackSpeed = B_AttackSpeed;
+        AttackPushPower = B_AttackPushPower;
+        WeaponDistance = B_WeaponDistance;
+        AngleRange = B_AngleRange;
+        MoveSpeed = B_MoveSpeed;
+        Coin = B_Coin;
+        CurrentStorage = B_CurrentStorage;
     }
 
     // =============================== Fixed Section ===============================
@@ -86,7 +121,7 @@ public class StatusManager : MonoBehaviour
 
             yield return new WaitForSeconds(HitCoolTime);
             IsHit = false;
-            yield break; 
+            yield break;
         }
 
         if (Elect > 0)
@@ -136,7 +171,7 @@ public class StatusManager : MonoBehaviour
             yield break;
         }
 
-        
+
         if (CurrentHp > 0)
         {
             CurrentHp -= damage;

@@ -177,7 +177,7 @@ public class UIManager : MonoBehaviour
         // ControllOptionUI Setting
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
-        
+
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
         bgmSlider.onValueChanged.AddListener(SetBGMVolume);
@@ -202,8 +202,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
-
+        { 
             SetWindowUI();
         }
     }
@@ -213,7 +212,7 @@ public class UIManager : MonoBehaviour
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
-            for (int i = hpList.Count - 1; i >= 0; i++)
+            for (int i = hpList.Count - 1; i >= 0; i--)
             {
                 GameObject removeHp = hpList[i];
                 hpList.RemoveAt(i);
@@ -221,6 +220,77 @@ public class UIManager : MonoBehaviour
             }
             hpNum = 0;
         }
+
+        if (hpPrefabsList.Count < 4)
+        {
+            Debug.LogError("hpPrefabsList에 필요한 프리팹이 부족합니다.");
+            return;
+        }
+
+        /* 과거 
+         * //플레이어의 체력 상황에따라 체력바 재생성
+        //if (statusManager.MaxHp > 0)
+        //{
+        //    //최대체력 3당 체력베터리 1개 생성후 리스트에 추가
+        //    for (int i = 0; i < statusManager.MaxHp / 3; i++)
+        //    {
+        //        GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
+        //        newHp.SetActive(true);
+        //        newHp.transform.SetParent(canvas.transform, false);
+        //        RectTransform rectTransform = newHp.GetComponent<RectTransform>();
+        //        rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
+        //        hpList.Add(newHp);
+        //        hpNum += 1;
+        //    }
+
+        //    //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
+        //    if (statusManager.TemHp > 0)
+        //    {
+        //        for (int i = 0; i < statusManager.TemHp / 3; i++)
+        //        {
+        //            GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
+        //            newTemHp.SetActive(true);
+        //            newTemHp.transform.SetParent(canvas.transform, false);
+        //            RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
+        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
+        //            hpList.Add(newTemHp);
+        //            hpNum += 1;
+
+        //        }
+        //    }
+
+        //    //전기1 전기베터리 1개 생성후 리스트에 추가
+        //    if (statusManager.Elect > 0)
+        //    {
+        //        for (int i = 0; i < statusManager.Elect; i++)
+        //        {
+        //            GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
+        //            spark.SetActive(true);
+        //            spark.transform.SetParent(canvas.transform, false);
+        //            RectTransform rectTransform = spark.GetComponent<RectTransform>();
+        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
+        //            hpList.Add(spark);
+        //            hpNum += 1;
+
+        //        }
+        //    }
+        //    //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
+        //    if (statusManager.ShieldHp > 0)
+        //    {
+        //        for (int i = 0; i < statusManager.ShieldHp; i++)
+        //        {
+        //            GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
+        //            newShildHp.SetActive(true);
+        //            newShildHp.transform.SetParent(canvas.transform, false);
+        //            RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
+        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
+        //            hpList.Add(newShildHp);
+        //            hpNum += 1;
+
+        //        }
+        //    }
+        }
+        */
         //플레이어의 체력 상황에따라 체력바 재생성
         if (statusManager.MaxHp > 0)
         {
@@ -248,7 +318,6 @@ public class UIManager : MonoBehaviour
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newTemHp);
                     hpNum += 1;
-
                 }
             }
 
@@ -264,9 +333,9 @@ public class UIManager : MonoBehaviour
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(spark);
                     hpNum += 1;
-
                 }
             }
+
             //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
             if (statusManager.ShieldHp > 0)
             {
@@ -279,7 +348,6 @@ public class UIManager : MonoBehaviour
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newShildHp);
                     hpNum += 1;
-
                 }
             }
         }
@@ -520,7 +588,7 @@ public class UIManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(delay);
         
-        float playTime = Time.time;
+        float playTime = Time.time - GameManager.Instance.StartTime;
         int hours = Mathf.FloorToInt(playTime / 3600);
         int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
         int seconds = Mathf.FloorToInt(playTime % 60);
@@ -543,7 +611,7 @@ public class UIManager : MonoBehaviour
 
     public void HPUIActiveSetting()
     {
-        if(HPUIActive)
+        if (HPUIActive)
         {
             foreach (GameObject HPList in hpList)
             {
@@ -562,15 +630,17 @@ public class UIManager : MonoBehaviour
             HPUIActive = true;
         }
     }
-    
+
     public void FReStartButton()
     {
         DeathUI.SetActive(false);
         Time.timeScale = 1;
-        Debug.Log("게임 시작 설정을 만들어줘야 함.");
+        statusManager.InitializeStatus();
+        HPUIActiveSetting();
 
-       //  GameManager GMInstance = FindObjectOfType<GameManager>();
-       // GMInstance.RestartGame();
+        HpBarSet();
+        GameManager.Instance.ReStartGame();
+        GameManager.Instance.ResetPlayTime();
     }
 
     // Input ESC -> Show UI 
@@ -874,15 +944,15 @@ public class UIManager : MonoBehaviour
 
     public void FMasterButton()
     {
-        if(!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
+        if (!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
         {
             MasterVolumeBaseImage.SetActive(false);
-            MasterVolumeMuteImage.SetActive(true); 
+            MasterVolumeMuteImage.SetActive(true);
         }
         else
         {
             MasterVolumeBaseImage.SetActive(true);
-            MasterVolumeMuteImage.SetActive(false); 
+            MasterVolumeMuteImage.SetActive(false);
         }
         SoundManager.Instance.MasterVolumeMute = !SoundManager.Instance.MasterVolumeMute;
         SetMasterVolume(SoundManager.Instance.MasterVolume);

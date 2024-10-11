@@ -36,9 +36,6 @@ public class MonsterBase : MonoBehaviour
     public float MoveSpeed;
     public float AttackPower;
     public float HP;
-    public float SearchingCoolTime; // Å½»ö ÄðÅ¸ÀÓ
-    public float AttackDelayTime; // Attack Ready Animation Time
-    public float AttackCoolTime;
     public float DetectingAreaR;
     protected bool isMoving = true;
 
@@ -152,6 +149,25 @@ public class MonsterBase : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    public bool DetectionPlayerPosition()
+    {
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        foreach (Collider2D obj in detectedObjects)
+        {
+            if (obj.CompareTag("Player"))
+            {
+                player = obj.transform;
+
+                TargetPosition = player.position;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // ========== Å½»ö¹üÀ§ Ç¥½Ã¿ë ==========
