@@ -37,6 +37,19 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     GameObject address;
 
+    // Basic UI
+    public GameObject FirstStartUI;
+    public Button StartButton;
+    public GameObject Start_Back;
+    public GameObject Start_Line;
+
+    public GameObject DeathUI;
+    public Button ReStartButton;
+    public Button GoToDesktop;
+    public Text PlayTimeText;
+    public Text DeathSign;
+    public bool HPUIActive;
+
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -87,6 +100,22 @@ public class UIManager : MonoBehaviour
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
 
+    public Slider masterSlider;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+
+    public Button MasterButton;
+    public GameObject MasterVolumeBaseImage;
+    public GameObject MasterVolumeMuteImage;
+
+    public Button BGMButton;
+    public GameObject BGMVolumeBaseImage;
+    public GameObject BGMVolumeMuteImage;
+
+    public Button SFXButton;
+    public GameObject SFXVolumeBaseImage;
+    public GameObject SFXVolumeMuteImage;
+
     // Program Manger
     private ProgramManager programManager;
 
@@ -123,6 +152,7 @@ public class UIManager : MonoBehaviour
         player = FindObjectOfType<Player>();
         BInstance = FindObjectOfType<PoolingManager>();
         statusManager = StatusManager.Instance;
+        HPUIActive = true;
 
         HpBarSet();
 
@@ -155,8 +185,29 @@ public class UIManager : MonoBehaviour
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
+
+        masterSlider.onValueChanged.AddListener(SetMasterVolume);
+        bgmSlider.onValueChanged.AddListener(SetBGMVolume);
+        sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+
+        MasterButton.onClick.AddListener(FMasterButton);
+        MasterVolumeMuteImage.SetActive(false);
+
+        BGMButton.onClick.AddListener(FBGMButton);
+        BGMVolumeMuteImage.SetActive(false);
+
+        SFXButton.onClick.AddListener(FSFXButton);
+        SFXVolumeMuteImage.SetActive(false);
+
+        
         Text addressText = address.GetComponent<Text>();
         addressText.text = "내 PC";
+
+        // Basic UI Setting
+        FirstStartFunc();
+        StartButton.onClick.AddListener(FStartButton);
+        ReStartButton.onClick.AddListener(FReStartButton);
+        GoToDesktop.onClick.AddListener(FDesktop_Button);
     }
 
     void Update()
@@ -418,6 +469,114 @@ public class UIManager : MonoBehaviour
     }
 
     // ========== UI Section ==========
+    public void FirstStartFunc()
+    {
+        if (FirstStartUI != null)
+        {
+            FirstStartUI.SetActive(true);
+
+            Start_Back.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+            Start_Line.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
+            Start_Back.GetComponent<Animator>().SetTrigger("Start");
+            Start_Line.GetComponent<Animator>().SetTrigger("Start");
+
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Debug.Log("FirstStartUI is not allocated");
+        }
+    }
+
+    public void FStartButton()
+    {
+        if (FirstStartUI != null)
+        {
+            // 소리 재생
+            SoundManager.Instance.StartButtonSound();
+            StartCoroutine(DelayUIAndGameStart(3.0f));
+        }
+        else
+        {
+            Debug.Log("FirstStartUI is not allocated");
+        }
+    }
+
+    private IEnumerator DelayUIAndGameStart(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        FirstStartUI.SetActive(false);
+        Time.timeScale = 1;
+        HpBarSet();
+    }
+
+    public void PlayerIsDead()
+    {
+        Time.timeScale = 0;
+        StartCoroutine(DelayUIAndGameOver(2.0f));
+    }
+
+    private IEnumerator DelayUIAndGameOver(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        float playTime = Time.time - GameManager.Instance.StartTime;
+        int hours = Mathf.FloorToInt(playTime / 3600);
+        int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
+        int seconds = Mathf.FloorToInt(playTime % 60);
+        PlayTimeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+
+        MonsterBase.MonsterType monsterType = statusManager.DeathSign;
+        if (MonsterBase.MonsterNameDict.TryGetValue(monsterType, out string monsterName))
+        {
+            DeathSign.text = monsterName + "한테 죽음.";
+        }
+        else
+        {
+            DeathSign.text = "알 수 없는 몬스터한테 죽음.";
+        }
+
+
+        DeathUI.SetActive(true);
+        HPUIActiveSetting();
+    }
+
+    public void HPUIActiveSetting()
+    {
+        if (HPUIActive)
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(false);
+            }
+
+            HPUIActive = false;
+        }
+        else
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(true);
+            }
+
+            HPUIActive = true;
+        }
+    }
+
+    public void FReStartButton()
+    {
+        DeathUI.SetActive(false);
+        Time.timeScale = 1;
+        statusManager.InitializeStatus();
+        HPUIActiveSetting();
+
+        HpBarSet();
+        GameManager.Instance.ReStartGame();
+        GameManager.Instance.ResetPlayTime();
+    }
+
+
 
     // Input ESC -> Show UI 
     public void SetWindowUI()
@@ -709,6 +868,71 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    // Audio
+    public void SetMasterVolume(float volume)
+    {
+        SoundManager.Instance.SetMasterVolume(volume);
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        SoundManager.Instance.SetBGMVolume(volume);
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        SoundManager.Instance.SetSFXVolume(volume);
+    }
+
+    public void FMasterButton()
+    {
+        if (!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
+        {
+            MasterVolumeBaseImage.SetActive(false);
+            MasterVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            MasterVolumeBaseImage.SetActive(true);
+            MasterVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.MasterVolumeMute = !SoundManager.Instance.MasterVolumeMute;
+        SetMasterVolume(SoundManager.Instance.MasterVolume);
+    }
+
+    public void FBGMButton()
+    {
+        if (!SoundManager.Instance.BGMVolumeMute) // 음소거 상태 아닐때
+        {
+            BGMVolumeBaseImage.SetActive(false);
+            BGMVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            BGMVolumeBaseImage.SetActive(true);
+            BGMVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.BGMVolumeMute = !SoundManager.Instance.BGMVolumeMute;
+        SetBGMVolume(SoundManager.Instance.BGMVolume);
+    }
+
+    public void FSFXButton()
+    {
+        if (!SoundManager.Instance.SFXVolumeMute) // 음소거 상태 아닐때
+        {
+            SFXVolumeBaseImage.SetActive(false);
+            SFXVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            SFXVolumeBaseImage.SetActive(true);
+            SFXVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.SFXVolumeMute = !SoundManager.Instance.SFXVolumeMute;
+        SetSFXVolume(SoundManager.Instance.BGMVolume);
+    }
+
     public void RoomUISet()
     {
         //UI에 남아있는요소 확인후 삭제

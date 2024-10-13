@@ -72,10 +72,8 @@ public class M_CardPack : MonsterBase
                 Debug.Log("CardNum Error");
                 break;
         }
-<<<<<<< HEAD
         // 장전 애니메이션 재생시간
         yield return new WaitForSeconds(2f);
-=======
 
         float preparationTime = 1.5f; // 애니메이션 대기 시간
         float elapsedTime = 0f;
@@ -100,7 +98,6 @@ public class M_CardPack : MonsterBase
     {
         Vector3 direction = TargetPosition - FirePoint.position;
         float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
->>>>>>> JJY
 
         if (CardNum == 0 || CardNum == 1)
         {
