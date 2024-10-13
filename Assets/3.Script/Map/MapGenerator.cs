@@ -53,6 +53,10 @@ public class MapGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            RestMap();
+        }
     }
 
     public void CreateMap()
@@ -661,5 +665,22 @@ public class MapGenerator : MonoBehaviour
                 }
             }*/
         }
+    }
+
+    public void RestMap()
+    {
+        int childCount = map.transform.childCount;
+
+        // 자식들이 파괴되면서 즉시 목록에서 제거되면, 올바르게 루프가 돌지 않으므로 뒤에서부터 처리합니다.
+        for (int i = childCount - 1; i >= 0; i--)
+        {
+            // 자식 객체를 가져옴
+            Transform child = map.transform.GetChild(i);
+            // 자식 객체를 파괴
+            Destroy(child.gameObject);
+        }
+        mapList.Clear();
+        CreateMap();
+        HideMap();
     }
 }
