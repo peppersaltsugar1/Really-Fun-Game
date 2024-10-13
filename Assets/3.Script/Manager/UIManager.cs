@@ -154,7 +154,7 @@ public class UIManager : MonoBehaviour
         statusManager = StatusManager.Instance;
         HPUIActive = true;
 
-        HpBarSet();
+        // HpBarSet();
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
@@ -224,7 +224,7 @@ public class UIManager : MonoBehaviour
         //hp 체력바 리셋
         if (hpList.Count > 0)
         {
-            for (int i = hpList.Count - 1; i >= 0; i++)
+            for (int i = hpList.Count - 1; i >= 0; i--)
             {
                 GameObject removeHp = hpList[i];
                 hpList.RemoveAt(i);
@@ -232,6 +232,13 @@ public class UIManager : MonoBehaviour
             }
             hpNum = 0;
         }
+
+        if (hpPrefabsList.Count < 4)
+        {
+            Debug.LogError("hpPrefabsList에 필요한 프리팹이 부족합니다.");
+            return;
+        }
+
         //플레이어의 체력 상황에따라 체력바 재생성
         if (statusManager.MaxHp > 0)
         {
