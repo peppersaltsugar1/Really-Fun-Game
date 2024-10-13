@@ -7,6 +7,7 @@ public class PoolingManager : MonoBehaviour
     private static PoolingManager instance = null;
     public GameObject[] bulletList;
     public GameObject[] monsterList;
+    public GameObject bulletBox;
     public int bulletCount;
     public int monsterCount = 50;
     public Queue<Bullet> bulletPool = new Queue<Bullet>();
@@ -69,8 +70,11 @@ public class PoolingManager : MonoBehaviour
             {
                 bulletPool.Enqueue(bullet);
             }
+            bulletObject.transform.SetParent(bulletBox.transform, false);
+            // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
+            bulletObject.transform.SetAsLastSibling();
+
         }
-        Debug.Log(bulletPool.Count);
     }
 
     public void RefreshBulletDamage(int newDamage)

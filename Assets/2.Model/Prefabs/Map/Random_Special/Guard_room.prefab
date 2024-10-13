@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 377212435076808552}
   - component: {fileID: 377212435076808553}
   - component: {fileID: -7968882209164796441}
+  - component: {fileID: 122452353049387700}
   m_Layer: 0
   m_Name: Guard_room
   m_TagString: Untagged
@@ -809,6 +810,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 15.807671, y: 15.9489765}
   m_EdgeRadius: 0
+--- !u!60 &122452353049387700
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377212435076808555}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 8.029536, y: 7.9975114}
+      - {x: -7.917215, y: 7.921086}
+      - {x: -7.9639616, y: -8.054956}
+      - {x: 7.9074364, y: -8.043885}
 --- !u!1 &377212435345882617
 GameObject:
   m_ObjectHideFlags: 0

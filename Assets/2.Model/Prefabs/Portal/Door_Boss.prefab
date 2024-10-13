@@ -81,7 +81,7 @@ SpriteRenderer:
   m_Size: {x: 1.65, y: 1.65}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6235806326948411526
@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6235806326948411520}
   - component: {fileID: 6235806326948411527}
   - component: {fileID: 3529152069431595123}
+  - component: {fileID: -7835379947895924617}
   m_Layer: 0
   m_Name: Door_Boss
   m_TagString: Untagged
@@ -169,7 +170,7 @@ SpriteRenderer:
   m_Size: {x: 1.65, y: 1.65}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &6235806326948411520
@@ -216,4 +217,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   connectPortal: {fileID: 0}
-  playerCamera: {fileID: 0}
+  currentMap: {fileID: 0}
+  portalCollider: {fileID: 0}
+  isUse: 0
+  isLock: 0
+--- !u!61 &-7835379947895924617
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6235806326948411526}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.65, y: 1.65}
+    newSize: {x: 1.65, y: 1.65}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.65, y: 1.65}
+  m_EdgeRadius: 0

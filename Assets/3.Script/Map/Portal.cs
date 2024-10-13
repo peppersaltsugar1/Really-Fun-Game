@@ -16,16 +16,16 @@ public class Portal : MonoBehaviour
     private void Awake()
     {
         portalCollider = GetComponent<Collider2D>();
-        
-    }
-    void Start()
-    {
+        currentMap = transform.parent.gameObject;
         teleportManager = TeleportManager.Instance;
         cameraManager = CameraManager.Instance;
         isUse = true;
-        isLock = false;
 
-
+    }
+    void Start()
+    {
+        
+        
     }
 
     // Update is called once per frame
@@ -38,56 +38,36 @@ public class Portal : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player")&& isUse)
         {
-            portalCollider.enabled = false;
-            connectPortal.portalCollider.enabled = false;
+            int currentPortalIndex = transform.parent.GetSiblingIndex();
+            int connectPortalIndex = connectPortal.transform.parent.GetSiblingIndex();
+
             Player player = collision.GetComponent<Player>();
             //플레이어가 충돌할경우 이동할맵을 가져옴
             GameObject moveMap = connectPortal.transform.parent.gameObject;
             //플레이어가 충돌한 위치를 계산
-            if (collision.transform.position.x > 0 && transform.position.x > 0)
+            if(currentPortalIndex < connectPortalIndex)
             {
-                if (collision.transform.position.x - transform.position.x > 0)
-                {
-                    isRightMove = false;
-                }
-                else
-                {
-                    isRightMove = true;
-                }
+                isRightMove = transform;
             }
-            else if (collision.transform.position.x > 0 && transform.position.x < 0)
+            else
             {
                 isRightMove = false;
             }
-            else if (collision.transform.position.x < 0 && transform.position.x > 0)
-            {
-                isRightMove = true;
-            }
-            else if (collision.transform.position.x > 0 && transform.position.x > 0)
-            {
-                if ((collision.transform.position.x * -1) - (transform.position.x * -1) > 0)
-                {
-                    isRightMove = false;
-                }
-                else
-                {
-                    isRightMove = true;
-                }
-            }
+            
             teleportManager.MapTeleportPortal(moveMap,isRightMove,transform.gameObject);
             teleportManager.PlayerTeleport(player, this,connectPortal);
-            cameraManager.PortalCameraMove(transform.gameObject,moveMap);
             cameraManager.CameraLimit(moveMap);
             currentMap = transform.parent.gameObject;
             currentMap.SetActive(false);
 
         }
     }
-    private void OnCollisionExit2D(Collision2D collision)
+   
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        isUse = true;
+        teleportManager.PortalUse_co(this);
     }
-    
-    
+
+
 }
 

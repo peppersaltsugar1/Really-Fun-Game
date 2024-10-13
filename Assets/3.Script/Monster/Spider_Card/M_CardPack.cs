@@ -72,6 +72,8 @@ public class M_CardPack : MonsterBase
                 Debug.Log("CardNum Error");
                 break;
         }
+        // 장전 애니메이션 재생시간
+        yield return new WaitForSeconds(2f);
 
         float preparationTime = 1.5f; // 애니메이션 대기 시간
         float elapsedTime = 0f;
@@ -112,7 +114,7 @@ public class M_CardPack : MonsterBase
                 if (rb != null)
                 {
                     Vector2 fireDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    rb.velocity = fireDirection * BulletSpeed;
+                    rb.velocity = fireDirection * (BulletSpeed*2/5);
                 }
             }
         }

@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     GameObject localDiskContent;
     [SerializeField]
     MapGenerator mapGenerator;
+    //포탈 Ui관련
     [SerializeField]
     GameObject UIPortal;
     [SerializeField]
@@ -30,6 +31,11 @@ public class UIManager : MonoBehaviour
     List<Sprite> closePortalUiList = new();
     [SerializeField]
     List<GameObject> itemImageList = new();
+
+    //주소관련
+    public List<Map> addressList = new();
+    [SerializeField]
+    GameObject address;
 
     // Basic UI
     public GameObject FirstStartUI;
@@ -52,7 +58,6 @@ public class UIManager : MonoBehaviour
     public GameObject LocalDisk_UI;
     public GameObject ControlOptions_UI;
     public GameObject Help_UI;
-
     // First Start Check
     private GameObject Start_UI;
 
@@ -94,10 +99,10 @@ public class UIManager : MonoBehaviour
     public Dropdown screenModeDropdown;
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
+
     public Slider masterSlider;
     public Slider bgmSlider;
     public Slider sfxSlider;
-
 
     public Button MasterButton;
     public GameObject MasterVolumeBaseImage;
@@ -131,7 +136,6 @@ public class UIManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
     public static UIManager Instance
     {
         get
@@ -143,17 +147,20 @@ public class UIManager : MonoBehaviour
             return instance;
         }
     }
-
     void Start()
     {
         player = FindObjectOfType<Player>();
         BInstance = FindObjectOfType<PoolingManager>();
         statusManager = StatusManager.Instance;
         HPUIActive = true;
+
+        // HpBarSet();
+
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
         UIDeactivation();
         Start_UI = null;
+
         // Left Button Setting
         MyPC_Button.onClick.AddListener(FMyPC_Button);
         DownLoad_Button.onClick.AddListener(FDownLoad_Button);
@@ -177,8 +184,8 @@ public class UIManager : MonoBehaviour
         // ControllOptionUI Setting
         screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
         resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
-
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
+
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
         bgmSlider.onValueChanged.AddListener(SetBGMVolume);
         sfxSlider.onValueChanged.AddListener(SetSFXVolume);
@@ -192,6 +199,10 @@ public class UIManager : MonoBehaviour
         SFXButton.onClick.AddListener(FSFXButton);
         SFXVolumeMuteImage.SetActive(false);
 
+        
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 PC";
+
         // Basic UI Setting
         FirstStartFunc();
         StartButton.onClick.AddListener(FStartButton);
@@ -202,7 +213,8 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
-        { 
+        {
+
             SetWindowUI();
         }
     }
@@ -227,70 +239,6 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        /* 과거 
-         * //플레이어의 체력 상황에따라 체력바 재생성
-        //if (statusManager.MaxHp > 0)
-        //{
-        //    //최대체력 3당 체력베터리 1개 생성후 리스트에 추가
-        //    for (int i = 0; i < statusManager.MaxHp / 3; i++)
-        //    {
-        //        GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
-        //        newHp.SetActive(true);
-        //        newHp.transform.SetParent(canvas.transform, false);
-        //        RectTransform rectTransform = newHp.GetComponent<RectTransform>();
-        //        rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
-        //        hpList.Add(newHp);
-        //        hpNum += 1;
-        //    }
-
-        //    //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
-        //    if (statusManager.TemHp > 0)
-        //    {
-        //        for (int i = 0; i < statusManager.TemHp / 3; i++)
-        //        {
-        //            GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
-        //            newTemHp.SetActive(true);
-        //            newTemHp.transform.SetParent(canvas.transform, false);
-        //            RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
-        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-        //            hpList.Add(newTemHp);
-        //            hpNum += 1;
-
-        //        }
-        //    }
-
-        //    //전기1 전기베터리 1개 생성후 리스트에 추가
-        //    if (statusManager.Elect > 0)
-        //    {
-        //        for (int i = 0; i < statusManager.Elect; i++)
-        //        {
-        //            GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
-        //            spark.SetActive(true);
-        //            spark.transform.SetParent(canvas.transform, false);
-        //            RectTransform rectTransform = spark.GetComponent<RectTransform>();
-        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-        //            hpList.Add(spark);
-        //            hpNum += 1;
-
-        //        }
-        //    }
-        //    //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
-        //    if (statusManager.ShieldHp > 0)
-        //    {
-        //        for (int i = 0; i < statusManager.ShieldHp; i++)
-        //        {
-        //            GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
-        //            newShildHp.SetActive(true);
-        //            newShildHp.transform.SetParent(canvas.transform, false);
-        //            RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
-        //            rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-        //            hpList.Add(newShildHp);
-        //            hpNum += 1;
-
-        //        }
-        //    }
-        }
-        */
         //플레이어의 체력 상황에따라 체력바 재생성
         if (statusManager.MaxHp > 0)
         {
@@ -298,66 +246,61 @@ public class UIManager : MonoBehaviour
             for (int i = 0; i < statusManager.MaxHp / 3; i++)
             {
                 GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
-                newHp.SetActive(true);
                 newHp.transform.SetParent(canvas.transform, false);
                 RectTransform rectTransform = newHp.GetComponent<RectTransform>();
                 rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
                 hpList.Add(newHp);
                 hpNum += 1;
             }
-
             //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
             if (statusManager.TemHp > 0)
             {
                 for (int i = 0; i < statusManager.TemHp / 3; i++)
                 {
                     GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
-                    newTemHp.SetActive(true);
                     newTemHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newTemHp);
                     hpNum += 1;
+
                 }
             }
-
             //전기1 전기베터리 1개 생성후 리스트에 추가
+
             if (statusManager.Elect > 0)
             {
                 for (int i = 0; i < statusManager.Elect; i++)
                 {
                     GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
-                    spark.SetActive(true);
                     spark.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = spark.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(spark);
                     hpNum += 1;
+
                 }
             }
-
             //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
             if (statusManager.ShieldHp > 0)
             {
                 for (int i = 0; i < statusManager.ShieldHp; i++)
                 {
                     GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
-                    newShildHp.SetActive(true);
                     newShildHp.transform.SetParent(canvas.transform, false);
                     RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
                     rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
                     hpList.Add(newShildHp);
                     hpNum += 1;
+
                 }
             }
         }
     }
-
     public void HpBarPlus()
     {
 
     }
-
     public void ShiledSet()
     {
         //쉴드체력이 소모될때 쉴드체력을 삭제
@@ -374,7 +317,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     private void ShiledOn()
     {
         //Hp체력바의 쉴드를 활성화
@@ -403,7 +345,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void HpSet()
     {
         if (statusManager.CurrentHp <= 3)
@@ -504,7 +445,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void HpDel()
     {
         for (int i = hpNum - 1; i >= 0; i--)
@@ -587,7 +527,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator DelayUIAndGameOver(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
-        
+
         float playTime = Time.time - GameManager.Instance.StartTime;
         int hours = Mathf.FloorToInt(playTime / 3600);
         int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
@@ -643,6 +583,8 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ResetPlayTime();
     }
 
+
+
     // Input ESC -> Show UI 
     public void SetWindowUI()
     {
@@ -652,12 +594,10 @@ public class UIManager : MonoBehaviour
             if (isActive)
             {
                 WindowUI.SetActive(false);
-                HPUIActiveSetting();
                 Time.timeScale = 1;
             }
             else
             {
-                HPUIActiveSetting();
                 // 상태 최신화
                 UpdateStats();
                 GenerateButtons();
@@ -670,7 +610,7 @@ public class UIManager : MonoBehaviour
                 }
                 WindowUI.SetActive(true);
                 Time.timeScale = 0;
-            }
+            }      
         }
     }
 
@@ -695,7 +635,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-
+        
         for (int i = 0; i < programManager.ProgramList.Count; i++)
         {
             GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
@@ -737,6 +677,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+
     public void OpenProgramDetail(int index)
     {
         CurrentProgram = index;
@@ -774,8 +715,8 @@ public class UIManager : MonoBehaviour
 
     public void FDelete_Button()
     {
-        if (CurrentProgram != -1)
-        {
+        if(CurrentProgram != -1)
+        { 
             programManager.RemoveProgram(CurrentProgram);
             CurrentProgram = -1;
 
@@ -817,18 +758,24 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         MyPC_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 PC";
     }
 
     public void FDownLoad_Button()
     {
         UIDeactivation();
         DownLoad_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "다운로드";
     }
 
     public void FMy_Documents_Button()
     {
         UIDeactivation();
         My_Documents_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 문서";
     }
 
     public void FLocalDisk_Button()
@@ -841,12 +788,16 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         ControlOptions_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "제어판";
     }
 
     public void FHelp_Button()
     {
         UIDeactivation();
         Help_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "도움말";
     }
 
     public void FDesktop_Button()
@@ -855,9 +806,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
 
         // 에디터에서 종료
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        #endif
     }
 
     void OnButtonClick(GameObject clickedButton)
@@ -887,7 +838,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-
+    
     // Resolution
     public void ChangeResolution(int index)
     {
@@ -907,13 +858,12 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Quality
     public void ChangeQuality(int index)
     {
         switch (index)
         {
             case 0: // 좋음
-                QualitySettings.SetQualityLevel(5, true);
+                QualitySettings.SetQualityLevel(5, true); 
                 break;
             case 1: // 중간
                 QualitySettings.SetQualityLevel(3, true);
@@ -1018,8 +968,23 @@ public class UIManager : MonoBehaviour
         }
         /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
         //맵list에서 현제맵을 가져옴
+        LocalDisckUISet(mapIndex);
+    }
+
+    public void LocalDisckUISet(int mapIndex)
+    {
+        AddressSet(mapIndex);
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
         GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
-        Map currentPortalMap = currentMap.GetComponent<Map>();
+        
         if (mapIndex == 0)
         {
             //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
@@ -1031,6 +996,7 @@ public class UIManager : MonoBehaviour
                     GameObject portalUI = Instantiate(UIPortal);
                     portalUI.transform.SetParent(localDiskContent.transform);
                     portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
                     Text mapName = portalUI.GetComponentInChildren<Text>();
                     Image[] images = portalUI.GetComponentsInChildren<Image>(true);
                     Image portalImage = images[1];
@@ -1038,14 +1004,18 @@ public class UIManager : MonoBehaviour
                     if (curretnportal.connectPortal != null)
                     {
                         Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        // 맵 이름을 설정합니다.
                         mapName.text = connectedMap.mapName;
+                        // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap = 
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
 
                         if (connectedMap != null)
                         {
                             // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
                             if (connectedMap.isClear)
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = portalUiList[0];
@@ -1062,7 +1032,7 @@ public class UIManager : MonoBehaviour
                                         portalImage.sprite = portalUiList[3];
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = portalUiList[4];
@@ -1082,7 +1052,8 @@ public class UIManager : MonoBehaviour
                             }
                             else
                             {
-                                switch (currentPortalMap.Type)
+                                Debug.Log("여기");
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = closePortalUiList[0];
@@ -1111,7 +1082,7 @@ public class UIManager : MonoBehaviour
                                         }
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = closePortalUiList[6];
@@ -1205,6 +1176,7 @@ public class UIManager : MonoBehaviour
                     GameObject portalUI = Instantiate(UIPortal);
                     portalUI.transform.SetParent(localDiskContent.transform);
                     portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
                     currentPortalList.Add(portalUI);
                     Text mapName = portalUI.GetComponentInChildren<Text>();
                     Image[] images = portalUI.GetComponentsInChildren<Image>(true);
@@ -1213,14 +1185,15 @@ public class UIManager : MonoBehaviour
                     if (curretnportal.connectPortal != null)
                     {
                         Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-                        Debug.Log(connectedMap.name);
                         mapName.text = connectedMap.mapName;
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
                         if (connectedMap != null)
                         {
                             // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
                             if (connectedMap.isClear)
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = portalUiList[0];
@@ -1237,7 +1210,7 @@ public class UIManager : MonoBehaviour
                                         portalImage.sprite = portalUiList[3];
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = portalUiList[4];
@@ -1257,7 +1230,7 @@ public class UIManager : MonoBehaviour
                             }
                             else
                             {
-                                switch (currentPortalMap.Type)
+                                switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
                                         portalImage.sprite = closePortalUiList[0];
@@ -1286,7 +1259,7 @@ public class UIManager : MonoBehaviour
                                         }
                                         continue;
                                     case Map.MapType.RandomSpecial:
-                                        switch (currentPortalMap.name)
+                                        switch (connectedMap.mapName)
                                         {
                                             case "휴지통":
                                                 portalImage.sprite = closePortalUiList[6];
@@ -1370,5 +1343,58 @@ public class UIManager : MonoBehaviour
 
             }
         }
+        /*AddressSet(mapIndex);*/
     }
+    public void AddressSet(int mapIndex)
+    {
+        addressList.Clear();
+        List<Map> temList = new();
+        Map currentMap = mapGenerator.mapList[mapIndex];
+        //반복시켜야함
+        if (currentMap != null)
+        {
+           
+            while (true)
+            {
+                Debug.Log("반복은함");
+                InfiniteLoopDetector.Run();
+                if (currentMap.Type == Map.MapType.Start)
+                {
+                    break;
+                }
+                //현재 맵을 가져와서 연결된맵을 리스트에 추가
+                int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
+                Debug.Log(siblingIndex);
+                if (siblingIndex != 0)
+                {
+                    //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
+                    Transform nowMap = mapGenerator.map.transform.GetChild(siblingIndex);
+                    Portal currentMapPortal = nowMap.GetComponentInChildren<Portal>();
+                    Portal connectPortal = currentMapPortal.connectPortal;
+                    Map connectMap = connectPortal.currentMap.GetComponent<Map>();
+                    temList.Add(currentMap);
+                    currentMap = connectMap;
+                }
+                
+            }
+            
+        }
+        
+        temList.Add(mapGenerator.mapList[0]);
+        
+        for (int i = temList.Count-1; i >=0; i--)
+        {
+            addressList.Add(temList[i]);
+        }
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "C:\\";
+        for(int i = 0; i < addressList.Count; i++)
+        {
+            addressText.text += addressList[i].mapName + " > ";
+        }
+        addressText.text = addressText.text.TrimEnd('>');
+
+    }
+    
+
 }
