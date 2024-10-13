@@ -6,7 +6,7 @@ public class MonsterBullet : MonoBehaviour
 {
     public float lifeTime = 5f;  // 총알이 파괴되기까지의 시간
     public int damage = 10;      // 총알의 공격력
-
+    public MonsterBase.MonsterType monstertype;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +28,7 @@ public class MonsterBullet : MonoBehaviour
             StatusManager statusManager = StatusManager.Instance;
             if (statusManager != null)
             {
-                statusManager.TakeDamage(damage);
+                statusManager.TakeDamage(damage, monstertype);
             }
             Destroy(gameObject);
         }

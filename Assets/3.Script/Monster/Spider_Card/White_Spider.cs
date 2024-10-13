@@ -6,12 +6,14 @@ using static UnityEngine.ParticleSystem;
 
 public class White_Spider : MonsterBase
 {
+    public float AttackCoolTime; 
+    public float SearchingCoolTime;
     bool First = true;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
-        TargetPosition = this.transform.position + new Vector3(0, -2, 0);
         monsterType = MonsterType.White_Spider;
         StartCoroutine(MonsterRoutine());
     }
@@ -30,7 +32,7 @@ public class White_Spider : MonsterBase
         {
             rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
 
-            yield return new WaitForFixedUpdate(); // 물리 업데이트 프레임에 맞춰서 대기
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -93,29 +95,26 @@ public class White_Spider : MonsterBase
     {
         TargetPosition = GetRanomPositionAround();
 
-        // 방향 설정
         SpriteFlipSetting();
 
         var speed = MoveSpeed * Time.deltaTime;
-        float maxMoveDuration = 1.0f;  // 이동을 허용할 최대 시간 (예: 3초)
-        float elapsedTime = 0f;        // 경과 시간
+        float maxMoveDuration = 1.0f;
+        float elapsedTime = 0f;        
 
         while (Vector3.Distance(transform.position, TargetPosition) > speed && isMoving)
         {
             elapsedTime += Time.deltaTime;
 
-            // 지정된 시간을 초과하면 이동 중지
             if (elapsedTime >= maxMoveDuration)
             {
-                yield break; // 코루틴 종료
+                yield break;
             }
 
             MAnimator.SetTrigger("Jump");
 
-            // Rigidbody2D를 사용하여 이동
             rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
 
-            yield return new WaitForFixedUpdate(); // 물리 업데이트 프레임에 맞춰서 대기
+            yield return new WaitForFixedUpdate();
         }
     }
 }

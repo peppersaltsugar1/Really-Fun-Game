@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Weapon : MonoBehaviour
 {
@@ -26,6 +27,12 @@ public class Weapon : MonoBehaviour
     {
         if (Input.GetMouseButton(0)) // 왼쪽 마우스 버튼 클릭 감지
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                // 클릭이 UI에서 발생한 경우, 아무 작업도 하지 않음
+                return;
+            }
+
             TryFire();
         }
     }
@@ -83,6 +90,7 @@ public class Weapon : MonoBehaviour
         if (Time.time >= nextFireTime)
         {
             Fire();
+            SoundManager.Instance.PlayerFireSound();
             nextFireTime = Time.time + attackSpeed; // 다음 공격 가능한 시간 업데이트
         }
     }

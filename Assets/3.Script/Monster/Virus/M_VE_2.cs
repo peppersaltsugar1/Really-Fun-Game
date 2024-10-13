@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class M_VE_2 : MonsterBase
 {
+    public float AttackCoolTime;
+
     public GameObject BulletPrefab;  // 발사할 총알 프리팹
     public Transform FirePoint;      // 총알 발사 위치
     public float BulletSpeed = 10f;  // 총알 속도
@@ -25,55 +27,35 @@ public class M_VE_2 : MonsterBase
     {
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {
+                Debug.Log("Player 탐지 완료");
+                DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
-                DetectionSuccess = false;
-            }
-            else
-            {
-                isMoving = true;
-                Debug.Log("플레이어 탐색실패");
             }
 
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
     }
 
     public override IEnumerator AttackPreparation()
     {
-        // 방향 설정
-        SpriteFlipSetting();
-
         if (!MAnimator.GetBool("Detected"))
         {
             MAnimator.SetBool("Detected", true);
             yield return new WaitForSeconds(1.30f);
 
-            DetectingAreaR = 10;
-
-            SearchingCoolTime = 1;
+            DetectingAreaR = 15;
             AttackCoolTime = 1;
         }
 
-
         MAnimator.SetTrigger("Shot");
-        yield return new WaitForSeconds(1.05f);
+        yield return new WaitForSeconds(1.05f); 
+
+        DetectionPlayerPosition();
         Fire();
 
         yield return new WaitForSeconds(AttackCoolTime);

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4892523656018741700}
   - component: {fileID: 7670105655463893488}
   m_Layer: 0
-  m_Name: MonsterBullet
+  m_Name: M_VE-2_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,3 +138,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeTime: 10
   damage: 1
+  monstertype: 5

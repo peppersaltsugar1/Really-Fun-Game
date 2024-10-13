@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class M_SpiderCardPack : MonsterBase
 {
-    public Transform FirePoint;      // ÃÑ¾Ë ¹ß»ç À§Ä¡
-    public float BulletSpeed = 10f;  // ÃÑ¾Ë ¼Óµµ
+    public Transform SpawnPoint;
+    public float AttackCoolTime;
+
     // ÇÁ¸®ÆÕ ¸®½ºÆ® 
     public GameObject SpiderPrefab1;
     public GameObject SpiderPrefab2;
@@ -33,8 +34,9 @@ public class M_SpiderCardPack : MonsterBase
         while (true)
         {
             yield return AttackPreparation();
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
+
     }
 
     public override IEnumerator AttackPreparation()
@@ -51,22 +53,23 @@ public class M_SpiderCardPack : MonsterBase
                 MAnimator.SetTrigger("Red_Spawn");
                 break;
         }
+
         // Animation Loading
         yield return new WaitForSeconds(10.6f);
 
         switch (SpiderColor)
         {
             case 0:
-               Instantiate(SpiderPrefab1, FirePoint.position, FirePoint.rotation);
+                Instantiate(SpiderPrefab1, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             case 1:
-                Instantiate(SpiderPrefab2, FirePoint.position, FirePoint.rotation);
+                Instantiate(SpiderPrefab2, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             case 2:
-                Instantiate(SpiderPrefab3, FirePoint.position, FirePoint.rotation);
+                Instantiate(SpiderPrefab3, SpawnPoint.position, SpawnPoint.rotation);
                 break;
             case 3:
-                Instantiate(SpiderPrefab4, FirePoint.position, FirePoint.rotation);
+                Instantiate(SpiderPrefab4, SpawnPoint.position, SpawnPoint.rotation);
                 break;
         }
 
