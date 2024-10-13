@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 3377475705501524877}
   - component: {fileID: 3377475705501524878}
   - component: {fileID: 3377475705501524879}
+  - component: {fileID: 3060099111559450465}
   m_Layer: 5
   m_Name: UI_Room
   m_TagString: Untagged
@@ -279,3 +280,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3060099111559450465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3377475705501524865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57b40cc36e8f954fb7f85953859d9d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

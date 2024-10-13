@@ -242,7 +242,7 @@ MonoBehaviour:
   currentMap: {fileID: 0}
   portalCollider: {fileID: 0}
   isUse: 0
-  isLock: 0
+  isLock: 1
 --- !u!61 &-4763397763897873917
 BoxCollider2D:
   m_ObjectHideFlags: 0

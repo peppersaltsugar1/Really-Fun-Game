@@ -1460,6 +1460,7 @@ GameObject:
   - component: {fileID: 3552399571853018888}
   - component: {fileID: 6458091103470265265}
   - component: {fileID: 8938617695204674662}
+  - component: {fileID: 3344436302074236663}
   m_Layer: 0
   m_Name: Store_room
   m_TagString: Untagged
@@ -1531,6 +1532,35 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 16.023634, y: 15.902763}
   m_EdgeRadius: 0
+--- !u!60 &3344436302074236663
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3552399571853018895}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 8.003743, y: 7.971003}
+      - {x: -7.9958262, y: 7.9439244}
+      - {x: -8.112041, y: -7.853787}
+      - {x: 7.9276247, y: -7.9644375}
 --- !u!1 &3552399572426965312
 GameObject:
   m_ObjectHideFlags: 0
