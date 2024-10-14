@@ -22,54 +22,33 @@ public class M_VE_1 : MonsterBase
     {
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {
+                Debug.Log("Player 탐지 완료");
+                DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
-                DetectionSuccess = false;
-            }
-            else
-            {
-                isMoving = true;
             }
 
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
+
     }
 
     public override IEnumerator AttackPreparation()
     {
-        // 방향 설정
-        SpriteFlipSetting();
-
         if (!MAnimator.GetBool("Detected"))
         {
             MAnimator.SetBool("Detected", true);
-            yield return new WaitForSeconds(1.30f);
+            yield return new WaitForSeconds(1.40f);
 
-            DetectingAreaR = 30;
-
-            SearchingCoolTime = 0;
-            AttackDelayTime = 0;
-            AttackCoolTime = 0;
+            DetectingAreaR = 20;
         }
 
-        // 실시간 추적
-        // Rigidbody2D를 사용하여 이동
+        // 방향 설정
+        SpriteFlipSetting();
         rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
         yield return null;
     }

@@ -7,6 +7,8 @@ public class M_CardPack : MonsterBase
 {
     public Transform FirePoint;      // 총알 발사 위치
     public float BulletSpeed = 10f;  // 총알 속도
+    private int CardNum;
+    public float AttackCoolTime;
 
     // 프리팹 리스트 
     public GameObject CardPrefab1;
@@ -31,64 +33,27 @@ public class M_CardPack : MonsterBase
     {
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {
+                DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
-                DetectionSuccess = false;
-            }
-            else
-            {
-                isMoving = true;
-                Debug.Log("플레이어 탐색실패");
             }
 
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
     }
 
     public override IEnumerator AttackPreparation()
     {
-        // 방향 설정
-        // SpriteFlipSetting();
-        // 플레이어 바라보기
-        Vector3 direction = TargetPosition - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, angle - 90);
-
-        // 공격 처리
-        yield return Fire();
-
-        yield return new WaitForSeconds(AttackCoolTime);
-    }
-
-    IEnumerator Fire()
-    {
-        int CardNum = Random.Range(0, 4);
-
         /*
          * 2초동안 장착 애니메이션 나옴. -> 발사 -> 바로 대기 애니.
             4개중에 하나 클로버 하트 스페이드 다이아
             스페이드 다이아는 빠르게 발사 한발.
          */
-
-        Vector3 direction = TargetPosition - FirePoint.position;
-        float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
+        CardNum = Random.Range(0, 4);
         switch (CardNum)
         {
             case 0:
@@ -106,10 +71,33 @@ public class M_CardPack : MonsterBase
             default:
                 Debug.Log("CardNum Error");
                 break;
-
         }
         // 장전 애니메이션 재생시간
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
+
+        float preparationTime = 1.5f; // 애니메이션 대기 시간
+        float elapsedTime = 0f;
+
+        while (elapsedTime < preparationTime)
+        {
+            DetectionPlayerPosition();
+            Vector3 direction = TargetPosition - transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return Fire();
+
+        yield return new WaitForSeconds(AttackCoolTime);
+    }
+
+    private IEnumerator Fire()
+    {
+        Vector3 direction = TargetPosition - FirePoint.position;
+        float baseAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
         if (CardNum == 0 || CardNum == 1)
         {
@@ -126,7 +114,7 @@ public class M_CardPack : MonsterBase
                 if (rb != null)
                 {
                     Vector2 fireDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
-                    rb.velocity = fireDirection * BulletSpeed;
+                    rb.velocity = fireDirection * (BulletSpeed*2/5);
                 }
             }
         }
@@ -143,5 +131,6 @@ public class M_CardPack : MonsterBase
                 rb.velocity = fireDirection * BulletSpeed;
             }
         }
+        yield return null;
     }
 }

@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class M_V2 : MonsterBase
 {
+    public float AttackCoolTime;
     public GameObject BulletPrefab;  // 발사할 총알 프리팹
     public Transform FirePoint;      // 총알 발사 위치
     public float BulletSpeed = 10f;  // 총알 속도
+
 
     // Start is called before the first frame update
     protected override void Start()
@@ -20,7 +22,7 @@ public class M_V2 : MonsterBase
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
@@ -28,79 +30,57 @@ public class M_V2 : MonsterBase
     {
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-                    // Debug.Log("플레이어 탐색 성공");
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {
+                Debug.Log("Player 탐지 완료");
+                DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
-                DetectionSuccess = false;
-            }
-            else
-            {
-                isMoving = true;
-
-                yield return RandomMoveAfterSearchFail();
             }
 
-            yield return new WaitForSeconds(SearchingCoolTime);
+            yield return null;
         }
     }
 
     public override IEnumerator AttackPreparation()
     {
-        // 방향 설정
-        SpriteFlipSetting();
-
-        // Waitting during Attack Ready Animation
-        MAnimator.SetTrigger("Shot");
-        yield return new WaitForSeconds(AttackDelayTime);
-
-        // Attack
-        Fire();
-
-        yield return new WaitForSeconds(AttackCoolTime);
-    }
-
-    public override IEnumerator RandomMoveAfterSearchFail()
-    {
-        TargetPosition = GetRanomPositionAround();
-
-        // 방향 설정
-        SpriteFlipSetting();
-
         var speed = MoveSpeed * Time.deltaTime;
-        float maxMoveDuration = 1.0f;  // 이동을 허용할 최대 시간 (예: 3초)
-        float elapsedTime = 0f;        // 경과 시간
+        float elapsedTime = 0f;
 
-        while (Vector3.Distance(transform.position, TargetPosition) > speed && isMoving)
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        while (Vector3.Distance(transform.position, TargetPosition) > speed)
         {
+            SpriteFlipSetting();
+            DetectionPlayerPosition();
             elapsedTime += Time.deltaTime;
 
-            // 지정된 시간을 초과하면 이동 중지
-            if (elapsedTime >= maxMoveDuration)
+            if (elapsedTime >= AttackCoolTime)
             {
-                yield break; // 코루틴 종료
+                DetectionPlayerPosition();
+                MAnimator.SetTrigger("Shot");
+
+                float animationTime = 1.4f;
+                float animElapsedTime = 0f;
+                while (animElapsedTime < animationTime)
+                {
+                    DetectionPlayerPosition();
+                    rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
+                    animElapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+                Fire();
+
+                elapsedTime = 0;
             }
-
-            // Rigidbody2D를 사용하여 이동
             rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
-
-            yield return new WaitForFixedUpdate(); // 물리 업데이트 프레임에 맞춰서 대기
+            yield return new WaitForFixedUpdate();
         }
+        yield return null;
     }
 
     // 공격 로직

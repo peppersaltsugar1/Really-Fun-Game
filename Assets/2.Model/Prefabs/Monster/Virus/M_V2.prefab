@@ -175,13 +175,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 1
-  MoveSpeed: 8
+  MoveSpeed: 1
   AttackPower: 1
   HP: 10
-  SearchingCoolTime: 1
-  AttackDelayTime: 1
-  AttackCoolTime: 1
   DetectingAreaR: 5
-  BulletPrefab: {fileID: 6926711150965903544, guid: af9f5b071b2348a47b91912d8f8b30eb, type: 3}
+  AttackCoolTime: 3
+  BulletPrefab: {fileID: 6926711150965903544, guid: 97b8fb3385f86ab45b360b9c573513bc, type: 3}
   FirePoint: {fileID: 5203126250362219194}
   BulletSpeed: 9

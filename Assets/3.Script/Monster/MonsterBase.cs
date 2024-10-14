@@ -17,14 +17,25 @@ public class MonsterBase : MonoBehaviour
         Red_Spider,
         White_Spider
     }
+
+    public static Dictionary<MonsterType, string> MonsterNameDict = new Dictionary<MonsterType, string>
+    {
+        { MonsterType.M_V1, "M_V1이름이름" },
+        { MonsterType.M_V2, "M_V2이름이름" },
+        { MonsterType.M_V3, "M_V3이름이름" },
+        { MonsterType.M_CardPack, "M_CardPack이름이름" },
+        { MonsterType.M_VE_1, "M_VE_1이름이름" },
+        { MonsterType.M_VE_2, "M_VE_2이름이름" },
+        { MonsterType.M_SpiderCardPack, "M_SpiderCardPack이름이름" },
+        { MonsterType.Red_Spider, "Red_Spider이름이름" },
+        { MonsterType.White_Spider, "White_Spider이름이름" }
+    };
+
     // Monster Base Info
     public MonsterType monsterType;
     public float MoveSpeed;
     public float AttackPower;
     public float HP;
-    public float SearchingCoolTime; // 탐색 쿨타임
-    public float AttackDelayTime; // Attack Ready Animation Time
-    public float AttackCoolTime;
     public float DetectingAreaR;
     protected bool isMoving = true;
 
@@ -109,7 +120,7 @@ public class MonsterBase : MonoBehaviour
         {
             if (statusManager != null)
             {
-                statusManager.TakeDamage(AttackPower);
+                statusManager.TakeDamage(AttackPower, monsterType);
             }
             else
             {
@@ -138,6 +149,25 @@ public class MonsterBase : MonoBehaviour
     private void Die()
     {
         Destroy(this.gameObject);
+    }
+
+    public bool DetectionPlayerPosition()
+    {
+        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        foreach (Collider2D obj in detectedObjects)
+        {
+            if (obj.CompareTag("Player"))
+            {
+                player = obj.transform;
+
+                TargetPosition = player.position;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // ========== 탐색범위 표시용 ==========

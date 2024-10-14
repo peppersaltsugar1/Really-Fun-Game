@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatusManager : MonoBehaviour
@@ -7,37 +8,53 @@ public class StatusManager : MonoBehaviour
     public static StatusManager Instance;
     private UIManager uiManager;
 
+    // When game is started, this base status used to Initializing Status based on this list.
     // Player Base Status
+    public float B_MaxHp;
+    public float B_CurrentHp;
+    public float B_TemHp;
+    public float B_Shield;
+    public float B_ShieldHp;
+    public float B_Elect;
+    private float B_HealCoolTime = 0.2f; // Playher Heal CoolTime
+    private float B_HitCoolTime = 2.0f; // Player Attacked CoolTime
+
+    // Player Attack Status
+    public float B_AttackPower; // Player Attack Power
+    public float B_AttackSpeed;  // Player Attack Speed
+    public float B_AttackPushPower; // When Player Attacking, Push Power
+    public float B_WeaponDistance; // Distance Between Player and Weapon
+    public float B_AngleRange = 35f; // Player Weapon Angle Range
+
+    // Other Status
+    public float B_MoveSpeed; // 이동속도
+    public int B_Coin; // 코인 개수
+    public int B_CurrentStorage;
+
+
+    // When player in game, playing with this status
+    // This status are no need to reset.
+    // Player Dynamic Status
     public float MaxHp; // 최대 체력
     public float CurrentHp; // 현재 체력
     public float TemHp; // 임시 체력(아이템)
     public float Shield; // 공격 막아주는 것
     public float ShieldHp;
     public float Elect;
-
-    private float HealCoolTime = 0.2f;
+    public MonsterBase.MonsterType DeathSign; // 사망원인
+    private float HealCoolTime;
     private Coroutine healing_coroutine;
-
-    // Take Damage
-    [SerializeField]
-    private Collider2D player_coroutine;
-    private float HitCoolTime = 2.0f;
+    private float HitCoolTime;
     private bool IsHit = false;
-
-    // Player Attack Status
     public float AttackPower; // 공격력
     public float AttackSpeed;  // 공격속도
     public float AttackPushPower; // 어택시 밀격
     public float WeaponDistance; // 캐릭터~무기 거리
-
-    // public Transform sPoint;    // 공격 시작 포인트
-    public float AngleRange = 35f; // 캐릭터 무기 각도 범위
-
-    //플레이어 이동속도
+    public float AngleRange; // 캐릭터 무기 각도 범위
     public float MoveSpeed;
-
-    // 기타 스텟
     public int Coin;
+    public int CurrentStorage;
+
 
     void Awake()
     {
@@ -55,81 +72,118 @@ public class StatusManager : MonoBehaviour
     void Start()
     {
         uiManager = UIManager.Instance;
-        CurrentHp = MaxHp;
+        InitializeStatus();
+    }
+
+    public void InitializeStatus()
+    {
+        MaxHp = B_MaxHp;
+        CurrentHp = B_CurrentHp;
+        TemHp = B_TemHp;
+        Shield = B_Shield;
+        B_ShieldHp = ShieldHp;
+        Elect = B_Elect;
+        HealCoolTime = B_HealCoolTime;
+        HitCoolTime = B_HitCoolTime;
+        AttackPower = B_AttackPower;
+        AttackSpeed = B_AttackSpeed;
+        AttackPushPower = B_AttackPushPower;
+        WeaponDistance = B_WeaponDistance;
+        AngleRange = B_AngleRange;
+        MoveSpeed = B_MoveSpeed;
+        Coin = B_Coin;
+        CurrentStorage = B_CurrentStorage;
     }
 
     // =============================== Fixed Section ===============================
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, MonsterBase.MonsterType deathSign)
     {
-        Debug.Log("Player Take Damage");
+        if (!IsHit)
+        {
+            DeathSign = deathSign;
+            StartCoroutine(Hit_Coroutine(damage));
+        }
+    }
 
-        if (HandleDefense(ref ShieldHp, damage, uiManager.ShiledSet, uiManager.ShiledOff)) return;
+    private IEnumerator Hit_Coroutine(float damage)
+    {
+        IsHit = true;
 
-        if (HandleDefense(ref Elect, damage, uiManager.ElectDel)) return;
+        if (ShieldHp > 0)
+        {
+            ShieldHp -= damage;
+            uiManager.ShiledSet();
 
-        if (HandleDefense(ref TemHp, damage, uiManager.TemHpSet, uiManager.TemHpDel)) return;
+            if (ShieldHp <= 0)
+            {
+                ShieldHp = 0;
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
+        }
+
+        if (Elect > 0)
+        {
+            Elect -= damage;
+            uiManager.ElectDel();
+
+            if (Elect <= 0)
+            {
+                Elect = 0;
+                ElectShieldExplode();
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
+        }
+
+        if (TemHp > 0)
+        {
+            TemHp -= damage;
+            uiManager.HpSet();
+
+            if (TemHp <= 0)
+            {
+                uiManager.TemHpDel();
+                TemHp = 0;
+            }
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
+        }
 
         if (Shield > 0 && Shield * 3 >= CurrentHp)
         {
             Shield -= 1;
-            uiManager.ShiledOff(); 
-            
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-            }
+            uiManager.ShiledOff();
 
-            if (Shield < 0)
+            if (Shield <= 0)
             {
                 Shield = 0;
             }
-            return;
+
+            yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
         }
+
 
         if (CurrentHp > 0)
         {
-
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-                CurrentHp -= damage;
-                uiManager.HpSet();
-            }
+            CurrentHp -= damage;
+            uiManager.HpSet();
 
             if (CurrentHp <= 0)
             {
-                // Die(); // 사망 처리
+                Die(); // 사망 처리
             }
+
+            yield return new WaitForSeconds(HitCoolTime);
         }
-    }
-
-    private bool HandleDefense(ref float defenseValue, float damage, System.Action onHitAction, System.Action onDepleteAction = null)
-    {
-        if (defenseValue > 0)
-        {
-            defenseValue -= damage;
-            onHitAction.Invoke(); 
-            
-            if (!IsHit)
-            {
-                StartCoroutine(Hit_Coroutine());
-            }
-
-            if (defenseValue <= 0)
-            {
-                defenseValue = 0;
-                onDepleteAction?.Invoke(); // 방어 수단이 다 소진되었을 때 처리
-            }
-            return true;
-        }
-        return false;
-    }
-
-    private IEnumerator Hit_Coroutine()
-    {
-        IsHit = true;
-
-        yield return new WaitForSeconds(HitCoolTime);
 
         IsHit = false;
     }
@@ -188,8 +242,7 @@ public class StatusManager : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Player Is Dead");
-        Debug.Log("Die Function is not defined");
+        uiManager.PlayerIsDead();
     }
 
     public void ElectShieldExplode()

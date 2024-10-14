@@ -126,10 +126,10 @@ Rigidbody2D:
   m_AngularDrag: 100
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!61 &2999923950280300708
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -195,10 +195,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 4
-  MoveSpeed: 6.5
+  MoveSpeed: 4
   AttackPower: 1
   HP: 20
   SearchingCoolTime: 1
   AttackDelayTime: 0
   AttackCoolTime: 0
-  DetectingAreaR: 6
+  DetectingAreaR: 5

@@ -14,6 +14,7 @@ public class PInformation : MonoBehaviour
     public float AttackSpeed = 0;
     public float MoveSpeed = 0;
     public float BulletSpeed = 0;
+    public bool DeleteIsPossible = true;
 
     // Image Setting
     public SpriteRenderer spriteRenderer;

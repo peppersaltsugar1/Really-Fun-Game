@@ -275,10 +275,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 0
-  MoveSpeed: 5
+  MoveSpeed: 3
   AttackPower: 1
   HP: 20
-  SearchingCoolTime: 1
-  AttackDelayTime: 0
-  AttackCoolTime: 1
-  DetectingAreaR: 8
+  DetectingAreaR: 5
+  AttackCoolTime: 3
+  AttackDuration: 3
