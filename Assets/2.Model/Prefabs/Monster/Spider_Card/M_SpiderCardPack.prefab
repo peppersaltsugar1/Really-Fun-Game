@@ -312,8 +312,8 @@ MonoBehaviour:
   monsterType: 6
   MoveSpeed: 0
   AttackPower: 1
-  HP: 20
-  DetectingAreaR: 10
+  HP: 15
+  DetectingAreaR: 12
   SpawnPoint: {fileID: 5643406198622916096}
   AttackCoolTime: 2
   SpiderPrefab1: {fileID: 2774128605324993160, guid: 1f3f41b3fb902564f8a8267d5f4b01df, type: 3}

@@ -277,7 +277,7 @@ MonoBehaviour:
   monsterType: 0
   MoveSpeed: 4
   AttackPower: 1
-  HP: 6
-  DetectingAreaR: 8
+  HP: 10
+  DetectingAreaR: 9
   AttackCoolTime: 3
   AttackDuration: 7

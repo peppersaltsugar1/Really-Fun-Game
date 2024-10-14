@@ -198,4 +198,4 @@ MonoBehaviour:
   MoveSpeed: 4
   AttackPower: 1
   HP: 8
-  DetectingAreaR: 8
+  DetectingAreaR: 9

@@ -198,7 +198,7 @@ MonoBehaviour:
   MoveSpeed: 0
   AttackPower: 1
   HP: 14
-  DetectingAreaR: 8
+  DetectingAreaR: 9
   AttackCoolTime: 2
   BulletPrefab: {fileID: 6926711150965903544, guid: 71c62784b81aa1e49a748852b9fa4162, type: 3}
   FirePoint: {fileID: 3845500156771145051}
