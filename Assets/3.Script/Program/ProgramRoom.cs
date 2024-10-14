@@ -37,6 +37,8 @@ public class ProgramRoom : MonoBehaviour
 
             // DeleteImage
             spriteRenderer.sprite = null;
+
+            transform.gameObject.SetActive(false);
         }
     }
 

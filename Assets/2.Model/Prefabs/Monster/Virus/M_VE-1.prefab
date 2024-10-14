@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1552696442177827463}
   m_Layer: 0
   m_Name: M_VE-1
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,8 +197,5 @@ MonoBehaviour:
   monsterType: 4
   MoveSpeed: 4
   AttackPower: 1
-  HP: 20
-  SearchingCoolTime: 1
-  AttackDelayTime: 0
-  AttackCoolTime: 0
-  DetectingAreaR: 5
+  HP: 8
+  DetectingAreaR: 8

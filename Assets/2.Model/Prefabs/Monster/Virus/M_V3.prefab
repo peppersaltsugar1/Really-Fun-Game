@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8827116163925300171}
   m_Layer: 0
   m_Name: M_V3
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,10 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 2
-  MoveSpeed: 10
+  MoveSpeed: 15
   AttackPower: 1
-  HP: 10
+  HP: 9
+  DetectingAreaR: 8
   SearchingCoolTime: 2
-  AttackDelayTime: 1
-  AttackCoolTime: 1
-  DetectingAreaR: 5

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3874364526117844258}
   m_Layer: 0
   m_Name: M_V2
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -175,10 +175,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterType: 1
-  MoveSpeed: 1
+  MoveSpeed: 0.5
   AttackPower: 1
-  HP: 10
-  DetectingAreaR: 5
+  HP: 12
+  DetectingAreaR: 8
   AttackCoolTime: 3
   BulletPrefab: {fileID: 6926711150965903544, guid: 97b8fb3385f86ab45b360b9c573513bc, type: 3}
   FirePoint: {fileID: 5203126250362219194}

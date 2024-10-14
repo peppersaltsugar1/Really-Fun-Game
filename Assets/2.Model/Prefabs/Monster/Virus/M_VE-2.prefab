@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4204681481207040274}
   m_Layer: 0
   m_Name: M_VE-2
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,11 +197,9 @@ MonoBehaviour:
   monsterType: 5
   MoveSpeed: 0
   AttackPower: 1
-  HP: 20
-  SearchingCoolTime: 3
-  AttackDelayTime: 0
+  HP: 14
+  DetectingAreaR: 8
   AttackCoolTime: 2
-  DetectingAreaR: 6
   BulletPrefab: {fileID: 6926711150965903544, guid: 71c62784b81aa1e49a748852b9fa4162, type: 3}
   FirePoint: {fileID: 3845500156771145051}
   BulletSpeed: 10
