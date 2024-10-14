@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8174199504990854808}
   m_Layer: 0
   m_Name: M_Spider_Clover
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,10 +162,9 @@ MonoBehaviour:
   MoveSpeed: 3
   AttackPower: 1
   HP: 10
-  SearchingCoolTime: 0.5
-  AttackDelayTime: 0.5
-  AttackCoolTime: 0.5
   DetectingAreaR: 3
+  AttackCoolTime: 0.5
+  SearchingCoolTime: 0.5
 --- !u!70 &8174199504990854808
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

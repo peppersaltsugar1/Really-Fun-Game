@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 775921267291773807}
   m_Layer: 0
   m_Name: M_Spider_Hearth
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -1905370701, guid: 34eae0ef1f5d86346afb546d99279d89, type: 3}
+  m_Sprite: {fileID: 91168230, guid: 34eae0ef1f5d86346afb546d99279d89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -178,7 +178,6 @@ MonoBehaviour:
   MoveSpeed: 3
   AttackPower: 1
   HP: 10
-  SearchingCoolTime: 0.5
-  AttackDelayTime: 0.5
-  AttackCoolTime: 0.5
   DetectingAreaR: 3
+  AttackCoolTime: 0.5
+  SearchingCoolTime: 0.5
