@@ -61,7 +61,8 @@ MonoBehaviour:
   - {fileID: 377212435076808553, guid: d0c76f4573532124993470dc0aa0c91b, type: 3}
   - {fileID: 2256108425953875611, guid: 156249d20f0c2e24ea4e29923cbbeab6, type: 3}
   - {fileID: 2181439996956237118, guid: e127d15087262d34595a9f7d6dbf71ca, type: 3}
-  bossMapPrefabList: []
+  bossMapPrefabList:
+  - {fileID: -23244632901191774, guid: 6d18802a51efae8499beeed6a53f2900, type: 3}
   portalPrefabList:
   - {fileID: 2554538583856762247, guid: 0328078c8f30b804da17712600d95a95, type: 3}
   - {fileID: 8303808779349550239, guid: 34c2dfa19af76124283ce7c33e19d71d, type: 3}
@@ -73,8 +74,7 @@ MonoBehaviour:
   mapList: []
   maxMapNum: 13
   map: {fileID: 0}
-  createMapNum: 0
-  specialMapNum: 2
-  randomSpeicalMapNum: 2
   specialPercent: 0
   randomSpecialPercent: 0
+  stageInfoList:
+  - {fileID: 11400000, guid: 9bb5efbe1ffba80488545b739175117f, type: 2}
