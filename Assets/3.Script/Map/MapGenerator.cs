@@ -22,32 +22,35 @@ public class MapGenerator : MonoBehaviour
     //부모객체 맵
     [SerializeField]
     public Transform map;
-    [SerializeField]
     private int createMapNum; //생성할 맵의 갯수
     private int currentMapNum; //생성된 맵의갯수
     private int makeMapNum; //만들어야 할 맵의갯수(포탈이만들어진 갯수)
-    [SerializeField]
     private int specialMapNum; //생성할 스페셜맵의 갯수
-    [SerializeField]
     private int randomSpeicalMapNum; //생성할 랜덤스페셜맵의 갯수
     //맵 생성 확률인수
     [SerializeField]
     private int specialPercent;
     [SerializeField]
     private int randomSpecialPercent;
+    //스테이지 정보 스크립트
+    [SerializeField]
+    List<Stage> stageInfoList = new();
     //맵이가진   
     private List<Portal> portalList = new List<Portal>();
     private List<Portal> connectPortalList = new List<Portal>();
     private List<List<Portal>> temPortalList = new List<List<Portal>>();
-
+    TeleportManager telManager;
     CameraManager cameraManager;
     // Start is called before the first frame update
     void Start()
     {
+        StageSet(stageInfoList[0]);
         currentMapNum = 0;
         cameraManager = CameraManager.Instance;
+        telManager = TeleportManager.Instance;
         CreateMap();
         HideMap();
+        telManager.StartPlayerTel();
     }
 
     // Update is called once per frame
@@ -170,6 +173,23 @@ public class MapGenerator : MonoBehaviour
         int createMapIndex = CheckPortal();
         for (int i = 0; i < createMapIndex; i++)
         {
+            Debug.Log(maxMapNum);
+            Debug.Log(mapList.Count);
+            if (maxMapNum - mapList.Count == 1)
+            {
+                Debug.Log("보스맵생성들어옴");
+                int lastMapIndex = Random.Range(0, bossMapPrefabList.Length);
+                Map makeMap = Instantiate(bossMapPrefabList[lastMapIndex]);
+                // 생성된 Map 오브젝트를 map의 자식으로 추가
+                makeMap.transform.SetParent(map, false);
+                // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
+                makeMap.transform.SetAsLastSibling();
+                mapList.Add(makeMap);
+                TakePortal(makeMap, connectPortalList);
+                ConnectPortal();
+                MapCheck();
+                break;
+            }
             //만들어야할 맵의갯수르롹인
             MapCheck();
             //맵생성될 확률계산
@@ -680,7 +700,16 @@ public class MapGenerator : MonoBehaviour
             Destroy(child.gameObject);
         }
         mapList.Clear();
+        StageSet(stageInfoList[0]);
+        currentMapNum = 0;
         CreateMap();
         HideMap();
+        telManager.StartPlayerTel();
+    }
+    public void StageSet(Stage stage)
+    {
+        maxMapNum = stage.maxMapNum;
+        specialMapNum = stage.specialMapNum;
+        randomSpeicalMapNum = stage.randomSpeicalMapNum;
     }
 }

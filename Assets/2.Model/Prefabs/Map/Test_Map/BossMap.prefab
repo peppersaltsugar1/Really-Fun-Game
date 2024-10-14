@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2786938351050214656}
   - component: {fileID: 8283341157967359196}
   m_Layer: 0
-  m_Name: TestMap4
+  m_Name: BossMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49,10 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a26c18b2394af1428b6eae1a760d570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 6
+  Type: 1
   PortalNum: 1
-  mapName: "\uC2E4\uD5D8\uB9F5(\uB05D)"
+  mapName: "\uC2E4\uD5D8\uB9F5(\uBCF4\uC2A4)"
   isClear: 0
+  nowPosition: 0
 --- !u!61 &2786938351050214656
 BoxCollider2D:
   m_ObjectHideFlags: 0

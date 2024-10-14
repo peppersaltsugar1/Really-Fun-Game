@@ -32,5 +32,22 @@ public class Map : MonoBehaviour
     void Update()
     {
         nowPosition = transform.position.x;
+        MapClearCheck();
+    }
+
+    public void MapClearCheck()
+    {
+        if (Type != Map.MapType.Start)
+        {
+            for(int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).CompareTag("Monster"))
+                {
+                    isClear = false;
+                    return;
+                }
+            }
+            isClear = true;
+        }
     }
 }

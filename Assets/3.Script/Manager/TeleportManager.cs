@@ -100,12 +100,17 @@ public class TeleportManager : MonoBehaviour
         {
             mapGenerator.mapList[currentMapIndex].gameObject.SetActive(false);
             telMap.SetActive(true);
-            gameManager.player.transform.position = telMap.transform.position;
+            Vector2 telPoint = telMap.transform.Find("TeleportPoint").transform.position;
+            gameManager.player.transform.position = telPoint;
             cameraManager.CameraLimit(telMap);
         }
     }
     public void PortalUse_co(Portal currentPortal)
     {
         StartCoroutine(PlayerTeleport_Co(currentPortal));
+    }
+    public void StartPlayerTel()
+    {
+        gameManager.player.transform.position = mapGenerator.mapList[0].transform.Find("TeleportPoint").transform.position;
     }
 }
