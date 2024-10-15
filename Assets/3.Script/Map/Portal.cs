@@ -31,7 +31,7 @@ public class Portal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        isUse = currentMap.GetComponent<Map>().isClear;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
