@@ -1,21 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class Red_Spider : MonsterBase
 {
     public float AttackCoolTime;
-    public float SearchingCoolTime;
-    bool First = true;
 
     // Start is called before the first frame update
     protected override void Start()
     {
         base.Start();
         monsterType = MonsterType.Red_Spider;
-        // TargetPosition = this.transform.position + new Vector3(0, -2, 0);
         StartCoroutine(MonsterRoutine());
     }
 
@@ -25,43 +20,16 @@ public class Red_Spider : MonsterBase
 
     }
 
-    IEnumerator MonsterRespawnMove()
-    {
-        var speed = MoveSpeed * Time.deltaTime;
-
-        while (Vector3.Distance(transform.position, TargetPosition) > speed)
-        {
-            rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
-
-            yield return new WaitForFixedUpdate();
-        }
-    }
 
     public override IEnumerator MonsterRoutine()
     {
-        if (First)
-        {
-            StartCoroutine(MonsterRespawnMove());
-            First = false;
-            rb.velocity = Vector2.zero;
-            yield return new WaitForSeconds(3.5f);
-        }
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
+            yield return new WaitForSeconds(2.0f);
+            
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
 
             if (DetectionSuccess)
             {
@@ -72,8 +40,6 @@ public class Red_Spider : MonsterBase
             { 
                 yield return RandomMoveAfterSearchFail();
             }
-
-            yield return new WaitForSeconds(SearchingCoolTime);
         }
     }
 
@@ -81,13 +47,14 @@ public class Red_Spider : MonsterBase
     {
         SpriteFlipSetting();
 
-        MAnimator.SetTrigger("Move");
+        MAnimator.SetBool("Move", true);
         while (Vector3.Distance(transform.position, TargetPosition) > 0.1f)
         {
             transform.position = Vector3.MoveTowards(transform.position, TargetPosition, MoveSpeed * Time.deltaTime);
             yield return null;
         }
 
+        MAnimator.SetBool("Move", false);
         yield return new WaitForSeconds(AttackCoolTime);
     }
 
@@ -99,8 +66,10 @@ public class Red_Spider : MonsterBase
 
         var speed = MoveSpeed * Time.deltaTime;
         float maxMoveDuration = 1.0f;  
-        float elapsedTime = 0f;        
+        float elapsedTime = 0f;
 
+
+        MAnimator.SetBool("Move", true);
         while (Vector3.Distance(transform.position, TargetPosition) > speed && isMoving)
         {
             elapsedTime += Time.deltaTime;
@@ -110,11 +79,11 @@ public class Red_Spider : MonsterBase
                 yield break;
             }
 
-            MAnimator.SetTrigger("Move");
 
             rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
 
             yield return new WaitForFixedUpdate();
         }
+        MAnimator.SetBool("Move", false);
     }
 }

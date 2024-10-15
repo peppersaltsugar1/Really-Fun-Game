@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: -1905370701, guid: 34eae0ef1f5d86346afb546d99279d89, type: 3}
+  m_Sprite: {fileID: 91168230, guid: 34eae0ef1f5d86346afb546d99279d89, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Mass: 100
   m_LinearDrag: 100
   m_AngularDrag: 100
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 2
   m_SleepingMode: 1
@@ -178,7 +178,6 @@ MonoBehaviour:
   MoveSpeed: 3
   AttackPower: 1
   HP: 10
-  SearchingCoolTime: 0.5
-  AttackDelayTime: 0.5
-  AttackCoolTime: 0.5
+  DefenseRate: 0
   DetectingAreaR: 3
+  AttackCoolTime: 0.5

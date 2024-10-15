@@ -39,6 +39,7 @@ public class M_VE_1 : MonsterBase
 
     public override IEnumerator AttackPreparation()
     {
+        DetectionPlayerPosition();
         if (!MAnimator.GetBool("Detected"))
         {
             MAnimator.SetBool("Detected", true);

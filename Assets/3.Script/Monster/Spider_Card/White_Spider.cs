@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class White_Spider : MonsterBase
 {
@@ -24,43 +21,13 @@ public class White_Spider : MonsterBase
 
     }
 
-    IEnumerator MonsterRespawnMove()
-    {
-        var speed = MoveSpeed * Time.deltaTime;
-
-        while (Vector3.Distance(transform.position, TargetPosition) > speed)
-        {
-            rb.MovePosition(Vector3.MoveTowards(rb.position, TargetPosition, MoveSpeed * Time.fixedDeltaTime));
-
-            yield return new WaitForFixedUpdate();
-        }
-    }
-
     public override IEnumerator MonsterRoutine()
     {
-        if (First)
-        {
-            StartCoroutine(MonsterRespawnMove());
-            First = false;
-            rb.velocity = Vector2.zero;
-            yield return new WaitForSeconds(3.5f);
-        }
         while (true)
         {
-            Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-
-            foreach (Collider2D obj in detectedObjects)
-            {
-                if (obj.CompareTag("Player"))
-                {
-                    player = obj.transform;
-
-                    TargetPosition = player.position;
-                    DetectionSuccess = true;
-                    break;
-                }
-            }
+            yield return new WaitForSeconds(2.0f);
+            if (!DetectionSuccess && DetectionPlayerPosition())
+                DetectionSuccess = true;
 
             if (DetectionSuccess)
             {

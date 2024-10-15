@@ -38,7 +38,7 @@ public class MonsterBase : MonoBehaviour
     public float AttackPower;
     public float HP;
     protected float BaseHP;
-    public float DefenseRate = 1.0f; // 방어력 계수
+    public float DefenseRate; // 방어력 계수
     public float DetectingAreaR;
     protected bool isMoving = true;
 
@@ -61,6 +61,8 @@ public class MonsterBase : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
         MAnimator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        DefenseRate = 1.0f;
     }
 
     // Update is called once per frame
@@ -142,7 +144,7 @@ public class MonsterBase : MonoBehaviour
             this.HP -= statusManager.AttackPower * DefenseRate;
             Destroy(collision.gameObject);
 
-            if (HP < 0)
+            if (HP <= 0)
             {
                 Die();
             }
