@@ -31,12 +31,12 @@ public class Portal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isUse = currentMap.GetComponent<Map>().isClear;
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player")&& isUse)
+        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true)
         {
             int currentPortalIndex = transform.parent.GetSiblingIndex();
             int connectPortalIndex = connectPortal.transform.parent.GetSiblingIndex();
