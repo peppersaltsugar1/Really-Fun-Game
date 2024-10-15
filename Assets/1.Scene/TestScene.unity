@@ -972,12 +972,17 @@ MonoBehaviour:
   MasterButton: {fileID: 787788351}
   MasterVolumeBaseImage: {fileID: 1985714566}
   MasterVolumeMuteImage: {fileID: 1951477122}
+  MasterVolumeText: {fileID: 0}
   BGMButton: {fileID: 1082222459}
   BGMVolumeBaseImage: {fileID: 782350575}
   BGMVolumeMuteImage: {fileID: 201374322}
+  BGMVolumeText: {fileID: 0}
   SFXButton: {fileID: 1697939493}
   SFXVolumeBaseImage: {fileID: 1331145975}
   SFXVolumeMuteImage: {fileID: 1241231311}
+  SFXVolumeText: {fileID: 0}
+  imsitutorial: {fileID: 4643454225879247800}
+  imsitutorial2: {fileID: 4643454225879247796}
 --- !u!114 &598970836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1025,7 +1030,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &598970839
 MonoBehaviour:
@@ -1212,7 +1217,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2201725203080318153, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318153, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1380,7 +1385,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -3434,6 +3439,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+--- !u!1 &4643454225879247796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 988634945310565588, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4643454225879247797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 137078585216812455, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
@@ -3447,6 +3457,11 @@ GameObject:
 --- !u!1 &4643454225879247799 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4643454227211536404, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4643454225879247800 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5005738906733210800, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
   m_PrefabInstance: {fileID: 4643454225879247795}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6775612156200355505

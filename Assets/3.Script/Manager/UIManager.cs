@@ -119,6 +119,9 @@ public class UIManager : MonoBehaviour
     public GameObject SFXVolumeMuteImage;
     public Text SFXVolumeText;
 
+    public GameObject imsitutorial;
+    public GameObject imsitutorial2;
+
     // Program Manger
     private ProgramManager programManager;
 
@@ -514,6 +517,8 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
 
         FirstStartUI.SetActive(false);
+        imsitutorial.SetActive(true);
+        imsitutorial2.SetActive(true);
         Time.timeScale = 1;
         HpBarSet();
     }
