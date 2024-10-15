@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7885459182886899190}
   m_Layer: 0
   m_Name: M_Spider_Dia
-  m_TagString: Monster
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Mass: 100
   m_LinearDrag: 100
   m_AngularDrag: 100
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 2
   m_SleepingMode: 1
@@ -177,7 +177,8 @@ MonoBehaviour:
   monsterType: 7
   MoveSpeed: 3
   AttackPower: 1
-  HP: 5
-  DetectingAreaR: 9
+  HP: 10
+  DefenseRate: 0
+  DetectingAreaR: 3
   AttackCoolTime: 0.5
   SearchingCoolTime: 0.5

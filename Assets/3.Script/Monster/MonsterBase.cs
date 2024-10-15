@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class MonsterBase : MonoBehaviour
@@ -15,7 +14,8 @@ public class MonsterBase : MonoBehaviour
         M_VE_2,
         M_SpiderCardPack,
         Red_Spider,
-        White_Spider
+        White_Spider,
+        Boss_Mouse
     }
 
     public static Dictionary<MonsterType, string> MonsterNameDict = new Dictionary<MonsterType, string>
@@ -28,7 +28,8 @@ public class MonsterBase : MonoBehaviour
         { MonsterType.M_VE_2, "M_VE_2이름이름" },
         { MonsterType.M_SpiderCardPack, "M_SpiderCardPack이름이름" },
         { MonsterType.Red_Spider, "Red_Spider이름이름" },
-        { MonsterType.White_Spider, "White_Spider이름이름" }
+        { MonsterType.White_Spider, "White_Spider이름이름" },
+        { MonsterType.Boss_Mouse, "Boss_Mouse는 보스" }
     };
 
     // Monster Base Info
@@ -36,6 +37,8 @@ public class MonsterBase : MonoBehaviour
     public float MoveSpeed;
     public float AttackPower;
     public float HP;
+    protected float BaseHP;
+    public float DefenseRate; // 방어력 계수
     public float DetectingAreaR;
     protected bool isMoving = true;
 
@@ -58,6 +61,8 @@ public class MonsterBase : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
         MAnimator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+
+        DefenseRate = 1.0f;
     }
 
     // Update is called once per frame
@@ -136,10 +141,10 @@ public class MonsterBase : MonoBehaviour
         if (collision.gameObject.CompareTag("Bullet"))
         {
             Debug.Log("Monster Take Damage");
-            this.HP -= statusManager.AttackPower;
+            this.HP -= statusManager.AttackPower * DefenseRate;
             Destroy(collision.gameObject);
 
-            if (HP < 0)
+            if (HP <= 0)
             {
                 Die();
             }

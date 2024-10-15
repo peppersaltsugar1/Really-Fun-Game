@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6648793467688548782}
   m_Layer: 0
   m_Name: M_CardPack
-  m_TagString: Monster
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,6 +198,7 @@ MonoBehaviour:
   MoveSpeed: 5
   AttackPower: 1
   HP: 10
+  DEF: 0
   DetectingAreaR: 9
   FirePoint: {fileID: 3719410122128694474}
   BulletSpeed: 10

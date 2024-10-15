@@ -107,14 +107,17 @@ public class UIManager : MonoBehaviour
     public Button MasterButton;
     public GameObject MasterVolumeBaseImage;
     public GameObject MasterVolumeMuteImage;
+    public Text MasterVolumeText;
 
     public Button BGMButton;
     public GameObject BGMVolumeBaseImage;
     public GameObject BGMVolumeMuteImage;
+    public Text BGMVolumeText;
 
     public Button SFXButton;
     public GameObject SFXVolumeBaseImage;
     public GameObject SFXVolumeMuteImage;
+    public Text SFXVolumeText;
 
     // Program Manger
     private ProgramManager programManager;
@@ -332,7 +335,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void ShiledOff()
     {
         //hp체력바의 쉴드를 비활성화
@@ -399,7 +401,6 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-
     public void TemHpSet()
     {
         //임시체력 관리 
@@ -459,7 +460,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void ElectDel()
     {
         for (int i = hpNum - 1; i >= 0; i--)
@@ -880,16 +880,22 @@ public class UIManager : MonoBehaviour
     public void SetMasterVolume(float volume)
     {
         SoundManager.Instance.SetMasterVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        MasterVolumeText.text = $"{VolumeText:F0}";
     }
 
     public void SetBGMVolume(float volume)
     {
         SoundManager.Instance.SetBGMVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        BGMVolumeText.text = $"{VolumeText:F0}";
     }
 
     public void SetSFXVolume(float volume)
     {
         SoundManager.Instance.SetSFXVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        SFXVolumeText.text = $"{VolumeText:F0}";
     }
 
     public void FMasterButton()
