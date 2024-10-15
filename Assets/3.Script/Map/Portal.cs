@@ -12,6 +12,7 @@ public class Portal : MonoBehaviour
     public bool isUse;
     public bool isLock;
     bool isRightMove = true;
+    Animator portalAnimator;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -20,18 +21,17 @@ public class Portal : MonoBehaviour
         teleportManager = TeleportManager.Instance;
         cameraManager = CameraManager.Instance;
         isUse = true;
+        portalAnimator = GetComponent<Animator>();
 
     }
     void Start()
     {
-        
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        /*portalAnimator.SetBool("Clear", currentMap.GetComponentInParent<Map>().isClear);*/
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
