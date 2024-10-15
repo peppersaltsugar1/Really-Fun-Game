@@ -199,7 +199,7 @@ MonoBehaviour:
   AttackPower: 1
   HP: 14
   DetectingAreaR: 9
-  AttackCoolTime: 3
+  AttackCoolTime: 4
   BulletPrefab: {fileID: 6926711150965903544, guid: 71c62784b81aa1e49a748852b9fa4162, type: 3}
   FirePoint: {fileID: 3845500156771145051}
   BulletSpeed: 10
