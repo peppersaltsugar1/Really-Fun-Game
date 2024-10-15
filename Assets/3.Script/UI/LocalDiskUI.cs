@@ -13,16 +13,9 @@ public class LocalDiskUI : MonoBehaviour
         uiManager = UIManager.Instance;
         telManger = TeleportManager.Instance;
     }
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+ 
     private void OnEnable()
     {
         uiManager.RoomUISet();

@@ -48,11 +48,7 @@ public class PoolingManager : MonoBehaviour
         BulletMake(0);
     }
 
-    void Update()
-    {
-
-    }
-
+    
     public void BulletMake(int bulletNum)
     {
         for (int i = 0; i < bulletCount; i++)

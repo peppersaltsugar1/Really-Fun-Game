@@ -39,11 +39,7 @@ public class TeleportManager : MonoBehaviour
         gameManager = GameManager.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    
     public void PlayerTeleport(Player player,Portal currentPortal,Portal connectPortal)
     {
         /*StartCoroutine(PlayerTeleport_Co(currentPortal, connectPortal));*/

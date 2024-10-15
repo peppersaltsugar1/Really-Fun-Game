@@ -53,14 +53,6 @@ public class MapGenerator : MonoBehaviour
         telManager.StartPlayerTel();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            RestMap();
-        }
-    }
 
     public void CreateMap()
     {

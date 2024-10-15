@@ -35,11 +35,7 @@ public class CameraManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    
     public void CameraLimit(GameObject map)
     {
         PolygonCollider2D collider = map.GetComponent<PolygonCollider2D>();
