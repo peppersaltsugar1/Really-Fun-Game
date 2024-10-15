@@ -214,8 +214,10 @@ public class UIManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-
-            SetWindowUI();
+            if (mapGenerator.currentMapClear)
+            {
+                SetWindowUI();
+            }
         }
     }
 

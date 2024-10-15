@@ -35,6 +35,8 @@ public class MapGenerator : MonoBehaviour
     //스테이지 정보 스크립트
     [SerializeField]
     List<Stage> stageInfoList = new();
+
+    public bool currentMapClear;
     //맵이가진   
     private List<Portal> portalList = new List<Portal>();
     private List<Portal> connectPortalList = new List<Portal>();
@@ -52,7 +54,17 @@ public class MapGenerator : MonoBehaviour
         HideMap();
         telManager.StartPlayerTel();
     }
-
+    private void Update()
+    {
+        foreach (Map map in mapList)
+        {
+            if (map.gameObject.activeSelf) // 활성화된 맵을 찾음
+            {
+                currentMapClear = map.isClear; // 활성화된 맵의 isClear 값을 currentMapClear로 설정
+                break; // 첫 번째 활성화된 맵만 확인 후 종료
+            }
+        }
+    }
 
     public void CreateMap()
     {
