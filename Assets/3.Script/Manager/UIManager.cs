@@ -190,8 +190,8 @@ public class UIManager : MonoBehaviour
         DeleteButton.onClick.AddListener(FDelete_Button);
 
         // ControllOptionUI Setting
-        screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
-        resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
+        // screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
+        // resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
 
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -1422,6 +1422,7 @@ public class UIManager : MonoBehaviour
     public void FClearButton()
     {
         FReStartButton();
+        HPUIActiveSetting();
         ClearUI.SetActive(false);
     }
 }
