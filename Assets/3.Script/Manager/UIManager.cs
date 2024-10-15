@@ -122,6 +122,11 @@ public class UIManager : MonoBehaviour
     public GameObject imsitutorial;
     public GameObject imsitutorial2;
 
+    // Clear Game
+    public GameObject ClearUI;
+    public Button ClearButton;
+
+
     // Program Manger
     private ProgramManager programManager;
 
@@ -205,7 +210,8 @@ public class UIManager : MonoBehaviour
         SFXButton.onClick.AddListener(FSFXButton);
         SFXVolumeMuteImage.SetActive(false);
 
-        
+        ClearButton.onClick.AddListener(FClearButton);
+
         Text addressText = address.GetComponent<Text>();
         addressText.text = "내 PC";
 
@@ -617,7 +623,7 @@ public class UIManager : MonoBehaviour
                 }
                 WindowUI.SetActive(true);
                 Time.timeScale = 0;
-            }      
+            }
         }
     }
 
@@ -642,7 +648,7 @@ public class UIManager : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
+
         for (int i = 0; i < programManager.ProgramList.Count; i++)
         {
             GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
@@ -722,8 +728,8 @@ public class UIManager : MonoBehaviour
 
     public void FDelete_Button()
     {
-        if(CurrentProgram != -1)
-        { 
+        if (CurrentProgram != -1)
+        {
             programManager.RemoveProgram(CurrentProgram);
             CurrentProgram = -1;
 
@@ -813,9 +819,9 @@ public class UIManager : MonoBehaviour
         Application.Quit();
 
         // 에디터에서 종료
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #endif
+#endif
     }
 
     void OnButtonClick(GameObject clickedButton)
@@ -845,7 +851,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-    
+
     // Resolution
     public void ChangeResolution(int index)
     {
@@ -870,7 +876,7 @@ public class UIManager : MonoBehaviour
         switch (index)
         {
             case 0: // 좋음
-                QualitySettings.SetQualityLevel(5, true); 
+                QualitySettings.SetQualityLevel(5, true);
                 break;
             case 1: // 중간
                 QualitySettings.SetQualityLevel(3, true);
@@ -997,7 +1003,7 @@ public class UIManager : MonoBehaviour
             }
         }
         GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
-        
+
         if (mapIndex == 0)
         {
             //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
@@ -1020,7 +1026,7 @@ public class UIManager : MonoBehaviour
                         // 맵 이름을 설정합니다.
                         mapName.text = connectedMap.mapName;
                         // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
-                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap = 
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
                             mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
 
                         if (connectedMap != null)
@@ -1366,7 +1372,7 @@ public class UIManager : MonoBehaviour
         //반복시켜야함
         if (currentMap != null)
         {
-           
+
             while (true)
             {
                 Debug.Log("반복은함");
@@ -1388,26 +1394,35 @@ public class UIManager : MonoBehaviour
                     temList.Add(currentMap);
                     currentMap = connectMap;
                 }
-                
+
             }
-            
+
         }
-        
+
         temList.Add(mapGenerator.mapList[0]);
-        
-        for (int i = temList.Count-1; i >=0; i--)
+
+        for (int i = temList.Count - 1; i >= 0; i--)
         {
             addressList.Add(temList[i]);
         }
         Text addressText = address.GetComponent<Text>();
         addressText.text = "C:\\";
-        for(int i = 0; i < addressList.Count; i++)
+        for (int i = 0; i < addressList.Count; i++)
         {
             addressText.text += addressList[i].mapName + " > ";
         }
         addressText.text = addressText.text.TrimEnd('>');
 
     }
-    
 
+    public void ClearGame()
+    {
+        ClearUI.SetActive(true);
+    }
+
+    public void FClearButton()
+    {
+        FReStartButton();
+        ClearUI.SetActive(false);
+    }
 }

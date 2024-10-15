@@ -42,9 +42,6 @@ public class MonsterBase : MonoBehaviour
     public float DetectingAreaR;
     protected bool isMoving = true;
 
-    //임시
-    public GameObject EndWindow;
-
     // Target Info
     protected Transform player; // 플레이어의 위치
     protected Vector3 TargetPosition; // 탐지된 플레이어의 위치 저장
@@ -143,7 +140,7 @@ public class MonsterBase : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("Monster Take Damage");
+            // Debug.Log("Monster Take Damage");
             this.HP -= statusManager.AttackPower * DefenseRate;
             Destroy(collision.gameObject);
 
@@ -154,12 +151,8 @@ public class MonsterBase : MonoBehaviour
         }
     }
 
-    private void Die()
+    protected virtual void Die()
     {
-        if(this.gameObject.name == "Boss_Mouse")
-        {
-            EndWindow.gameObject.SetActive(true);
-        }
         Destroy(this.gameObject);
     }
 

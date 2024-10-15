@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
     {
         if (isSpecilHit == false)
         {
-            Debug.Log("발동!");
+            // Debug.Log("발동!");
             isSpecilHit = true;
             randomInt = Random.Range(1, 4);
 
@@ -173,42 +173,42 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.Log("특수공격 발동 도중이라 효과 없음.");
+            // Debug.Log("특수공격 발동 도중이라 효과 없음.");
         }
 
     }
     IEnumerator PlayerYflip()
     {
-        Debug.Log("패턴1");
+        // Debug.Log("패턴1");
         playerSprite.flipY = true;
         // 10초 대기
-        Debug.Log("10초 후 대기");
+        // Debug.Log("10초 후 대기");
         yield return new WaitForSeconds(10f);
         playerSprite.flipY = false;
         yield return new WaitForSeconds(1f);
         isSpecilHit = false;
-        Debug.Log("플레이어 Yflip코루틴 끝");
+        // Debug.Log("플레이어 Yflip코루틴 끝");
     }
 
     IEnumerator Window12()
     {
-        Debug.Log("패턴2");
+        // Debug.Log("패턴2");
         window1.SetActive(true);
         window2.SetActive(true);
-        Debug.Log("5초 후 대기");
+        // Debug.Log("5초 후 대기");
         yield return new WaitForSeconds(5f);
         isSpecilHit = false;
-        Debug.Log("패턴2 끝");
+        // Debug.Log("패턴2 끝");
     }
     IEnumerator Window34()
     {
-        Debug.Log("패턴3");
+        // Debug.Log("패턴3");
         window3.SetActive(true);
         window4.SetActive(true);
-        Debug.Log("5초 후 대기");
+        // Debug.Log("5초 후 대기");
         yield return new WaitForSeconds(5f);
         isSpecilHit = false;
-        Debug.Log("패턴3 끝");
+        // Debug.Log("패턴3 끝");
     }
 
 

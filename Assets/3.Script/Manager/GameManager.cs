@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
     public Transform playerPoint;
     public Player player;
     public float StartTime;
-
+    private MapGenerator mg;
     private void Awake()
     {
         if (null == instance)
@@ -38,6 +39,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         ResetPlayTime();
+        GameObject mapGeneratorObject = GameObject.Find("MapGenerator");
+
+        if (mapGeneratorObject != null)
+        {
+            mg = mapGeneratorObject.GetComponent<MapGenerator>();
+        }
     }
 
     // Update is called once per frame
@@ -53,12 +60,14 @@ public class GameManager : MonoBehaviour
 
     public void ReStartGame()
     {
-        // SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-        // 맵 재생성 기능을 넣어야 함.
-
-        Debug.Log("맵 재생성 기능을 넣어야 함.");
-        Debug.Log("시작 위치로 이동시키는 기능을 넣어야 함.");
-        Debug.Log("맵 재생성 기능을 넣어야 함.");
+        if (mg != null)
+        {
+            mg.RestMap();
+        }
+        else
+        {
+            Debug.Log("MapGenerator is not find");
+        }
     }
 
 }

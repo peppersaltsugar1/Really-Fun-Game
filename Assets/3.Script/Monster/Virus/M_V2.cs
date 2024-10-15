@@ -35,7 +35,7 @@ public class M_V2 : MonsterBase
 
             if (DetectionSuccess)
             {
-                Debug.Log("Player Å½Áö ¿Ï·á");
+                // Debug.Log("Player Å½Áö ¿Ï·á");
                 DetectingAreaR = 15.0f;
                 yield return AttackPreparation();
             }

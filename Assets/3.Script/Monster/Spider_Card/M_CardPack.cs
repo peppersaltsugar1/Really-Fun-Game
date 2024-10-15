@@ -84,7 +84,7 @@ public class M_CardPack : MonsterBase
             transform.rotation = Quaternion.Euler(0, 0, angle - 90);
 
             elapsedTime += Time.deltaTime;
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
 
         yield return Fire();

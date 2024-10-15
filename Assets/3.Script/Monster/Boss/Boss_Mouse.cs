@@ -238,7 +238,11 @@ public class Boss_Mouse : MonsterBase
         rb.velocity = fireDirection * BulletSpeed;
     }
 
-
+    protected override void Die()
+    {
+        UIManager.Instance.ClearGame();
+        base.Die();
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (isDashing)
