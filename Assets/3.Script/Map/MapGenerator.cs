@@ -165,11 +165,8 @@ public class MapGenerator : MonoBehaviour
         int createMapIndex = CheckPortal();
         for (int i = 0; i < createMapIndex; i++)
         {
-            Debug.Log(maxMapNum);
-            Debug.Log(mapList.Count);
             if (maxMapNum - mapList.Count == 1)
             {
-                Debug.Log("보스맵생성들어옴");
                 int lastMapIndex = Random.Range(0, bossMapPrefabList.Length);
                 Map makeMap = Instantiate(bossMapPrefabList[lastMapIndex]);
                 // 생성된 Map 오브젝트를 map의 자식으로 추가
