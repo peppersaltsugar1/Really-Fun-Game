@@ -50,8 +50,7 @@ public class M_V1 : MonsterBase
         var speed = MoveSpeed * Time.deltaTime;
         float elapsedTime = 0f;
 
-        Collider2D[] detectedObjects = Physics2D.OverlapCircleAll(transform.position, DetectingAreaR);
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        // rb.bodyType = RigidbodyType2D.Dynamic;
 
         while (Vector3.Distance(transform.position, TargetPosition) > speed)
         {
@@ -72,6 +71,5 @@ public class M_V1 : MonsterBase
             yield return new WaitForFixedUpdate(); 
         }
         MAnimator.SetBool("Move", false);
-
     }
 }

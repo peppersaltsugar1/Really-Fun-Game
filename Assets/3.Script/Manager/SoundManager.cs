@@ -18,9 +18,9 @@ public class SoundManager : MonoBehaviour
     public bool BGMVolumeMute = false;
     public bool SFXVolumeMute = false;
 
-    public float MasterVolume = 0;
-    public float BGMVolume = 0;
-    public float SFXVolume = 0;
+    public float MasterVolume = -12;
+    public float BGMVolume = -12;
+    public float SFXVolume = -12;
 
     private int currentTrackIndex = 0;
 

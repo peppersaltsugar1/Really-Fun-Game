@@ -198,12 +198,11 @@ MonoBehaviour:
   MoveSpeed: 5
   AttackPower: 1
   HP: 10
-  SearchingCoolTime: 3
-  AttackDelayTime: 1.5
-  AttackCoolTime: 0
+  DEF: 0
   DetectingAreaR: 9
   FirePoint: {fileID: 3719410122128694474}
   BulletSpeed: 10
+  AttackCoolTime: 0
   CardPrefab1: {fileID: 121062196166947722, guid: 3bf4869672cc6b345a3c77ce93caa22e, type: 3}
   CardPrefab2: {fileID: 6320851205985993213, guid: 5b1b2ef765ea2dc4fbcd30f141acf1f6, type: 3}
   CardPrefab3: {fileID: 4161296659828347394, guid: dae137e24bce0984fa9b666070224edb, type: 3}

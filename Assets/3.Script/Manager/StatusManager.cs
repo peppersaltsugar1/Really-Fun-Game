@@ -100,6 +100,7 @@ public class StatusManager : MonoBehaviour
     {
         if (!IsHit)
         {
+            Debug.Log("Player Take Damage");
             DeathSign = deathSign;
             StartCoroutine(Hit_Coroutine(damage));
         }
