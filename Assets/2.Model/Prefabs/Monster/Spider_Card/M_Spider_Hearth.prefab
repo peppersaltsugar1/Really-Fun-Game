@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 775921267291773807}
   m_Layer: 0
   m_Name: M_Spider_Hearth
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -177,7 +177,7 @@ MonoBehaviour:
   monsterType: 7
   MoveSpeed: 3
   AttackPower: 1
-  HP: 10
-  DefenseRate: 0
-  DetectingAreaR: 3
+  HP: 5
+  DefenseRate: 1
+  DetectingAreaR: 9
   AttackCoolTime: 0.5

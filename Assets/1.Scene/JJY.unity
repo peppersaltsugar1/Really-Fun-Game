@@ -3727,6 +3727,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 304676761}
   camera: {fileID: 0}
+  isSpecilHit: 0
+  lastInt: 0
+  randomInt: 0
+  window1: {fileID: 0}
+  window2: {fileID: 0}
+  window3: {fileID: 0}
+  window4: {fileID: 0}
 --- !u!114 &304676761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8995,7 +9002,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 598970832}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a758e10894b31104dadea43df502d18e, type: 3}
   m_Name: 

@@ -594,6 +594,7 @@ public class UIManager : MonoBehaviour
             if (isActive)
             {
                 WindowUI.SetActive(false);
+                HPUIActiveSetting();
                 Time.timeScale = 1;
             }
             else
@@ -601,6 +602,7 @@ public class UIManager : MonoBehaviour
                 // 상태 최신화
                 UpdateStats();
                 GenerateButtons();
+                HPUIActiveSetting();
 
                 // UI를 활성화하고 게임을 일시 정지
                 if (Start_UI == null)

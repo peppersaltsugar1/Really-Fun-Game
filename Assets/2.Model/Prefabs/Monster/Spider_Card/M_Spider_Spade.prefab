@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 1611052507010950093}
   - component: {fileID: -6436682548777474869}
   - component: {fileID: -7664575940198438351}
-  - component: {fileID: 2445647257621636511}
   - component: {fileID: 5286595955443110003}
+  - component: {fileID: 2445647257621636511}
   m_Layer: 0
   m_Name: M_Spider_Spade
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,26 +146,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &2445647257621636511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1611052507010950094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9fc1a920f2e9c24abb45d3c87d8890f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  monsterType: 8
-  MoveSpeed: 3
-  AttackPower: 1
-  HP: 10
-  DefenseRate: 0
-  DetectingAreaR: 3
-  AttackCoolTime: 0.5
-  SearchingCoolTime: 0.5
 --- !u!70 &5286595955443110003
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -182,3 +162,23 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1}
   m_Direction: 0
+--- !u!114 &2445647257621636511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611052507010950094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9fc1a920f2e9c24abb45d3c87d8890f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterType: 8
+  MoveSpeed: 3
+  AttackPower: 1
+  HP: 5
+  DefenseRate: 1
+  DetectingAreaR: 9
+  AttackCoolTime: 0.5
+  SearchingCoolTime: 0.5
