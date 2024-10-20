@@ -36,8 +36,7 @@ public class MonsterBullet : MonoBehaviour
             {
                 statusManager.TakeDamage(damage, monstertype);
             }
-            //임시 특수 공격 구현
-            player.SpecialHit();
+
             Destroy(gameObject);
         }
     }

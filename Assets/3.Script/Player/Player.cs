@@ -17,16 +17,6 @@ public class Player : MonoBehaviour
     private UIManager uiManager;
     private StatusManager statusManager;
 
-    // 임시 특수공격
-    public bool isSpecilHit = false;
-    public int lastInt = 0;
-    public int randomInt = 0;
-
-    public GameObject window1;
-    public GameObject window2;
-    public GameObject window3;
-    public GameObject window4;
-
 
     // Program(Temp)
     /*
@@ -143,73 +133,7 @@ public class Player : MonoBehaviour
     {
         return weapon;
     }
-    public void SpecialHit()
-    {
-        if (isSpecilHit == false)
-        {
-            // Debug.Log("발동!");
-            isSpecilHit = true;
-            randomInt = Random.Range(1, 4);
-
-            while (randomInt == lastInt)
-            {
-                randomInt = Random.Range(1, 4);
-                InfiniteLoopDetector.Run();
-            }
-
-        lastInt = randomInt;
-        switch (randomInt)
-            {
-            case 1:
-                StartCoroutine(PlayerYflip());
-                break;
-            case 2:
-                StartCoroutine(Window12());
-                break;
-            case 3:
-                StartCoroutine(Window34());
-                break;
-            }
-        }
-        else
-        {
-            // Debug.Log("특수공격 발동 도중이라 효과 없음.");
-        }
-
-    }
-    IEnumerator PlayerYflip()
-    {
-        // Debug.Log("패턴1");
-        playerSprite.flipY = true;
-        // 10초 대기
-        // Debug.Log("10초 후 대기");
-        yield return new WaitForSeconds(10f);
-        playerSprite.flipY = false;
-        yield return new WaitForSeconds(1f);
-        isSpecilHit = false;
-        // Debug.Log("플레이어 Yflip코루틴 끝");
-    }
-
-    IEnumerator Window12()
-    {
-        // Debug.Log("패턴2");
-        window1.SetActive(true);
-        window2.SetActive(true);
-        // Debug.Log("5초 후 대기");
-        yield return new WaitForSeconds(5f);
-        isSpecilHit = false;
-        // Debug.Log("패턴2 끝");
-    }
-    IEnumerator Window34()
-    {
-        // Debug.Log("패턴3");
-        window3.SetActive(true);
-        window4.SetActive(true);
-        // Debug.Log("5초 후 대기");
-        yield return new WaitForSeconds(5f);
-        isSpecilHit = false;
-        // Debug.Log("패턴3 끝");
-    }
+ 
 
 
     // ====== 몬스터 강제 삭제 알고리즘(수정 중) ======

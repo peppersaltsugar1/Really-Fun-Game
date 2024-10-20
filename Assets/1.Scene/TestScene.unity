@@ -421,13 +421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 304676761}
   camera: {fileID: 0}
-  isSpecilHit: 0
-  lastInt: 0
-  randomInt: 0
-  window1: {fileID: 4643454225879247799}
-  window2: {fileID: 4643454225879247798}
-  window3: {fileID: 4643454225879247797}
-  window4: {fileID: 417230519}
 --- !u!114 &304676761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,11 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &417230519 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4482118734372415440, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
-  m_PrefabInstance: {fileID: 4643454225879247795}
-  m_PrefabAsset: {fileID: 0}
 --- !u!223 &549786600 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 4643454225346771035, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
@@ -843,7 +831,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   B_MaxHp: 12
   B_CurrentHp: 12
-  B_TemHp: 3
+  B_TemHp: 0
   B_Shield: 0
   B_ShieldHp: 0
   B_Elect: 0
@@ -3514,21 +3502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4643454225879247797 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 137078585216812455, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
-  m_PrefabInstance: {fileID: 4643454225879247795}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4643454225879247798 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 320996938091528414, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
-  m_PrefabInstance: {fileID: 4643454225879247795}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4643454225879247799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4643454227211536404, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
-  m_PrefabInstance: {fileID: 4643454225879247795}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4643454225879247800 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4643454226560909102, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
