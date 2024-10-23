@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -237,7 +238,6 @@ public class UIManager : MonoBehaviour
     // ================ My Documents Section ================
     public void GenerateItemList()
     {
-
         Debug.Log("GenerateItemList");
 
         foreach (Transform child in ContentItemGroup)
@@ -254,6 +254,10 @@ public class UIManager : MonoBehaviour
             foreach (Item itemInfo in items)
             {
                 GameObject newButton = Instantiate(Button_Item_Prefab, ContentItemGroup);
+
+                ItemDragHandler dragHandler = newButton.AddComponent<ItemDragHandler>();  // ItemDragHandler 추가
+                dragHandler.item = itemInfo;  // 아이템 정보 전달
+                dragHandler.windowUI = WindowUI;  // WindowUI 오브젝트 참조 전달
 
                 Transform childImageTransform = newButton.transform.Find("Image");
                 Transform childTextTransform = newButton.transform.Find("Text");
@@ -356,6 +360,15 @@ public class UIManager : MonoBehaviour
     {
         i_StorageView.fillAmount = (float)statusManager.CurrentStorage / (statusManager.B_MaxStorage);
         t_StorageRate.text = statusManager.B_MaxStorage.ToString() + "MB 중 " + (statusManager.B_MaxStorage - statusManager.CurrentStorage).ToString() + "MB 사용 가능";
+    }
+
+    public void RemoveItemDetail()
+    {
+        Image DetailImage = i_Item_Detail_Image_Prefab.GetComponent<Image>();
+        DetailImage.sprite = null;
+        t_Item_Detail_Name_Prefab.text = "";
+        t_Item_Detail_Explanation_Prefab.text = "";
+        t_Item_Detail_Size_Prefab.text = "";
     }
 
     public void FItemDelete_Button()

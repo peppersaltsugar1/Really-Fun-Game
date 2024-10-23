@@ -59,6 +59,19 @@ public class ItemManager : MonoBehaviour
         return true;
     }
 
+    public void RemoveItem(Item item)
+    {
+        if (itemList.ContainsKey(item.ItemName))
+        {
+            statusManager.CurrentStorage -= item.ItemSize;
+            itemList[item.ItemName].Remove(item);
+            if (itemList[item.ItemName].Count == 0)
+            {
+                itemList.Remove(item.ItemName);
+            }
+        }
+    }
+
     // 내림차순 정렬을 위한 클래스
     public class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
     {
