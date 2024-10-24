@@ -294,47 +294,42 @@ public class UIManager : MonoBehaviour
         string spriteSheetName = "";
         Sprite[] sprites;
         Sprite itemSprite = null;
+        int ImageIndex = Item.ImageNumber[(int)itemType];
 
+        // 이미지 설정
         // 아이템 타입에 따른 이미지 경로 설정
         switch (itemType)
         {
             case Item.ItemType.Coin1:
-                spriteSheetName = "Item/use_Coin"; // 스프라이트 시트 이름
-                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                itemSprite = sprites[0];
-                break;
             case Item.ItemType.Coin5:
-                spriteSheetName = "Item/use_Coin"; // 스프라이트 시트 이름
-                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                itemSprite = sprites[1];
-                break;
             case Item.ItemType.Coin10:
-                spriteSheetName = "Item/use_Coin"; // 스프라이트 시트 이름
-                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                itemSprite = sprites[6];
-                break;
             case Item.ItemType.Coin15:
-                spriteSheetName = "Item/use_Coin"; // 스프라이트 시트 이름
-                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                itemSprite = sprites[11];
+                spriteSheetName = "Item/use_Coin";
                 break;
-            /*case Item.ItemType.Heal:
-            //    spriteSheetName = "Sprites/Items/Heal";  // 회복 아이템 이미지 경로
-            //    break;
-            //case Item.ItemType.TemHp:
-            //    spriteSheetName = "Sprites/Items/TemHp";  // 임시 체력 아이템 이미지 경로
-            //    break;
-            //case Item.ItemType.Shiled:
-            //    spriteSheetName = "Sprites/Items/Shiled";  // 쉴드 아이템 이미지 경로
-            //    break;
-            //case Item.ItemType.Spark:
-            //    spriteSheetName = "Sprites/Items/Spark";  // 스파크 아이템 이미지 경로
+            case Item.ItemType.Key:
+            case Item.ItemType.CardPack:
+            case Item.ItemType.ProgramRemove:
+            case Item.ItemType.ProgramRecycle:
+                spriteSheetName = "Item/use_DropItem";
                 break;
+
+            /* 힐 아이템  추가할 것
+            //  case Item.ItemType.Heal:
+            //  case Item.ItemType.TemHp:
+            //  case Item.ItemType.Shiled:
+            //  case Item.ItemType.Spark:
+            //      spriteSheetName = "Sprites/Items/Heal";
+                    sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+                    itemSprite = sprites[ImageIndex];
+            //      break;
             */
+
             default:
                 Debug.LogError("Unknown item type.");
                 return;
         }
+        sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+        itemSprite = sprites[ImageIndex];
 
         if (itemSprite != null)
         {
