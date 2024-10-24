@@ -15,6 +15,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField]
     private Map[] bossMapPrefabList;
     [SerializeField]
+    private Map[] hiddenMapList;
+    [SerializeField]
     private List<Portal> portalPrefabList = new();
     public List<Map> mapList = new List<Map>();
     //맵 생성관련 인수
@@ -22,6 +24,9 @@ public class MapGenerator : MonoBehaviour
     //부모객체 맵
     [SerializeField]
     public Transform map;
+    //히든맵 부모객체
+    [SerializeField]
+    public GameObject hiddenMap;
     private int createMapNum; //생성할 맵의 갯수
     private int currentMapNum; //생성된 맵의갯수
     private int makeMapNum; //만들어야 할 맵의갯수(포탈이만들어진 갯수)
@@ -51,6 +56,7 @@ public class MapGenerator : MonoBehaviour
         cameraManager = CameraManager.Instance;
         telManager = TeleportManager.Instance;
         CreateMap();
+        CreateHiddenMap();
         HideMap();
         telManager.StartPlayerTel();
     }
@@ -528,9 +534,14 @@ public class MapGenerator : MonoBehaviour
         {
             mapList[i].gameObject.SetActive(false);
         }
+        for(int j = 0; j < hiddenMapList.Length; j++)
+        {
+            hiddenMap.transform.GetChild(j).gameObject.SetActive(false);
+        }
         mapList[0].gameObject.SetActive(true);
     }
     
+    //포탈 연결된맵의 종류에 따라 변경
     private void PortalChange()
     {
         for(int i = 0; i<mapList.Count; i++)
@@ -688,6 +699,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    //맵초기화
     public void RestMap()
     {
         int childCount = map.transform.childCount;
@@ -707,10 +719,18 @@ public class MapGenerator : MonoBehaviour
         HideMap();
         telManager.StartPlayerTel();
     }
+    //스테이지 정보에맞게 만들맵의 정보를 갱신
     public void StageSet(Stage stage)
     {
         maxMapNum = stage.maxMapNum;
         specialMapNum = stage.specialMapNum;
         randomSpeicalMapNum = stage.randomSpeicalMapNum;
+    }
+    public void CreateHiddenMap()
+    {
+        for(int i = 0; i < hiddenMapList.Length; i++)
+        {
+           Instantiate(hiddenMapList[i],hiddenMap.transform);
+        }
     }
 }

@@ -18,9 +18,9 @@ public class Back_Button : MonoBehaviour
 
     public void BackButton()
     {
-        if (uiManager.addressList.Count > 1)
+        if (uiManager.adressList.Count > 1)
         {
-            Map targetMap = uiManager.addressList[uiManager.addressList.Count - 2];
+            Map targetMap = uiManager.adressList[uiManager.adressList.Count - 2];
             int targetIndex = mapGenerator.mapList.IndexOf(targetMap);
             uiManager.LocalDisckUISet(targetIndex);
         }

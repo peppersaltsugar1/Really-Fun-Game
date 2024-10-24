@@ -32,9 +32,11 @@ public class UIManager : MonoBehaviour
     List<GameObject> ItemImageList = new();
 
     //주소관련
-    public List<Map> addressList = new();
+    public List<Map> adressList = new();
     [SerializeField]
-    GameObject address;
+    GameObject adressParent;
+    [SerializeField]
+    Adress_Button adressButton;
 
     // Basic UI
     public GameObject FirstStartUI;
@@ -216,8 +218,7 @@ public class UIManager : MonoBehaviour
         SFXButton.onClick.AddListener(FSFXButton);
         SFXVolumeMuteImage.SetActive(false);
 
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "내 PC";
+       
 
         // Basic UI Setting
         ReStartButton.onClick.AddListener(FReStartButton);
@@ -626,24 +627,27 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         MyPC_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "내 PC";
+        AdressReset();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "내 PC";
     }
 
     public void FDownLoad_Button()
     {
         UIDeactivation();
         DownLoad_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "다운로드";
+        AdressReset();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "다운로드";
     }
 
     public void FMy_Documents_Button()
     {
         UIDeactivation();
         My_Documents_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "내 문서";
+        AdressReset();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "내 문서";
     }
 
     public void FLocalDisk_Button()
@@ -656,16 +660,18 @@ public class UIManager : MonoBehaviour
     {
         UIDeactivation();
         ControlOptions_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "제어판";
+        AdressReset();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "제어판";
     }
 
     public void FHelp_Button()
     {
         UIDeactivation();
         Help_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "도움말";
+        AdressReset();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "도움말";
     }
 
     public void FDesktop_Button()
@@ -843,7 +849,7 @@ public class UIManager : MonoBehaviour
 
     public void LocalDisckUISet(int mapIndex)
     {
-        AddressSet(mapIndex);
+        AdressSet(mapIndex);
         for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
         {
             Transform child = localDiskContent.transform.GetChild(i);
@@ -1216,9 +1222,13 @@ public class UIManager : MonoBehaviour
         /*AddressSet(mapIndex);*/
     }
 
-    public void AddressSet(int mapIndex)
+    public void AdressSet(int mapIndex)
     {
-        addressList.Clear();
+        for (int i = adressParent.transform.childCount - 1; i > 0; i--) // 0번째는 제외하고 역순으로
+        {
+            Destroy(adressParent.transform.GetChild(i).gameObject);
+        }
+        adressList.Clear();
         List<Map> temList = new();
         Map currentMap = mapGenerator.mapList[mapIndex];
         //반복시켜야함
@@ -1227,15 +1237,13 @@ public class UIManager : MonoBehaviour
 
             while (true)
             {
-                Debug.Log("반복은함");
-                InfiniteLoopDetector.Run();
+              
                 if (currentMap.Type == Map.MapType.Start)
                 {
                     break;
                 }
                 //현재 맵을 가져와서 연결된맵을 리스트에 추가
                 int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
-                Debug.Log(siblingIndex);
                 if (siblingIndex != 0)
                 {
                     //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
@@ -1255,16 +1263,40 @@ public class UIManager : MonoBehaviour
 
         for (int i = temList.Count - 1; i >= 0; i--)
         {
-            addressList.Add(temList[i]);
+            adressList.Add(temList[i]);
         }
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "C:\\";
-        for (int i = 0; i < addressList.Count; i++)
+        
+        
+        for (int i = 0; i < adressList.Count; i++)
         {
-            addressText.text += addressList[i].mapName + " > ";
+            Adress_Button adressObj = Instantiate(adressButton, adressParent.transform);
+            Text adressText = adressObj.GetComponent<Text>();
+            adressText.text += adressList[i].mapName + " > ";
         }
-        addressText.text = addressText.text.TrimEnd('>');
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        firstChildText.text = "C:\\";
+        // 마지막 자식의 Text 변경
+        int lastIndex = adressParent.transform.childCount - 1;
+        Text lastChildText = adressParent.transform.GetChild(lastIndex).GetComponent<Text>();
+        Debug.Log(lastChildText.text);
+        lastChildText.text = lastChildText.text.Replace(">", "");
+        /*adressText.text = adressText.text.TrimEnd('>');*/
+        Canvas.ForceUpdateCanvases();
+        StartCoroutine(LayoutReset(adressParent.GetComponent<RectTransform>()));
+    }
+    IEnumerator LayoutReset(RectTransform obj)
+    {
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(obj);
 
+    }
+    public void AdressReset()
+    {
+        for (int i = adressParent.transform.childCount - 1; i > 0; i--) // 0번째는 제외하고 역순으로
+        {
+            Destroy(adressParent.transform.GetChild(i).gameObject);
+        }
+        adressList.Clear();
     }
 
     // ================ HP UI Section ================

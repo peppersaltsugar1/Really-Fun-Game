@@ -109,4 +109,9 @@ public class TeleportManager : MonoBehaviour
     {
         gameManager.player.transform.position = mapGenerator.mapList[0].transform.Find("TeleportPoint").transform.position;
     }
+    public void HiddenTel()
+    {
+        int hiddenIndex = Random.Range(0, mapGenerator.hiddenMap.transform.childCount);
+        gameManager.player.transform.position = mapGenerator.hiddenMap.transform.GetChild(hiddenIndex).transform.Find("TeleportPoint").transform.position;
+    }
 }
