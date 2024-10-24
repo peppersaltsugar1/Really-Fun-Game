@@ -240,7 +240,6 @@ public class Boss_Mouse : MonsterBase
 
     protected override void Die()
     {
-        UIManager.Instance.ClearGame();
         base.Die();
     }
     void OnCollisionEnter2D(Collision2D collision)

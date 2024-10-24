@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1170710182440163473}
   - component: {fileID: 1170710182440163478}
   - component: {fileID: 1170710182440163472}
+  - component: {fileID: 8688139333198738591}
+  - component: {fileID: -3903356831334132261}
   m_Layer: 0
   m_Name: Coin_1
   m_TagString: Untagged
@@ -105,3 +107,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!58 &8688139333198738591
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170710182440163479}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.31
+--- !u!114 &-3903356831334132261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1170710182440163479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemScore: 1
+  itemType: 0
+  ItemName: "\uAC00_\uAC00\uB85C\uC2DC\uC791\uD558\uB294\uCF54\uC778"
+  ItemInfomation: "\uCF54\uC778\uC774\uC9C0\uC694~"
+  ItemSize: 42424
+  IsAvailable: 0

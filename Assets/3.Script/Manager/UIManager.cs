@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class UIManager : MonoBehaviour
 {
@@ -27,7 +29,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     List<Sprite> closePortalUiList = new();
     [SerializeField]
-    List<GameObject> itemImageList = new();
+    List<GameObject> ItemImageList = new();
 
     //주소관련
     public List<Map> addressList = new();
@@ -81,16 +83,28 @@ public class UIManager : MonoBehaviour
     // BulletManger
     private PoolingManager BInstance;
 
-    // Program UI Member
+    // Program UI
     public GameObject Button_Program_Prefab;
     public GameObject i_Program_Detail_Image_Prefab;
     public Text t_Program_Detail_Name_Prefab;
     public Text t_Program_Detail_Explanation_Prefab;
     public Text t_Program_Detail_PowerExplanation_Prefab;
 
-    public Transform ContentGroup;
-    public Button DeleteButton;
+    public Transform ContentProgramGroup;
+    public Button ProgramDeleteButton;
     private int CurrentProgram = -1;
+
+    // Item UI
+    public GameObject Button_Item_Prefab;
+    public GameObject i_Item_Detail_Image_Prefab;
+    public Text t_Item_Detail_Name_Prefab;
+    public Text t_Item_Detail_Explanation_Prefab;
+    public Text t_Item_Detail_Size_Prefab;
+
+    public Image i_StorageView;
+    public Text t_StorageRate;
+
+    public Transform ContentItemGroup;
 
     // Setting UI Member
     public Dropdown screenModeDropdown;
@@ -116,19 +130,10 @@ public class UIManager : MonoBehaviour
     public GameObject SFXVolumeMuteImage;
     public Text SFXVolumeText;
 
-    public GameObject imsitutorial;
-    public GameObject imsitutorial2;
-
-    // Clear Game
-    public GameObject ClearUI;
-    public Button ClearButton;
-
-
-    // Program Manger
+    // Manger
     private ProgramManager programManager;
-
-    // Status Manager
     private StatusManager statusManager;
+    private ItemManager itemManager;
 
     private int hpNum = 0;
 
@@ -162,7 +167,7 @@ public class UIManager : MonoBehaviour
         statusManager = StatusManager.Instance;
         HPUIActive = true;
 
-        // HpBarSet();
+        HpBarSet();
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
@@ -184,14 +189,18 @@ public class UIManager : MonoBehaviour
 
         // ProgramList Setting
         programManager = ProgramManager.Instance;  // ProgramManager 싱글턴 참조
-        GenerateButtons();
+        GenerateProgramList();
+
+        // ItemList Ssetting
+        itemManager = ItemManager.Instance;
+        GenerateItemList();
 
         // Delete Button Setting
-        DeleteButton.onClick.AddListener(FDelete_Button);
+        ProgramDeleteButton.onClick.AddListener(FDelete_Button);
 
         // ControllOptionUI Setting
-        // screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
-        // resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
+        screenModeDropdown.onValueChanged.AddListener(delegate { ChangeScreenMode(screenModeDropdown.value); });
+        resolutionDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionDropdown.value); });
         qualityDropdown.onValueChanged.AddListener(delegate { ChangeQuality(qualityDropdown.value); });
 
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
@@ -207,14 +216,10 @@ public class UIManager : MonoBehaviour
         SFXButton.onClick.AddListener(FSFXButton);
         SFXVolumeMuteImage.SetActive(false);
 
-        ClearButton.onClick.AddListener(FClearButton);
-
         Text addressText = address.GetComponent<Text>();
         addressText.text = "내 PC";
 
         // Basic UI Setting
-        FirstStartFunc();
-        StartButton.onClick.AddListener(FStartButton);
         ReStartButton.onClick.AddListener(FReStartButton);
         GoToDesktop.onClick.AddListener(FDesktop_Button);
     }
@@ -230,6 +235,1065 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // ================ My Documents Section ================
+    public void GenerateItemList()
+    {
+        Debug.Log("GenerateItemList");
+
+        foreach (Transform child in ContentItemGroup)
+        {
+            Destroy(child.gameObject);
+        }
+        Debug.Log("자식 제거 완료");
+
+        foreach (var kvp in itemManager.itemList) 
+        {
+            string itemName = kvp.Key;
+            List<Item> items = kvp.Value;
+
+            foreach (Item itemInfo in items)
+            {
+                GameObject newButton = Instantiate(Button_Item_Prefab, ContentItemGroup);
+
+                ItemDragHandler dragHandler = newButton.AddComponent<ItemDragHandler>();  // ItemDragHandler 추가
+                dragHandler.item = itemInfo;  // 아이템 정보 전달
+                dragHandler.windowUI = WindowUI;  // WindowUI 오브젝트 참조 전달
+
+                Transform childImageTransform = newButton.transform.Find("Image");
+                Transform childTextTransform = newButton.transform.Find("Text");
+                if (childImageTransform != null)
+                {
+                    Image ButtonImage = childImageTransform.GetComponent<Image>();
+                    Text ButtonText = childTextTransform.GetComponent<Text>();
+                    if (ButtonImage != null)
+                    {
+                        SetItemImage(ButtonImage, itemInfo.itemType);
+                        ButtonText.text = itemInfo.ItemName;
+
+                        // 클릭 이벤트 리스너 추가
+                        newButton.GetComponent<Button>().onClick.AddListener(() => OpenItemDetail(itemInfo));
+                    }
+                    else
+                    {
+                        Debug.LogError("Error: Button image not found.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("자식 오브젝트를 찾을 수 없습니다.");
+                }
+                
+            }
+        }
+
+        Debug.Log("추가 완료");
+    }
+
+    public void SetItemImage(Image buttonImage, Item.ItemType itemType)
+    {
+        string spriteSheetName = "";
+        Sprite[] sprites;
+        Sprite itemSprite = null;
+        int ImageIndex = Item.ImageNumber[(int)itemType];
+
+        // 이미지 설정
+        // 아이템 타입에 따른 이미지 경로 설정
+        switch (itemType)
+        {
+            case Item.ItemType.Coin1:
+            case Item.ItemType.Coin5:
+            case Item.ItemType.Coin10:
+            case Item.ItemType.Coin15:
+                spriteSheetName = "Item/use_Coin";
+                break;
+            case Item.ItemType.Key:
+            case Item.ItemType.CardPack:
+            case Item.ItemType.ProgramRemove:
+            case Item.ItemType.ProgramRecycle:
+                spriteSheetName = "Item/use_DropItem";
+                break;
+
+            /* 힐 아이템  추가할 것
+            //  case Item.ItemType.Heal:
+            //  case Item.ItemType.TemHp:
+            //  case Item.ItemType.Shiled:
+            //  case Item.ItemType.Spark:
+            //      spriteSheetName = "Sprites/Items/Heal";
+                    sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+                    itemSprite = sprites[ImageIndex];
+            //      break;
+            */
+
+            default:
+                Debug.LogError("Unknown item type.");
+                return;
+        }
+        sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+        itemSprite = sprites[ImageIndex];
+
+        if (itemSprite != null)
+        {
+            buttonImage.sprite = itemSprite;
+            Debug.Log($"Item Image loaded: {itemType} -> {itemSprite.name}");
+        }
+        else
+        {
+            Debug.LogError($"Sprite not found for item type: {itemType} at path: {spriteSheetName}");
+        }
+    }
+
+    public void OpenItemDetail(Item CurItem)
+    {
+        Image DetailImage = i_Item_Detail_Image_Prefab.GetComponent<Image>();
+        SetItemImage(DetailImage, CurItem.itemType);
+        t_Item_Detail_Name_Prefab.text = CurItem.ItemName;
+        t_Item_Detail_Explanation_Prefab.text = CurItem.ItemInfomation;
+        t_Item_Detail_Size_Prefab.text = CurItem.ItemSize.ToString() + "MB";
+    }
+
+    public void UpdateStorage()
+    {
+        i_StorageView.fillAmount = (float)statusManager.CurrentStorage / (statusManager.B_MaxStorage);
+        t_StorageRate.text = statusManager.B_MaxStorage.ToString() + "MB 중 " + (statusManager.B_MaxStorage - statusManager.CurrentStorage).ToString() + "MB 사용 가능";
+    }
+
+    public void RemoveItemDetail()
+    {
+        Image DetailImage = i_Item_Detail_Image_Prefab.GetComponent<Image>();
+        DetailImage.sprite = null;
+        t_Item_Detail_Name_Prefab.text = "";
+        t_Item_Detail_Explanation_Prefab.text = "";
+        t_Item_Detail_Size_Prefab.text = "";
+    }
+
+    public void FItemDelete_Button()
+    {
+        //if (CurrentProgram != -1)
+        //{
+        //    programManager.RemoveProgram(CurrentProgram);
+        //    CurrentProgram = -1;
+
+        //    // i_Program_Detail_Image_Prefab
+        //    t_Program_Detail_Name_Prefab.text = "";
+        //    t_Program_Detail_Explanation_Prefab.text = "";
+        //    t_Program_Detail_PowerExplanation_Prefab.text = "";
+
+
+        //    GenerateProgramList();
+        //}
+
+        //Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        //if (detailImage != null)
+        //{
+        //    detailImage.sprite = null;
+        //}
+        //else
+        //{
+        //    Debug.LogError("Image component not found");
+        //}
+    }
+
+    // ================ Basic UI Setting Section ================
+    // This is basically control UI setting.
+    // Input ESC -> Show UI 
+    public void SetWindowUI()
+    {
+        if (WindowUI != null)
+        {
+            bool isActive = WindowUI.activeSelf;
+            if (isActive)
+            {
+                WindowUI.SetActive(false);
+                HPUIActiveSetting();
+                Time.timeScale = 1;
+            }
+            else
+            {
+                // 상태 최신화
+                UpdateStats();
+                GenerateProgramList();
+                GenerateItemList();
+                UpdateStorage();
+                HPUIActiveSetting();
+
+                // UI를 활성화하고 게임을 일시 정지
+                if (Start_UI == null)
+                {
+                    Start_UI = MyPC_UI;
+                    Start_UI.SetActive(true);
+                }
+                WindowUI.SetActive(true);
+                Time.timeScale = 0;
+            }
+        }
+    }
+   
+    // UI Deactivation
+    public void UIDeactivation()
+    {
+        MyPC_UI.SetActive(false);
+        DownLoad_UI.SetActive(false);
+        My_Documents_UI.SetActive(false);
+        LocalDisk_UI.SetActive(false);
+        ControlOptions_UI.SetActive(false);
+        Help_UI.SetActive(false);
+    }
+
+    // Status Update Function
+    private void UpdateStats()
+    {
+        if (player != null)
+        {
+            AttackText.text = statusManager.AttackPower.ToString();
+            AttackSpeedText.text = statusManager.AttackSpeed.ToString();
+            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
+            RangeText.text = statusManager.AngleRange.ToString();
+            MoveSpeedText.text = statusManager.MoveSpeed.ToString();
+        }
+    }
+
+    // ================ Program Section ================
+    public void GenerateProgramList()
+    {
+        // 자손 제거
+        foreach (Transform child in ContentProgramGroup)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < programManager.ProgramList.Count; i++)
+        {
+            GameObject newButton = Instantiate(Button_Program_Prefab, ContentProgramGroup);
+
+            PInformation programInfo = programManager.ProgramList[i];
+            Image buttonImage = newButton.GetComponent<Image>();
+
+            if (buttonImage != null)
+            {
+                SetSpriteFromSheet(buttonImage, programInfo.spriteSheetName, programInfo.spriteIndex);
+            }
+            else
+            {
+                Debug.LogError("Error");
+            }
+
+            int index = i;
+            newButton.GetComponent<Button>().onClick.AddListener(() => OnProgramClick(newButton));
+        }
+
+        // Delete Button Activation
+        if (programManager.ProgramList.Count == 0)
+            ProgramDeleteButton.gameObject.SetActive(false);
+    }
+
+    void OnProgramClick(GameObject clickedButton)
+    {
+        int index = clickedButton.transform.GetSiblingIndex();
+        OpenProgramDetail(index);
+    }
+
+    public void SetSpriteFromSheet(Image buttonImage, string spriteSheetName, int spriteIndex)
+    {
+        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+
+        if (sprites != null && spriteIndex >= 0 && spriteIndex < sprites.Length)
+        {
+            buttonImage.sprite = sprites[spriteIndex];
+            Debug.Log("Sprite loaded: " + sprites[spriteIndex].name);
+
+        }
+        else
+        {
+            Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + spriteSheetName);
+        }
+    }
+
+    public void OpenProgramDetail(int index)
+    {
+        CurrentProgram = index;
+        // Detail Setting
+        t_Program_Detail_Name_Prefab.text = programManager.ProgramList[index].ProgramName;
+        t_Program_Detail_Explanation_Prefab.text = programManager.ProgramList[index].Explanation;
+        t_Program_Detail_PowerExplanation_Prefab.text = programManager.ProgramList[index].PowerExplanation;
+
+        // Image Setting
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            Sprite[] sprites = Resources.LoadAll<Sprite>(programManager.ProgramList[index].spriteSheetName);
+
+            if (sprites != null && programManager.ProgramList[index].spriteIndex >= 0 && programManager.ProgramList[index].spriteIndex < sprites.Length)
+            {
+                detailImage.sprite = sprites[programManager.ProgramList[index].spriteIndex];
+                Debug.Log("Detail Image sprite set: " + sprites[programManager.ProgramList[index].spriteIndex].name);
+            }
+            else
+            {
+                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + programManager.ProgramList[index].spriteSheetName);
+            }
+        }
+        else
+        {
+            Debug.LogError("i_Program_Detail_Image_Prefab does not have an Image component.");
+        }
+
+        ProgramDeleteButton.gameObject.SetActive(true);
+
+        Debug.Log("OpenProgramDetail");
+    }
+
+    public void FDelete_Button()
+    {
+        if (CurrentProgram != -1)
+        {
+            programManager.RemoveProgram(CurrentProgram);
+            CurrentProgram = -1;
+
+            // i_Program_Detail_Image_Prefab
+            t_Program_Detail_Name_Prefab.text = "";
+            t_Program_Detail_Explanation_Prefab.text = "";
+            t_Program_Detail_PowerExplanation_Prefab.text = "";
+
+            ProgramDeleteButton.gameObject.SetActive(false);
+
+            GenerateProgramList();
+        }
+
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+
+        if (detailImage != null)
+        {
+            detailImage.sprite = null;
+        }
+        else
+        {
+            Debug.LogError("Image component not found");
+        }
+    }
+
+    // 여기에 아이템 함수 널꺼임
+
+
+    // ================ Start, End, GameOver Section ================
+    public void PlayerIsDead()
+    {
+        Time.timeScale = 0;
+        StartCoroutine(DelayUIAndGameOver(2.0f));
+    }
+
+    private IEnumerator DelayUIAndGameOver(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+
+        float playTime = Time.time - GameManager.Instance.StartTime;
+        int hours = Mathf.FloorToInt(playTime / 3600);
+        int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
+        int seconds = Mathf.FloorToInt(playTime % 60);
+        PlayTimeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
+
+        MonsterBase.MonsterType monsterType = statusManager.DeathSign;
+        if (MonsterBase.MonsterNameDict.TryGetValue(monsterType, out string monsterName))
+        {
+            DeathSign.text = monsterName + "한테 죽음.";
+        }
+        else
+        {
+            DeathSign.text = "알 수 없는 몬스터한테 죽음.";
+        }
+
+
+        DeathUI.SetActive(true);
+        HPUIActiveSetting();
+    }
+
+    public void FReStartButton()
+    {
+        DeathUI.SetActive(false);
+        Time.timeScale = 1;
+        statusManager.InitializeStatus();
+        HPUIActiveSetting();
+
+        HpBarSet();
+        GameManager.Instance.ReStartGame();
+        GameManager.Instance.ResetPlayTime();
+    }
+
+
+    // Button OnClickFuction
+    public void FMyPC_Button()
+    {
+        UIDeactivation();
+        MyPC_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 PC";
+    }
+
+    public void FDownLoad_Button()
+    {
+        UIDeactivation();
+        DownLoad_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "다운로드";
+    }
+
+    public void FMy_Documents_Button()
+    {
+        UIDeactivation();
+        My_Documents_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "내 문서";
+    }
+
+    public void FLocalDisk_Button()
+    {
+        UIDeactivation();
+        LocalDisk_UI.SetActive(true);
+    }
+
+    public void FControlOptions_Button()
+    {
+        UIDeactivation();
+        ControlOptions_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "제어판";
+    }
+
+    public void FHelp_Button()
+    {
+        UIDeactivation();
+        Help_UI.SetActive(true);
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "도움말";
+    }
+
+    public void FDesktop_Button()
+    {
+        // PC 종료
+        Application.Quit();
+
+        // 에디터에서 종료
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    
+
+    // ================ Setting Function ================
+    // ScreenMode
+    public void ChangeScreenMode(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Debug.Log("전체화면 모드");
+                break;
+            case 1:
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                Debug.Log("창모드");
+                break;
+            default:
+                Debug.LogWarning("Error");
+                break;
+        }
+    }
+
+    // Resolution
+    public void ChangeResolution(int index)
+    {
+        switch (index)
+        {
+            case 0: // 1920 x 1080
+                Screen.SetResolution(1920, 1080, Screen.fullScreen);
+                break;
+            case 1: // 1600 x 900
+                Screen.SetResolution(1600, 900, Screen.fullScreen);
+                break;
+            case 2: // 1280 x 720
+                Screen.SetResolution(1280, 720, Screen.fullScreen);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void ChangeQuality(int index)
+    {
+        switch (index)
+        {
+            case 0: // 좋음
+                QualitySettings.SetQualityLevel(5, true);
+                break;
+            case 1: // 중간
+                QualitySettings.SetQualityLevel(3, true);
+                break;
+            case 2: // 낮음
+                QualitySettings.SetQualityLevel(1, true);
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Audio
+    public void SetMasterVolume(float volume)
+    {
+        SoundManager.Instance.SetMasterVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        MasterVolumeText.text = $"{VolumeText:F0}";
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        SoundManager.Instance.SetBGMVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        BGMVolumeText.text = $"{VolumeText:F0}";
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        SoundManager.Instance.SetSFXVolume(volume);
+        float VolumeText = ((volume + 40) / 40) * 100;
+        SFXVolumeText.text = $"{VolumeText:F0}";
+    }
+
+    public void FMasterButton()
+    {
+        if (!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
+        {
+            MasterVolumeBaseImage.SetActive(false);
+            MasterVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            MasterVolumeBaseImage.SetActive(true);
+            MasterVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.MasterVolumeMute = !SoundManager.Instance.MasterVolumeMute;
+        SetMasterVolume(SoundManager.Instance.MasterVolume);
+    }
+
+    public void FBGMButton()
+    {
+        if (!SoundManager.Instance.BGMVolumeMute) // 음소거 상태 아닐때
+        {
+            BGMVolumeBaseImage.SetActive(false);
+            BGMVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            BGMVolumeBaseImage.SetActive(true);
+            BGMVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.BGMVolumeMute = !SoundManager.Instance.BGMVolumeMute;
+        SetBGMVolume(SoundManager.Instance.BGMVolume);
+    }
+
+    public void FSFXButton()
+    {
+        if (!SoundManager.Instance.SFXVolumeMute) // 음소거 상태 아닐때
+        {
+            SFXVolumeBaseImage.SetActive(false);
+            SFXVolumeMuteImage.SetActive(true);
+        }
+        else
+        {
+            SFXVolumeBaseImage.SetActive(true);
+            SFXVolumeMuteImage.SetActive(false);
+        }
+        SoundManager.Instance.SFXVolumeMute = !SoundManager.Instance.SFXVolumeMute;
+        SetSFXVolume(SoundManager.Instance.BGMVolume);
+    }
+
+
+    // ================ Map Section ================
+    public void RoomUISet()
+    {
+        //UI에 남아있는요소 확인후 삭제
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
+        //맵 index초기화
+        int mapIndex = 0;
+        //현제 맵이 몇번째 index인지 확인
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
+
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                mapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+        /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
+        //맵list에서 현제맵을 가져옴
+        LocalDisckUISet(mapIndex);
+    }
+
+    public void LocalDisckUISet(int mapIndex)
+    {
+        AddressSet(mapIndex);
+        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform child = localDiskContent.transform.GetChild(i);
+
+            if (child != null)
+            {
+                Destroy(child.gameObject); // 자식 객체 삭제
+            }
+        }
+        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+
+        if (mapIndex == 0)
+        {
+            //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        // 맵 이름을 설정합니다.
+                        mapName.text = connectedMap.mapName;
+                        // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
+
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (connectedMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (connectedMap.mapName)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("여기");
+                                switch (connectedMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (connectedMap.mapName)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            //0번째 방일때 현제맵의 아이템을 가져와서 ui갱신
+            foreach (Transform child in currentMap.transform)
+            {
+                Item fildItem = child.GetComponent<Item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case Item.ItemType.Coin1:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(ItemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(ItemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(ItemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(ItemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue;
+                        case Item.ItemType.Heal:
+                            GameObject healUI = Instantiate(ItemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.TemHp:
+                            GameObject ItemUI = Instantiate(ItemImageList[0]);
+                            ItemUI.transform.SetParent(localDiskContent.transform);
+                            ItemUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(ItemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(ItemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+
+                }
+
+            }
+        }
+        else
+        {
+            List<GameObject> currentPortalList = new();
+            foreach (Transform child in currentMap.transform)
+            {
+                Portal curretnportal = child.GetComponent<Portal>();
+                if (curretnportal != null)
+                {
+                    GameObject portalUI = Instantiate(UIPortal);
+                    portalUI.transform.SetParent(localDiskContent.transform);
+                    portalUI.transform.SetAsLastSibling();
+                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
+                    currentPortalList.Add(portalUI);
+                    Text mapName = portalUI.GetComponentInChildren<Text>();
+                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
+                    Image portalImage = images[1];
+
+                    if (curretnportal.connectPortal != null)
+                    {
+                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
+                        mapName.text = connectedMap.mapName;
+                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
+                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
+                        if (connectedMap != null)
+                        {
+                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
+                            if (connectedMap.isClear)
+                            {
+                                switch (connectedMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = portalUiList[0];
+                                        continue;
+
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = portalUiList[1];
+                                        continue;
+
+                                    case Map.MapType.Download:
+                                        portalImage.sprite = portalUiList[2];
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        portalImage.sprite = portalUiList[3];
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (connectedMap.mapName)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = portalUiList[4];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = portalUiList[5];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = portalUiList[6];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = portalUiList[7];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+                            else
+                            {
+                                switch (connectedMap.Type)
+                                {
+                                    case Map.MapType.Middle:
+                                        portalImage.sprite = closePortalUiList[0];
+                                        continue;
+                                    case Map.MapType.Boss:
+                                        portalImage.sprite = closePortalUiList[1];
+                                        continue;
+                                    case Map.MapType.Download:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[3];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[2];
+                                        }
+                                        continue;
+                                    case Map.MapType.Shop:
+                                        if (curretnportal.isLock)
+                                        {
+                                            portalImage.sprite = closePortalUiList[4];
+                                        }
+                                        else
+                                        {
+                                            portalImage.sprite = closePortalUiList[5];
+                                        }
+                                        continue;
+                                    case Map.MapType.RandomSpecial:
+                                        switch (connectedMap.mapName)
+                                        {
+                                            case "휴지통":
+                                                portalImage.sprite = closePortalUiList[6];
+                                                continue;
+                                            case "전원 옵션":
+                                                portalImage.sprite = closePortalUiList[7];
+                                                continue;
+                                            case "JuvaCafe":
+                                                portalImage.sprite = closePortalUiList[8];
+                                                continue;
+                                            case "Window 방화벽":
+                                                portalImage.sprite = closePortalUiList[9];
+                                                continue;
+                                        }
+                                        continue;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            Destroy(currentPortalList[0].gameObject);
+            currentPortalList.RemoveAt(0);
+            foreach (Transform child in currentMap.transform)
+            {
+                Item fildItem = child.GetComponent<Item>();
+                if (fildItem != null)
+                {
+                    switch (fildItem.itemType)
+                    {
+                        case Item.ItemType.Coin1:
+                            switch (fildItem.itemScore)
+                            {
+                                case 1:
+                                    GameObject oneCoinUI = Instantiate(ItemImageList[0]);
+                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
+                                    oneCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 5:
+                                    GameObject fiveCoinUI = Instantiate(ItemImageList[1]);
+                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fiveCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 10:
+                                    GameObject tenCoinUI = Instantiate(ItemImageList[2]);
+                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    tenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                                case 15:
+                                    GameObject fifteenCoinUI = Instantiate(ItemImageList[3]);
+                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
+                                    fifteenCoinUI.transform.SetAsLastSibling();
+                                    continue;
+                            }
+                            continue;
+                        case Item.ItemType.Heal:
+                            GameObject healUI = Instantiate(ItemImageList[0]);
+                            healUI.transform.SetParent(localDiskContent.transform);
+                            healUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.TemHp:
+                            GameObject ItemUI = Instantiate(ItemImageList[0]);
+                            ItemUI.transform.SetParent(localDiskContent.transform);
+                            ItemUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.Shiled:
+                            GameObject shiledUI = Instantiate(ItemImageList[0]);
+                            shiledUI.transform.SetParent(localDiskContent.transform);
+                            shiledUI.transform.SetAsLastSibling();
+                            continue;
+                        case Item.ItemType.Spark:
+                            GameObject sparkUI = Instantiate(ItemImageList[0]);
+                            sparkUI.transform.SetParent(localDiskContent.transform);
+                            sparkUI.transform.SetAsLastSibling();
+                            continue;
+                    }
+
+
+                }
+
+            }
+        }
+        /*AddressSet(mapIndex);*/
+    }
+
+    public void AddressSet(int mapIndex)
+    {
+        addressList.Clear();
+        List<Map> temList = new();
+        Map currentMap = mapGenerator.mapList[mapIndex];
+        //반복시켜야함
+        if (currentMap != null)
+        {
+
+            while (true)
+            {
+                Debug.Log("반복은함");
+                InfiniteLoopDetector.Run();
+                if (currentMap.Type == Map.MapType.Start)
+                {
+                    break;
+                }
+                //현재 맵을 가져와서 연결된맵을 리스트에 추가
+                int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
+                Debug.Log(siblingIndex);
+                if (siblingIndex != 0)
+                {
+                    //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
+                    Transform nowMap = mapGenerator.map.transform.GetChild(siblingIndex);
+                    Portal currentMapPortal = nowMap.GetComponentInChildren<Portal>();
+                    Portal connectPortal = currentMapPortal.connectPortal;
+                    Map connectMap = connectPortal.currentMap.GetComponent<Map>();
+                    temList.Add(currentMap);
+                    currentMap = connectMap;
+                }
+
+            }
+
+        }
+
+        temList.Add(mapGenerator.mapList[0]);
+
+        for (int i = temList.Count - 1; i >= 0; i--)
+        {
+            addressList.Add(temList[i]);
+        }
+        Text addressText = address.GetComponent<Text>();
+        addressText.text = "C:\\";
+        for (int i = 0; i < addressList.Count; i++)
+        {
+            addressText.text += addressList[i].mapName + " > ";
+        }
+        addressText.text = addressText.text.TrimEnd('>');
+
+    }
+
+    // ================ HP UI Section ================
+    // Fixed
+
+    // HP UI Activation Setting
+    public void HPUIActiveSetting()
+    {
+        if (HPUIActive)
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(false);
+            }
+
+            HPUIActive = false;
+        }
+        else
+        {
+            foreach (GameObject HPList in hpList)
+            {
+                HPList.SetActive(true);
+            }
+
+            HPUIActive = true;
+        }
+    }
+
+    // HP Update Func
     public void HpBarSet()
     {
         //hp 체력바 리셋
@@ -481,948 +1545,5 @@ public class UIManager : MonoBehaviour
                 return;
             }
         }
-    }
-
-    // ========== UI Section ==========
-    public void FirstStartFunc()
-    {
-        if (FirstStartUI != null)
-        {
-            FirstStartUI.SetActive(true);
-
-            Start_Back.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
-            Start_Line.GetComponent<Animator>().updateMode = AnimatorUpdateMode.UnscaledTime;
-            Start_Back.GetComponent<Animator>().SetTrigger("Start");
-            Start_Line.GetComponent<Animator>().SetTrigger("Start");
-
-            Time.timeScale = 0;
-        }
-        else
-        {
-            Debug.Log("FirstStartUI is not allocated");
-        }
-    }
-
-    public void FStartButton()
-    {
-        if (FirstStartUI != null)
-        {
-            // 소리 재생
-            SoundManager.Instance.StartButtonSound();
-            StartCoroutine(DelayUIAndGameStart(3.0f));
-        }
-        else
-        {
-            Debug.Log("FirstStartUI is not allocated");
-        }
-    }
-
-    private IEnumerator DelayUIAndGameStart(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-
-        FirstStartUI.SetActive(false);
-        imsitutorial.SetActive(true);
-        imsitutorial2.SetActive(true);
-        Time.timeScale = 1;
-        HpBarSet();
-    }
-
-    public void PlayerIsDead()
-    {
-        Time.timeScale = 0;
-        StartCoroutine(DelayUIAndGameOver(2.0f));
-    }
-
-    private IEnumerator DelayUIAndGameOver(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-
-        float playTime = Time.time - GameManager.Instance.StartTime;
-        int hours = Mathf.FloorToInt(playTime / 3600);
-        int minutes = Mathf.FloorToInt((playTime % 3600) / 60);
-        int seconds = Mathf.FloorToInt(playTime % 60);
-        PlayTimeText.text = string.Format("{0:00}:{1:00}:{2:00}", hours, minutes, seconds);
-
-        MonsterBase.MonsterType monsterType = statusManager.DeathSign;
-        if (MonsterBase.MonsterNameDict.TryGetValue(monsterType, out string monsterName))
-        {
-            DeathSign.text = monsterName + "한테 죽음.";
-        }
-        else
-        {
-            DeathSign.text = "알 수 없는 몬스터한테 죽음.";
-        }
-
-
-        DeathUI.SetActive(true);
-        HPUIActiveSetting();
-    }
-
-    public void HPUIActiveSetting()
-    {
-        if (HPUIActive)
-        {
-            foreach (GameObject HPList in hpList)
-            {
-                HPList.SetActive(false);
-            }
-
-            HPUIActive = false;
-        }
-        else
-        {
-            foreach (GameObject HPList in hpList)
-            {
-                HPList.SetActive(true);
-            }
-
-            HPUIActive = true;
-        }
-    }
-
-    public void FReStartButton()
-    {
-        DeathUI.SetActive(false);
-        Time.timeScale = 1;
-        statusManager.InitializeStatus();
-        HPUIActiveSetting();
-
-        HpBarSet();
-        GameManager.Instance.ReStartGame();
-        GameManager.Instance.ResetPlayTime();
-    }
-
-
-
-    // Input ESC -> Show UI 
-    public void SetWindowUI()
-    {
-        if (WindowUI != null)
-        {
-            bool isActive = WindowUI.activeSelf;
-            if (isActive)
-            {
-                WindowUI.SetActive(false);
-                HPUIActiveSetting();
-                Time.timeScale = 1;
-            }
-            else
-            {
-                // 상태 최신화
-                UpdateStats();
-                GenerateButtons();
-                HPUIActiveSetting();
-
-                // UI를 활성화하고 게임을 일시 정지
-                if (Start_UI == null)
-                {
-                    Start_UI = MyPC_UI;
-                    Start_UI.SetActive(true);
-                }
-                WindowUI.SetActive(true);
-                Time.timeScale = 0;
-            }
-        }
-    }
-
-    // Status Update Function
-    private void UpdateStats()
-    {
-        if (player != null)
-        {
-            AttackText.text = statusManager.AttackPower.ToString();
-            AttackSpeedText.text = statusManager.AttackSpeed.ToString();
-            BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
-            RangeText.text = statusManager.AngleRange.ToString();
-            MoveSpeedText.text = statusManager.MoveSpeed.ToString();
-        }
-    }
-
-    // Program Update Funtion
-    public void GenerateButtons()
-    {
-        // 자손 제거
-        foreach (Transform child in ContentGroup)
-        {
-            Destroy(child.gameObject);
-        }
-
-        for (int i = 0; i < programManager.ProgramList.Count; i++)
-        {
-            GameObject newButton = Instantiate(Button_Program_Prefab, ContentGroup);
-
-            PInformation programInfo = programManager.ProgramList[i];
-            Image buttonImage = newButton.GetComponent<Image>();
-
-            if (buttonImage != null)
-            {
-                SetSpriteFromSheet(buttonImage, programInfo.spriteSheetName, programInfo.spriteIndex);
-            }
-            else
-            {
-                Debug.LogError("Error");
-            }
-
-            int index = i;
-            newButton.GetComponent<Button>().onClick.AddListener(() => OnButtonClick(newButton));
-        }
-
-        // Delete Button Activation
-        if (programManager.ProgramList.Count == 0)
-            DeleteButton.gameObject.SetActive(false);
-    }
-
-    public void SetSpriteFromSheet(Image buttonImage, string spriteSheetName, int spriteIndex)
-    {
-        Sprite[] sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-
-        if (sprites != null && spriteIndex >= 0 && spriteIndex < sprites.Length)
-        {
-            buttonImage.sprite = sprites[spriteIndex];
-            Debug.Log("Sprite loaded: " + sprites[spriteIndex].name);
-
-        }
-        else
-        {
-            Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + spriteSheetName);
-        }
-    }
-
-
-    public void OpenProgramDetail(int index)
-    {
-        CurrentProgram = index;
-        // Detail Setting
-        t_Program_Detail_Name_Prefab.text = programManager.ProgramList[index].ProgramName;
-        t_Program_Detail_Explanation_Prefab.text = programManager.ProgramList[index].Explanation;
-        t_Program_Detail_PowerExplanation_Prefab.text = programManager.ProgramList[index].PowerExplanation;
-
-        // Image Setting
-        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
-
-        if (detailImage != null)
-        {
-            Sprite[] sprites = Resources.LoadAll<Sprite>(programManager.ProgramList[index].spriteSheetName);
-
-            if (sprites != null && programManager.ProgramList[index].spriteIndex >= 0 && programManager.ProgramList[index].spriteIndex < sprites.Length)
-            {
-                detailImage.sprite = sprites[programManager.ProgramList[index].spriteIndex];
-                Debug.Log("Detail Image sprite set: " + sprites[programManager.ProgramList[index].spriteIndex].name);
-            }
-            else
-            {
-                Debug.LogError("Sprite not found or invalid index for spriteSheetName: " + programManager.ProgramList[index].spriteSheetName);
-            }
-        }
-        else
-        {
-            Debug.LogError("i_Program_Detail_Image_Prefab does not have an Image component.");
-        }
-
-        DeleteButton.gameObject.SetActive(true);
-
-        Debug.Log("OpenProgramDetail");
-    }
-
-    public void FDelete_Button()
-    {
-        if (CurrentProgram != -1)
-        {
-            programManager.RemoveProgram(CurrentProgram);
-            CurrentProgram = -1;
-
-            // i_Program_Detail_Image_Prefab
-            t_Program_Detail_Name_Prefab.text = "";
-            t_Program_Detail_Explanation_Prefab.text = "";
-            t_Program_Detail_PowerExplanation_Prefab.text = "";
-
-            DeleteButton.gameObject.SetActive(false);
-
-            GenerateButtons();
-        }
-
-        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
-
-        if (detailImage != null)
-        {
-            detailImage.sprite = null;
-        }
-        else
-        {
-            Debug.LogError("Image component not found");
-        }
-    }
-
-    // UI Deactivation
-    public void UIDeactivation()
-    {
-        MyPC_UI.SetActive(false);
-        DownLoad_UI.SetActive(false);
-        My_Documents_UI.SetActive(false);
-        LocalDisk_UI.SetActive(false);
-        ControlOptions_UI.SetActive(false);
-        Help_UI.SetActive(false);
-    }
-
-    // Button OnClickFuction
-    public void FMyPC_Button()
-    {
-        UIDeactivation();
-        MyPC_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "내 PC";
-    }
-
-    public void FDownLoad_Button()
-    {
-        UIDeactivation();
-        DownLoad_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "다운로드";
-    }
-
-    public void FMy_Documents_Button()
-    {
-        UIDeactivation();
-        My_Documents_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "내 문서";
-    }
-
-    public void FLocalDisk_Button()
-    {
-        UIDeactivation();
-        LocalDisk_UI.SetActive(true);
-    }
-
-    public void FControlOptions_Button()
-    {
-        UIDeactivation();
-        ControlOptions_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "제어판";
-    }
-
-    public void FHelp_Button()
-    {
-        UIDeactivation();
-        Help_UI.SetActive(true);
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "도움말";
-    }
-
-    public void FDesktop_Button()
-    {
-        // PC 종료
-        Application.Quit();
-
-        // 에디터에서 종료
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    }
-
-    void OnButtonClick(GameObject clickedButton)
-    {
-
-        int index = clickedButton.transform.GetSiblingIndex();
-        OpenProgramDetail(index);
-    }
-
-    // Setting Function
-
-    // ScreenMode
-    public void ChangeScreenMode(int index)
-    {
-        switch (index)
-        {
-            case 0:
-                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
-                Debug.Log("전체화면 모드");
-                break;
-            case 1:
-                Screen.fullScreenMode = FullScreenMode.Windowed;
-                Debug.Log("창모드");
-                break;
-            default:
-                Debug.LogWarning("Error");
-                break;
-        }
-    }
-
-    // Resolution
-    public void ChangeResolution(int index)
-    {
-        switch (index)
-        {
-            case 0: // 1920 x 1080
-                Screen.SetResolution(1920, 1080, Screen.fullScreen);
-                break;
-            case 1: // 1600 x 900
-                Screen.SetResolution(1600, 900, Screen.fullScreen);
-                break;
-            case 2: // 1280 x 720
-                Screen.SetResolution(1280, 720, Screen.fullScreen);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void ChangeQuality(int index)
-    {
-        switch (index)
-        {
-            case 0: // 좋음
-                QualitySettings.SetQualityLevel(5, true);
-                break;
-            case 1: // 중간
-                QualitySettings.SetQualityLevel(3, true);
-                break;
-            case 2: // 낮음
-                QualitySettings.SetQualityLevel(1, true);
-                break;
-            default:
-                break;
-        }
-    }
-
-    // Audio
-    public void SetMasterVolume(float volume)
-    {
-        SoundManager.Instance.SetMasterVolume(volume);
-        float VolumeText = ((volume + 40) / 40) * 100;
-        MasterVolumeText.text = $"{VolumeText:F0}";
-    }
-
-    public void SetBGMVolume(float volume)
-    {
-        SoundManager.Instance.SetBGMVolume(volume);
-        float VolumeText = ((volume + 40) / 40) * 100;
-        BGMVolumeText.text = $"{VolumeText:F0}";
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        SoundManager.Instance.SetSFXVolume(volume);
-        float VolumeText = ((volume + 40) / 40) * 100;
-        SFXVolumeText.text = $"{VolumeText:F0}";
-    }
-
-    public void FMasterButton()
-    {
-        if (!SoundManager.Instance.MasterVolumeMute) // 음소거 상태 아닐때
-        {
-            MasterVolumeBaseImage.SetActive(false);
-            MasterVolumeMuteImage.SetActive(true);
-        }
-        else
-        {
-            MasterVolumeBaseImage.SetActive(true);
-            MasterVolumeMuteImage.SetActive(false);
-        }
-        SoundManager.Instance.MasterVolumeMute = !SoundManager.Instance.MasterVolumeMute;
-        SetMasterVolume(SoundManager.Instance.MasterVolume);
-    }
-
-    public void FBGMButton()
-    {
-        if (!SoundManager.Instance.BGMVolumeMute) // 음소거 상태 아닐때
-        {
-            BGMVolumeBaseImage.SetActive(false);
-            BGMVolumeMuteImage.SetActive(true);
-        }
-        else
-        {
-            BGMVolumeBaseImage.SetActive(true);
-            BGMVolumeMuteImage.SetActive(false);
-        }
-        SoundManager.Instance.BGMVolumeMute = !SoundManager.Instance.BGMVolumeMute;
-        SetBGMVolume(SoundManager.Instance.BGMVolume);
-    }
-
-    public void FSFXButton()
-    {
-        if (!SoundManager.Instance.SFXVolumeMute) // 음소거 상태 아닐때
-        {
-            SFXVolumeBaseImage.SetActive(false);
-            SFXVolumeMuteImage.SetActive(true);
-        }
-        else
-        {
-            SFXVolumeBaseImage.SetActive(true);
-            SFXVolumeMuteImage.SetActive(false);
-        }
-        SoundManager.Instance.SFXVolumeMute = !SoundManager.Instance.SFXVolumeMute;
-        SetSFXVolume(SoundManager.Instance.BGMVolume);
-    }
-
-    public void RoomUISet()
-    {
-        //UI에 남아있는요소 확인후 삭제
-        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
-        {
-            Transform child = localDiskContent.transform.GetChild(i);
-
-            if (child != null)
-            {
-                Destroy(child.gameObject); // 자식 객체 삭제
-            }
-        }
-        //맵 index초기화
-        int mapIndex = 0;
-        //현제 맵이 몇번째 index인지 확인
-        for (int i = 0; i < mapGenerator.mapList.Count; i++)
-        {
-            Map map = mapGenerator.mapList[i];
-
-            // 현재 활성화된 맵인지 확인
-            if (map.transform.gameObject.activeSelf)
-            {
-                mapIndex = i;
-                continue; // 활성화된 맵의 인덱스 반환
-            }
-        }
-        /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
-        //맵list에서 현제맵을 가져옴
-        LocalDisckUISet(mapIndex);
-    }
-
-    public void LocalDisckUISet(int mapIndex)
-    {
-        AddressSet(mapIndex);
-        for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
-        {
-            Transform child = localDiskContent.transform.GetChild(i);
-
-            if (child != null)
-            {
-                Destroy(child.gameObject); // 자식 객체 삭제
-            }
-        }
-        GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
-
-        if (mapIndex == 0)
-        {
-            //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
-            foreach (Transform child in currentMap.transform)
-            {
-                Portal curretnportal = child.GetComponent<Portal>();
-                if (curretnportal != null)
-                {
-                    GameObject portalUI = Instantiate(UIPortal);
-                    portalUI.transform.SetParent(localDiskContent.transform);
-                    portalUI.transform.SetAsLastSibling();
-                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
-                    Text mapName = portalUI.GetComponentInChildren<Text>();
-                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
-                    Image portalImage = images[1];
-
-                    if (curretnportal.connectPortal != null)
-                    {
-                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-                        // 맵 이름을 설정합니다.
-                        mapName.text = connectedMap.mapName;
-                        // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
-                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
-                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
-
-                        if (connectedMap != null)
-                        {
-                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
-                            if (connectedMap.isClear)
-                            {
-                                switch (connectedMap.Type)
-                                {
-                                    case Map.MapType.Middle:
-                                        portalImage.sprite = portalUiList[0];
-                                        continue;
-
-                                    case Map.MapType.Boss:
-                                        portalImage.sprite = portalUiList[1];
-                                        continue;
-
-                                    case Map.MapType.Download:
-                                        portalImage.sprite = portalUiList[2];
-                                        continue;
-                                    case Map.MapType.Shop:
-                                        portalImage.sprite = portalUiList[3];
-                                        continue;
-                                    case Map.MapType.RandomSpecial:
-                                        switch (connectedMap.mapName)
-                                        {
-                                            case "휴지통":
-                                                portalImage.sprite = portalUiList[4];
-                                                continue;
-                                            case "전원 옵션":
-                                                portalImage.sprite = portalUiList[5];
-                                                continue;
-                                            case "JuvaCafe":
-                                                portalImage.sprite = portalUiList[6];
-                                                continue;
-                                            case "Window 방화벽":
-                                                portalImage.sprite = portalUiList[7];
-                                                continue;
-                                        }
-                                        continue;
-                                }
-                            }
-                            else
-                            {
-                                Debug.Log("여기");
-                                switch (connectedMap.Type)
-                                {
-                                    case Map.MapType.Middle:
-                                        portalImage.sprite = closePortalUiList[0];
-                                        continue;
-                                    case Map.MapType.Boss:
-                                        portalImage.sprite = closePortalUiList[1];
-                                        continue;
-                                    case Map.MapType.Download:
-                                        if (curretnportal.isLock)
-                                        {
-                                            portalImage.sprite = closePortalUiList[3];
-                                        }
-                                        else
-                                        {
-                                            portalImage.sprite = closePortalUiList[2];
-                                        }
-                                        continue;
-                                    case Map.MapType.Shop:
-                                        if (curretnportal.isLock)
-                                        {
-                                            portalImage.sprite = closePortalUiList[4];
-                                        }
-                                        else
-                                        {
-                                            portalImage.sprite = closePortalUiList[5];
-                                        }
-                                        continue;
-                                    case Map.MapType.RandomSpecial:
-                                        switch (connectedMap.mapName)
-                                        {
-                                            case "휴지통":
-                                                portalImage.sprite = closePortalUiList[6];
-                                                continue;
-                                            case "전원 옵션":
-                                                portalImage.sprite = closePortalUiList[7];
-                                                continue;
-                                            case "JuvaCafe":
-                                                portalImage.sprite = closePortalUiList[8];
-                                                continue;
-                                            case "Window 방화벽":
-                                                portalImage.sprite = closePortalUiList[9];
-                                                continue;
-                                        }
-                                        continue;
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
-            //0번째 방일때 현제맵의 아이템을 가져와서 ui갱신
-            foreach (Transform child in currentMap.transform)
-            {
-                item fildItem = child.GetComponent<item>();
-                if (fildItem != null)
-                {
-                    switch (fildItem.itemType)
-                    {
-                        case item.ItemType.Coin:
-                            switch (fildItem.itemScore)
-                            {
-                                case 1:
-                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
-                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
-                                    oneCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 5:
-                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
-                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
-                                    fiveCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 10:
-                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
-                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
-                                    tenCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 15:
-                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
-                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
-                                    fifteenCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                            }
-                            continue;
-                        case item.ItemType.Heal:
-                            GameObject healUI = Instantiate(itemImageList[0]);
-                            healUI.transform.SetParent(localDiskContent.transform);
-                            healUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.TemHp:
-                            GameObject itemUI = Instantiate(itemImageList[0]);
-                            itemUI.transform.SetParent(localDiskContent.transform);
-                            itemUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.Shiled:
-                            GameObject shiledUI = Instantiate(itemImageList[0]);
-                            shiledUI.transform.SetParent(localDiskContent.transform);
-                            shiledUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.Spark:
-                            GameObject sparkUI = Instantiate(itemImageList[0]);
-                            sparkUI.transform.SetParent(localDiskContent.transform);
-                            sparkUI.transform.SetAsLastSibling();
-                            continue;
-                    }
-
-
-                }
-
-            }
-        }
-        else
-        {
-            List<GameObject> currentPortalList = new();
-            foreach (Transform child in currentMap.transform)
-            {
-                Portal curretnportal = child.GetComponent<Portal>();
-                if (curretnportal != null)
-                {
-                    GameObject portalUI = Instantiate(UIPortal);
-                    portalUI.transform.SetParent(localDiskContent.transform);
-                    portalUI.transform.SetAsLastSibling();
-                    LocalDisk_UI.GetComponent<LocalDiskUI>().telMap = currentMap;
-                    currentPortalList.Add(portalUI);
-                    Text mapName = portalUI.GetComponentInChildren<Text>();
-                    Image[] images = portalUI.GetComponentsInChildren<Image>(true);
-                    Image portalImage = images[1];
-
-                    if (curretnportal.connectPortal != null)
-                    {
-                        Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-                        mapName.text = connectedMap.mapName;
-                        portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
-                            mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
-                        if (connectedMap != null)
-                        {
-                            // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
-                            if (connectedMap.isClear)
-                            {
-                                switch (connectedMap.Type)
-                                {
-                                    case Map.MapType.Middle:
-                                        portalImage.sprite = portalUiList[0];
-                                        continue;
-
-                                    case Map.MapType.Boss:
-                                        portalImage.sprite = portalUiList[1];
-                                        continue;
-
-                                    case Map.MapType.Download:
-                                        portalImage.sprite = portalUiList[2];
-                                        continue;
-                                    case Map.MapType.Shop:
-                                        portalImage.sprite = portalUiList[3];
-                                        continue;
-                                    case Map.MapType.RandomSpecial:
-                                        switch (connectedMap.mapName)
-                                        {
-                                            case "휴지통":
-                                                portalImage.sprite = portalUiList[4];
-                                                continue;
-                                            case "전원 옵션":
-                                                portalImage.sprite = portalUiList[5];
-                                                continue;
-                                            case "JuvaCafe":
-                                                portalImage.sprite = portalUiList[6];
-                                                continue;
-                                            case "Window 방화벽":
-                                                portalImage.sprite = portalUiList[7];
-                                                continue;
-                                        }
-                                        continue;
-                                }
-                            }
-                            else
-                            {
-                                switch (connectedMap.Type)
-                                {
-                                    case Map.MapType.Middle:
-                                        portalImage.sprite = closePortalUiList[0];
-                                        continue;
-                                    case Map.MapType.Boss:
-                                        portalImage.sprite = closePortalUiList[1];
-                                        continue;
-                                    case Map.MapType.Download:
-                                        if (curretnportal.isLock)
-                                        {
-                                            portalImage.sprite = closePortalUiList[3];
-                                        }
-                                        else
-                                        {
-                                            portalImage.sprite = closePortalUiList[2];
-                                        }
-                                        continue;
-                                    case Map.MapType.Shop:
-                                        if (curretnportal.isLock)
-                                        {
-                                            portalImage.sprite = closePortalUiList[4];
-                                        }
-                                        else
-                                        {
-                                            portalImage.sprite = closePortalUiList[5];
-                                        }
-                                        continue;
-                                    case Map.MapType.RandomSpecial:
-                                        switch (connectedMap.mapName)
-                                        {
-                                            case "휴지통":
-                                                portalImage.sprite = closePortalUiList[6];
-                                                continue;
-                                            case "전원 옵션":
-                                                portalImage.sprite = closePortalUiList[7];
-                                                continue;
-                                            case "JuvaCafe":
-                                                portalImage.sprite = closePortalUiList[8];
-                                                continue;
-                                            case "Window 방화벽":
-                                                portalImage.sprite = closePortalUiList[9];
-                                                continue;
-                                        }
-                                        continue;
-                                }
-                            }
-
-                        }
-                    }
-                }
-            }
-            Destroy(currentPortalList[0].gameObject);
-            currentPortalList.RemoveAt(0);
-            foreach (Transform child in currentMap.transform)
-            {
-                item fildItem = child.GetComponent<item>();
-                if (fildItem != null)
-                {
-                    switch (fildItem.itemType)
-                    {
-                        case item.ItemType.Coin:
-                            switch (fildItem.itemScore)
-                            {
-                                case 1:
-                                    GameObject oneCoinUI = Instantiate(itemImageList[0]);
-                                    oneCoinUI.transform.SetParent(localDiskContent.transform);
-                                    oneCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 5:
-                                    GameObject fiveCoinUI = Instantiate(itemImageList[1]);
-                                    fiveCoinUI.transform.SetParent(localDiskContent.transform);
-                                    fiveCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 10:
-                                    GameObject tenCoinUI = Instantiate(itemImageList[2]);
-                                    tenCoinUI.transform.SetParent(localDiskContent.transform);
-                                    tenCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                                case 15:
-                                    GameObject fifteenCoinUI = Instantiate(itemImageList[3]);
-                                    fifteenCoinUI.transform.SetParent(localDiskContent.transform);
-                                    fifteenCoinUI.transform.SetAsLastSibling();
-                                    continue;
-                            }
-                            continue;
-                        case item.ItemType.Heal:
-                            GameObject healUI = Instantiate(itemImageList[0]);
-                            healUI.transform.SetParent(localDiskContent.transform);
-                            healUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.TemHp:
-                            GameObject itemUI = Instantiate(itemImageList[0]);
-                            itemUI.transform.SetParent(localDiskContent.transform);
-                            itemUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.Shiled:
-                            GameObject shiledUI = Instantiate(itemImageList[0]);
-                            shiledUI.transform.SetParent(localDiskContent.transform);
-                            shiledUI.transform.SetAsLastSibling();
-                            continue;
-                        case item.ItemType.Spark:
-                            GameObject sparkUI = Instantiate(itemImageList[0]);
-                            sparkUI.transform.SetParent(localDiskContent.transform);
-                            sparkUI.transform.SetAsLastSibling();
-                            continue;
-                    }
-
-
-                }
-
-            }
-        }
-        /*AddressSet(mapIndex);*/
-    }
-    public void AddressSet(int mapIndex)
-    {
-        addressList.Clear();
-        List<Map> temList = new();
-        Map currentMap = mapGenerator.mapList[mapIndex];
-        //반복시켜야함
-        if (currentMap != null)
-        {
-
-            while (true)
-            {
-                Debug.Log("반복은함");
-                InfiniteLoopDetector.Run();
-                if (currentMap.Type == Map.MapType.Start)
-                {
-                    break;
-                }
-                //현재 맵을 가져와서 연결된맵을 리스트에 추가
-                int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
-                Debug.Log(siblingIndex);
-                if (siblingIndex != 0)
-                {
-                    //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
-                    Transform nowMap = mapGenerator.map.transform.GetChild(siblingIndex);
-                    Portal currentMapPortal = nowMap.GetComponentInChildren<Portal>();
-                    Portal connectPortal = currentMapPortal.connectPortal;
-                    Map connectMap = connectPortal.currentMap.GetComponent<Map>();
-                    temList.Add(currentMap);
-                    currentMap = connectMap;
-                }
-
-            }
-
-        }
-
-        temList.Add(mapGenerator.mapList[0]);
-
-        for (int i = temList.Count - 1; i >= 0; i--)
-        {
-            addressList.Add(temList[i]);
-        }
-        Text addressText = address.GetComponent<Text>();
-        addressText.text = "C:\\";
-        for (int i = 0; i < addressList.Count; i++)
-        {
-            addressText.text += addressList[i].mapName + " > ";
-        }
-        addressText.text = addressText.text.TrimEnd('>');
-
-    }
-
-    public void ClearGame()
-    {
-        ClearUI.SetActive(true);
-    }
-
-    public void FClearButton()
-    {
-        FReStartButton();
-        HPUIActiveSetting();
-        ClearUI.SetActive(false);
     }
 }

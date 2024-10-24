@@ -30,7 +30,7 @@ public class StatusManager : MonoBehaviour
     public float B_MoveSpeed; // 이동속도
     public int B_Coin; // 코인 개수
     public int B_CurrentStorage;
-
+    public int B_MaxStorage;
 
     // When player in game, playing with this status
     // This status are no need to reset.
