@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4943023787842292218}
   - component: {fileID: 4943023787842292219}
   - component: {fileID: 2303109008998102207}
-  - component: {fileID: 6127081987044880287}
+  - component: {fileID: 812925900285062468}
   m_Layer: 0
   m_Name: Solitaire_Card
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.71, y: 0.82}
   m_EdgeRadius: 0
---- !u!114 &6127081987044880287
+--- !u!114 &812925900285062468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,10 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImageNumber: 0000000001000000060000000b00000002000000010000000400000003000000
-  itemScore: 1
+  itemScore: 0
   itemType: 5
-  ItemName: "\uCE74\uB4DC\uD329\uD329"
-  ItemInfomation: "\uB098\uB294\uC57C\uCE74\uB4DC\uD328\uC561"
-  ItemSize: 10
+  ItemName: "\uCE74\uB4DC\uD329"
+  ItemInfomation: "\uC0AC\uC6A9\uD558\uBA74 \uC88B\uC740 \uC77C\uC774 \uC77C\uC5B4\uB0A0\uC9C0\uB3C4..?"
+  ItemSize: 77
   IsAvailable: 0

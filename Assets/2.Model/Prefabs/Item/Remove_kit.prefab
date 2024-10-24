@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4456502218440765472}
   - component: {fileID: 4456502218440765487}
   - component: {fileID: 141948745424560136}
-  - component: {fileID: 5097587218303765602}
+  - component: {fileID: 1332212826214526169}
   m_Layer: 0
   m_Name: Remove_kit
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 0.78}
   m_EdgeRadius: 0
---- !u!114 &5097587218303765602
+--- !u!114 &1332212826214526169
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,9 +124,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemScore: 1
+  itemScore: 0
   itemType: 6
-  ItemName: "\uD504\uB85C\uADF8\uB7A8 \uC81C\uAC70\uD234"
-  ItemInfomation: "\uC81C\uAC70\uD234\uC815\uBCF4\uC815\uBCF4\uC815\uBCF4\uC815\uBCF4"
-  ItemSize: 13
+  ItemName: "\uD504\uB85C\uADF8\uB7A8 \uC81C\uAC70 \uD0A4\uD2B8"
+  ItemInfomation: "\uD504\uB85C\uADF8\uB7A8\uC744 \uC81C\uAC70\uD569\uB2C8\uB2E4"
+  ItemSize: 5
   IsAvailable: 0
