@@ -628,7 +628,7 @@ public class UIManager : MonoBehaviour
         UIDeactivation();
         MyPC_UI.SetActive(true);
         AdressReset();
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "내 PC";
     }
 
@@ -637,7 +637,7 @@ public class UIManager : MonoBehaviour
         UIDeactivation();
         DownLoad_UI.SetActive(true);
         AdressReset();
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "다운로드";
     }
 
@@ -646,7 +646,7 @@ public class UIManager : MonoBehaviour
         UIDeactivation();
         My_Documents_UI.SetActive(true);
         AdressReset();
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "내 문서";
     }
 
@@ -661,7 +661,7 @@ public class UIManager : MonoBehaviour
         UIDeactivation();
         ControlOptions_UI.SetActive(true);
         AdressReset();
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "제어판";
     }
 
@@ -670,7 +670,7 @@ public class UIManager : MonoBehaviour
         UIDeactivation();
         Help_UI.SetActive(true);
         AdressReset();
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "도움말";
     }
 
@@ -1270,14 +1270,14 @@ public class UIManager : MonoBehaviour
         for (int i = 0; i < adressList.Count; i++)
         {
             Adress_Button adressObj = Instantiate(adressButton, adressParent.transform);
-            Text adressText = adressObj.GetComponent<Text>();
+            Text adressText = adressObj.GetComponentInChildren<Text>();
             adressText.text += adressList[i].mapName + " > ";
         }
-        Text firstChildText = adressParent.transform.GetChild(0).GetComponent<Text>();
+        Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
         firstChildText.text = "C:\\";
         // 마지막 자식의 Text 변경
         int lastIndex = adressParent.transform.childCount - 1;
-        Text lastChildText = adressParent.transform.GetChild(lastIndex).GetComponent<Text>();
+        Text lastChildText = adressParent.transform.GetChild(lastIndex).GetComponentInChildren<Text>();
         Debug.Log(lastChildText.text);
         lastChildText.text = lastChildText.text.Replace(">", "");
         /*adressText.text = adressText.text.TrimEnd('>');*/

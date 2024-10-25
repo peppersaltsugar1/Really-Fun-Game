@@ -21,6 +21,13 @@ public class TeleportManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            HiddenTel();
+        }
+    }
     public static TeleportManager Instance
     {
         get
@@ -111,7 +118,32 @@ public class TeleportManager : MonoBehaviour
     }
     public void HiddenTel()
     {
+        int currentMapIndex = 0;
+        for (int i = 0; i < mapGenerator.mapList.Count; i++)
+        {
+            Map map = mapGenerator.mapList[i];
+
+            // 현재 활성화된 맵인지 확인
+            if (map.transform.gameObject.activeSelf)
+            {
+                currentMapIndex = i;
+                continue; // 활성화된 맵의 인덱스 반환
+            }
+        }
+        mapGenerator.mapList[currentMapIndex].gameObject.SetActive(false);
+
+        // 랜덤으로 히든 맵 선택
         int hiddenIndex = Random.Range(0, mapGenerator.hiddenMap.transform.childCount);
-        gameManager.player.transform.position = mapGenerator.hiddenMap.transform.GetChild(hiddenIndex).transform.Find("TeleportPoint").transform.position;
+        GameObject hiddenMap = mapGenerator.hiddenMap.transform.GetChild(hiddenIndex).gameObject;
+        Debug.Log(hiddenMap);
+        // 선택한 히든 맵 활성화
+        hiddenMap.SetActive(true);
+
+        // 플레이어의 텔레포트 위치 설정
+        Vector2 telPoint = hiddenMap.transform.Find("TeleportPoint").transform.position;
+        gameManager.player.transform.position = telPoint;
+
+        // 카메라 제한 설정
+        cameraManager.CameraLimit(hiddenMap);
     }
 }
