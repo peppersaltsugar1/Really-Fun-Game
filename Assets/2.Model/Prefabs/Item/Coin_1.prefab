@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1170710182440163478}
   - component: {fileID: 1170710182440163472}
   - component: {fileID: 8688139333198738591}
-  - component: {fileID: 7083600907167492211}
+  - component: {fileID: 5725255977768535180}
   m_Layer: 0
   m_Name: Coin_1
   m_TagString: Untagged
@@ -123,7 +123,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.31
---- !u!114 &7083600907167492211
+--- !u!114 &5725255977768535180
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,9 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemScore: 2
+  itemScore: 1
   itemType: 0
-  ItemName: "\uAC00_\uAC00\uB85C\uC2DC\uC791\uD558\uB294\uCF54\uC778"
-  ItemInfomation: "\uCF54\uC778\uC774\uC9C0\uC694~"
-  ItemSize: 110
+  ItemName: "\uC559\uC8FC"
+  ItemInfomation: "\uB77C\uC774\uB824\u3151\uC5B4\u314F\u3153"
+  ItemSize: 2
   IsAvailable: 0
