@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4943023787842292218}
   - component: {fileID: 4943023787842292219}
   - component: {fileID: 2303109008998102207}
-  - component: {fileID: 812925900285062468}
+  - component: {fileID: 7688860683293819615}
   m_Layer: 0
   m_Name: Solitaire_Card
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.71, y: 0.82}
   m_EdgeRadius: 0
---- !u!114 &812925900285062468
+--- !u!114 &7688860683293819615
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

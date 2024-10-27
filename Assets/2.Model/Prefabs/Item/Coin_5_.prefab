@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1064887551674864826}
   - component: {fileID: 1064887551674864824}
   - component: {fileID: 7271644082962523691}
-  - component: {fileID: 8563521343673137360}
+  - component: {fileID: 801412178065890092}
   m_Layer: 0
   m_Name: Coin_5_
   m_TagString: Untagged
@@ -123,7 +123,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.32
---- !u!114 &8563521343673137360
+--- !u!114 &801412178065890092
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
