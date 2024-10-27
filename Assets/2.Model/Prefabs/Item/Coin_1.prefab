@@ -135,9 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemScore: 1
+  itemScore: 2
   itemType: 0
   ItemName: "\uAC00_\uAC00\uB85C\uC2DC\uC791\uD558\uB294\uCF54\uC778"
   ItemInfomation: "\uCF54\uC778\uC774\uC9C0\uC694~"
-  ItemSize: 42424
+  ItemSize: 110
   IsAvailable: 0
