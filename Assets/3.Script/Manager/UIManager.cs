@@ -51,6 +51,12 @@ public class UIManager : MonoBehaviour
     public Text DeathSign;
     public bool HPUIActive;
 
+    // HUD
+    public Text KeyCount;
+    public Text CoinCount;
+    public Text BombCount;
+    public Text MonsterCount;
+
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -96,6 +102,7 @@ public class UIManager : MonoBehaviour
     public Transform ContentProgramGroup;
     public Button ProgramDeleteButton;
     private int CurrentProgram = -1;
+
 
     // Item UI
     public GameObject Button_Item_Prefab;
@@ -219,8 +226,6 @@ public class UIManager : MonoBehaviour
         SFXButton.onClick.AddListener(FSFXButton);
         SFXVolumeMuteImage.SetActive(false);
 
-       
-
         // Basic UI Setting
         ReStartButton.onClick.AddListener(FReStartButton);
         GoToDesktop.onClick.AddListener(FDesktop_Button);
@@ -237,6 +242,15 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // ================ HUD Section ================
+    public void UpdateHUD()
+    {
+        KeyCount.text = ItemManager.Instance.GetKeyCount().ToString();
+        CoinCount.text = ItemManager.Instance.GetCoinCount().ToString();
+        BombCount.text = ItemManager.Instance.GetBombCount().ToString(); ;
+        MonsterCount.text = "";
+    }
+
     // ================ My Documents Section ================
     public void GenerateItemList()
     {
@@ -248,7 +262,7 @@ public class UIManager : MonoBehaviour
         }
         Debug.Log("자식 제거 완료");
 
-        foreach (var kvp in itemManager.itemList) 
+        foreach (var kvp in itemManager.itemList)
         {
             string itemName = kvp.Key;
             List<Item> items = kvp.Value;
@@ -284,7 +298,7 @@ public class UIManager : MonoBehaviour
                 {
                     Debug.LogError("자식 오브젝트를 찾을 수 없습니다.");
                 }
-                
+
             }
         }
 
@@ -430,7 +444,7 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-   
+
     // UI Deactivation
     public void UIDeactivation()
     {
@@ -687,7 +701,7 @@ public class UIManager : MonoBehaviour
 #endif
     }
 
-    
+
 
     // ================ Setting Function ================
     // ScreenMode
@@ -1239,7 +1253,7 @@ public class UIManager : MonoBehaviour
 
             while (true)
             {
-              
+
                 if (currentMap.Type == Map.MapType.Start)
                 {
                     break;
@@ -1267,8 +1281,8 @@ public class UIManager : MonoBehaviour
         {
             adressList.Add(temList[i]);
         }
-        
-        
+
+
         for (int i = 0; i < adressList.Count; i++)
         {
             Adress_Button adressObj = Instantiate(adressButton, adressParent.transform);

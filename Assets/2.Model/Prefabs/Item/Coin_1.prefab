@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemScore: 1
   itemType: 0
-  ItemName: "\uC559\uC8FC"
+  ItemName: "(1) \uBA54\uAC00 \uBC14\uC774\uD2B8 \uCF54\uC778"
   ItemInfomation: "\uB77C\uC774\uB824\u3151\uC5B4\u314F\u3153"
   ItemSize: 2
   IsAvailable: 0
