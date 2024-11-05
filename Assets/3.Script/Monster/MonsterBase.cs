@@ -121,32 +121,36 @@ public class MonsterBase : MonoBehaviour
     // Player Collision
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.isTrigger)
         {
-            if (statusManager != null)
+            if (collision.gameObject.CompareTag("Player"))
             {
-                statusManager.TakeDamage(AttackPower, monsterType);
+                if (statusManager != null)
+                {
+                    statusManager.TakeDamage(AttackPower, monsterType);
+                }
+                else
+                {
+                    Debug.Log("Monster OnTriggerEnter2D : Player Not Found");
+                }
+                if (monsterType != MonsterType.M_SpiderCardPack)
+                {
+                    rb.velocity = Vector3.zero;
+                    rb.angularVelocity = 0f;
+                }
             }
-            else
-            {
-                Debug.Log("Monster OnTriggerEnter2D : Player Not Found");
-            }
-            if (monsterType != MonsterType.M_SpiderCardPack)
-            {
-                rb.velocity = Vector3.zero;
-                rb.angularVelocity = 0f;
-            }
-        }
 
-        if (collision.gameObject.CompareTag("Bullet"))
-        {
-            // Debug.Log("Monster Take Damage");
-            this.HP -= statusManager.AttackPower * DefenseRate;
-            Destroy(collision.gameObject);
-
-            if (HP <= 0)
+            if (collision.gameObject.CompareTag("Bullet"))
             {
-                Die();
+                // Debug.Log("Monster Take Damage");
+                Destroy(collision.gameObject);
+                Debug.Log("Attack Damage : " + statusManager.AttackPower * DefenseRate);
+                this.HP -= statusManager.AttackPower * DefenseRate;
+                
+                if (HP <= 0)
+                {
+                    Die();
+                }
             }
         }
     }
