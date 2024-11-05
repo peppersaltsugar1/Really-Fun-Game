@@ -81,6 +81,7 @@ public class UIManager : MonoBehaviour
     public Text BulletVelocityText;
     public Text RangeText;
     public Text MoveSpeedText;
+    public Text Storage;
 
     // BulletManger
     private PoolingManager BInstance;
@@ -355,7 +356,7 @@ public class UIManager : MonoBehaviour
     public void UpdateStorage()
     {
         i_StorageView.fillAmount = (float)statusManager.CurrentStorage / (statusManager.B_MaxStorage);
-        t_StorageRate.text = statusManager.B_MaxStorage.ToString() + "MB 중 " + (statusManager.B_MaxStorage - statusManager.CurrentStorage).ToString() + "MB 사용 가능";
+        t_StorageRate.text = statusManager.MaxStorage.ToString() + "MB 중 " + (statusManager.MaxStorage - statusManager.CurrentStorage).ToString() + "MB 사용 가능";
     }
 
     public void RemoveItemDetail()
@@ -451,6 +452,7 @@ public class UIManager : MonoBehaviour
             BulletVelocityText.text = BInstance.bulletPool.Peek().speed.ToString();
             RangeText.text = statusManager.AngleRange.ToString();
             MoveSpeedText.text = statusManager.MoveSpeed.ToString();
+            Storage.text = statusManager.CurrentStorage.ToString();
         }
     }
 
