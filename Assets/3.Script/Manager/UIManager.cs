@@ -103,6 +103,34 @@ public class UIManager : MonoBehaviour
     public Button ProgramDeleteButton;
     private int CurrentProgram = -1;
 
+    public GameObject DownLoadUI;
+    public bool FinishedInstall = false;
+
+    public Image ProgramImage0;
+    public Image ProgramImage1;
+    public Image ProgramImage2;
+    public Image ProgramImage3;
+
+    public GameObject DownLoadUI0;
+    public Button UI_0_Next;
+    public Button UI_0_Exit;
+    public Button UI_0_Cancel;
+
+    public GameObject DownLoadUI1;
+    public Button UI_1_Before;
+    public Button UI_1_Exit;
+    public Button UI_1_Next;
+    public Button UI_1_Cancel;
+    public Text UI_1_Info;
+
+    public GameObject DownLoadUI2;
+    public Animator DAnimator;
+
+    public GameObject DownLoadUI3;
+    public Button UI_3_Exit;
+    public Button UI_3_End;
+
+    public int CurrentUIIndex;
 
     // Item UI
     public GameObject Button_Item_Prefab;
@@ -200,6 +228,21 @@ public class UIManager : MonoBehaviour
         // ProgramList Setting
         programManager = ProgramManager.Instance;  // ProgramManager 싱글턴 참조
         GenerateProgramList();
+
+
+        UI_0_Next.onClick.AddListener(FNextButton);
+        UI_0_Cancel.onClick.AddListener(FDownLoadUIExit);
+        UI_0_Exit.onClick.AddListener(FDownLoadUIExit);
+
+        UI_1_Before.onClick.AddListener(FBeforeButton);
+        UI_1_Next.onClick.AddListener(FNextButton);
+        UI_1_Cancel.onClick.AddListener(FDownLoadUIExit);
+        UI_1_Exit.onClick.AddListener(FDownLoadUIExit);
+
+        //DAnimator = DownLoadUI2.GetComponentInChildren<Animator>();
+
+        UI_3_End.onClick.AddListener(FDownLoadUIExit);
+        UI_3_Exit.onClick.AddListener(FDownLoadUIExit);
 
         // ItemList Ssetting
         itemManager = ItemManager.Instance;
@@ -589,6 +632,123 @@ public class UIManager : MonoBehaviour
             Debug.LogError("Image component not found");
         }
     }
+
+    public void ProgramInstallUI(int index)
+    {
+        CurrentUIIndex = index;
+        switch (index)
+        {
+            case 0:
+                Time.timeScale = 0.0f;
+                DownLoadUI.SetActive(true);
+                DownLoadUI0.SetActive(true);
+                break;
+            case 1:
+                DownLoadUI1.SetActive(true);
+                break;
+            case 2:
+                DownLoadUI2.SetActive(true);
+                DAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                StartCoroutine(PlayInstallAnimation());
+                break;
+            case 3:
+                FinishedInstall = true;
+                DownLoadUI3.SetActive(true);
+                break;
+            default:
+                Debug.Log("Out of Index");
+                break;
+        }
+    }
+
+    private IEnumerator PlayInstallAnimation()
+    {
+        DAnimator.speed = 0.5f;
+        Debug.Log("In Coroutine");
+        int animationNum = Random.Range(0, 5);
+
+        Debug.Log("Num : " + animationNum);
+        float animationDuration = 2f;
+
+        switch (animationNum)
+        {
+            case 0:
+                DAnimator.SetTrigger("Bar_1");
+                animationDuration = 6.0f;
+                break;
+            case 1:
+                DAnimator.SetTrigger("Bar_2");
+                animationDuration = 12.0f;
+                break;
+            case 2:
+                DAnimator.SetTrigger("Bar_3");
+                animationDuration = 13.0f;
+                break;
+            case 3:
+                DAnimator.SetTrigger("Bar_4");
+                animationDuration = 12.0f;
+                break;
+            case 4:
+                DAnimator.SetTrigger("Bar_5");
+                animationDuration = 6.0f;
+                break;
+            default:
+                Debug.Log("Out of Index");
+                break;
+        }
+
+        yield return new WaitForSecondsRealtime(animationDuration);
+
+        DownLoadUI2.SetActive(false);
+        ProgramInstallUI(CurrentUIIndex + 1);
+    }
+
+    public void FNextButton()
+    {
+        switch (CurrentUIIndex)
+        {
+            case 0:
+                DownLoadUI0.SetActive(false);
+                ProgramInstallUI(CurrentUIIndex + 1);
+                break;
+            case 1:
+                DownLoadUI1.SetActive(false);
+                ProgramInstallUI(CurrentUIIndex + 1);
+                break;
+            default:
+                Debug.Log("Out of Index");
+                break;
+        }
+    }
+
+    public void FDownLoadUIExit()
+    {
+        switch (CurrentUIIndex)
+        {
+            case 0:
+                DownLoadUI0.SetActive(false);
+                break;
+            case 1:
+                DownLoadUI1.SetActive(false);
+                break;
+            case 3:
+                DownLoadUI3.SetActive(false);
+                break;
+            default:
+                Debug.Log("Out of Index");
+                break;
+        }
+        DownLoadUI.SetActive(false);
+        Time.timeScale = 1.0f;
+    }
+
+    public void FBeforeButton()
+    {
+        CurrentUIIndex = CurrentUIIndex - 1;
+        DownLoadUI1.SetActive(false);
+        DownLoadUI0.SetActive(true);
+    }
+
 
     // 여기에 아이템 함수 널꺼임
 
