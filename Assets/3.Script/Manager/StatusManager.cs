@@ -54,7 +54,7 @@ public class StatusManager : MonoBehaviour
     public float MoveSpeed;
     public int Coin;
     public int CurrentStorage;
-
+    public int MaxStorage;
 
     void Awake()
     {
@@ -93,6 +93,7 @@ public class StatusManager : MonoBehaviour
         MoveSpeed = B_MoveSpeed;
         Coin = B_Coin;
         CurrentStorage = B_CurrentStorage;
+        MaxStorage = B_MaxStorage;
     }
 
     // =============================== Fixed Section ===============================
@@ -249,5 +250,10 @@ public class StatusManager : MonoBehaviour
     public void ElectShieldExplode()
     {
         Debug.Log("ElectShieldExplode Is Not Defined");
+    }
+
+    public void MaxStorageUp(int Value)
+    {
+        MaxStorage += Value;
     }
 }

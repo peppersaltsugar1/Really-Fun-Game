@@ -47,10 +47,11 @@ public class Weapon : MonoBehaviour
 
     public void UseBasicWeapon()
     {
-        attackSpeed =0.5f;
+        attackSpeed = 0.5f;
     }
     public void Fire()
     {
+        Debug.Log("Fire");
         PoolingManager poolingManager = PoolingManager.Instance;
         if (poolingManager.bulletPool.Count > 0)
         {
@@ -84,12 +85,13 @@ public class Weapon : MonoBehaviour
     }
     private void TryFire()
     {
-        // 현재 시간이 다음 공격 시간보다 크거나 같을 때만 공격
+        float attackInterval = 1f / StatusManager.Instance.AttackSpeed;
+
         if (Time.time >= nextFireTime)
         {
             Fire();
             SoundManager.Instance.PlayerFireSound();
-            nextFireTime = Time.time + attackSpeed; // 다음 공격 가능한 시간 업데이트
+            nextFireTime = Time.time + attackInterval; // 다음 공격 가능한 시간 업데이트
         }
     }
 

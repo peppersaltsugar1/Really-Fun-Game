@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemScore: 1
   itemType: 4
-  ItemName: "\uD0A4"
+  ItemName: "\uC7A0\uAE08\uD30C\uC77C \uD574\uB3C5 \uD0A4"
   ItemInfomation: "\uB098\uB294\uD0A4\uC774\uC9C0\uC694"
   ItemSize: 15
   IsAvailable: 0

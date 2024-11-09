@@ -145,7 +145,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.47
+  m_Radius: 0.45
 --- !u!58 &7509492775881251388
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -161,7 +161,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.44
+  m_Radius: 0.26
 --- !u!114 &3874364526117844258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +178,7 @@ MonoBehaviour:
   MoveSpeed: 0.5
   AttackPower: 1
   HP: 12
+  DefenseRate: 0
   DetectingAreaR: 9
   AttackCoolTime: 4
   BulletPrefab: {fileID: 6926711150965903544, guid: 97b8fb3385f86ab45b360b9c573513bc, type: 3}
