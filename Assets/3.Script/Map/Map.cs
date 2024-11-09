@@ -9,6 +9,7 @@ public class Map : MonoBehaviour
     public int PortalNum;
     public string mapName;
     public bool isClear;
+    public int currentMonsterNum;
 
     public float nowPosition;
 
@@ -32,7 +33,9 @@ public class Map : MonoBehaviour
     void Update()
     {
         nowPosition = transform.position.x;
+        MonsterCheck();
         MapClearCheck();
+        
     }
 
     public void MapClearCheck()
@@ -48,6 +51,22 @@ public class Map : MonoBehaviour
                 }
             }
             isClear = true;
+        }
+    }
+    public void MonsterCheck()
+    {
+        int checkMonsterNum = 0;
+        if (Type != Map.MapType.Start)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                if (transform.GetChild(i).CompareTag("Monster"))
+                {
+                    checkMonsterNum++;
+                }
+            }
+            currentMonsterNum = checkMonsterNum;
+           
         }
     }
 }
