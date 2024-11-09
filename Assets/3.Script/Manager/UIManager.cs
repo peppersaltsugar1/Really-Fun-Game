@@ -291,9 +291,11 @@ public class UIManager : MonoBehaviour
         KeyCount.text = ItemManager.Instance.GetKeyCount().ToString();
         CoinCount.text = ItemManager.Instance.GetCoinCount().ToString();
         BombCount.text = ItemManager.Instance.GetBombCount().ToString(); ;
-        MonsterCount.text = "";
     }
-
+    public void MonsterCountHUDSet(int monsterNum)
+    {
+        MonsterCount.text = monsterNum.ToString();
+    }
     // ================ My Documents Section ================
     public void GenerateItemList()
     {

@@ -10,6 +10,7 @@ public class Map : MonoBehaviour
     public string mapName;
     public bool isClear;
     public int currentMonsterNum;
+    UIManager uiManager;
 
     public float nowPosition;
 
@@ -26,7 +27,7 @@ public class Map : MonoBehaviour
     }
     void Start()
     {
-
+        uiManager = UIManager.Instance;
     }
 
     // Update is called once per frame
@@ -66,7 +67,12 @@ public class Map : MonoBehaviour
                 }
             }
             currentMonsterNum = checkMonsterNum;
-           
+            uiManager.MonsterCountHUDSet(checkMonsterNum);
+        }
+        else
+        {
+            currentMonsterNum = 0;
+            uiManager.MonsterCountHUDSet(checkMonsterNum);
         }
     }
 }

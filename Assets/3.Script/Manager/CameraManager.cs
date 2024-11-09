@@ -13,6 +13,19 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private CinemachineVirtualCamera cinemachineVir;
     GameManager gameManager;
+    [Header("특수맵 카메라 조정")]
+    [SerializeField]
+    private float chargeCamera;
+    [SerializeField]
+    private float guardCamera;
+    [SerializeField]
+    private float trashCamera;
+    [SerializeField]
+    private float cafeCamera;
+    [SerializeField]
+    private float downloadCamera;
+    [SerializeField]
+    private float shopCamera;
     
 
     private void Awake()
@@ -52,27 +65,27 @@ public class CameraManager : MonoBehaviour
         {
             case "전원 옵션":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = chargeCamera;
                 break;
             case "Window 방화벽":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = guardCamera;
                 break;
             case "JuvaCafe":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = cafeCamera;
                 break;
             case "휴지통":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = trashCamera;
                 break;
             case "Download":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = downloadCamera;
                 break;
             case "Shop":
                 //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = 6f;
+                cinemachineVir.m_Lens.OrthographicSize = shopCamera;
                 break;
         }
     }

@@ -125,4 +125,32 @@ public class ItemManager : MonoBehaviour
         }
         return BombCount;
     }
+
+    public bool KeyUse()
+    {
+        string keyName = "잠금파일 해독 키"; // 찾고자 하는 키의 이름
+
+        // 키 아이템이 itemList에 있고, 해당 리스트에 아이템이 하나 이상 있는지 확인
+        if (itemList.ContainsKey(keyName) && itemList[keyName].Count > 0)
+        {
+            Item keyItem = itemList[keyName][0]; // 첫 번째 아이템 가져오기
+            statusManager.CurrentStorage -= keyItem.ItemSize; // 사용 후 저장소 용량 줄이기
+            itemList[keyName].Remove(keyItem); // 사용한 아이템 제거
+
+            // 해당 키가 더 이상 없으면 리스트에서 키 자체를 삭제
+            if (itemList[keyName].Count == 0)
+            {
+                itemList.Remove(keyName);
+            }
+
+            uIManager.UpdateHUD(); // HUD 업데이트
+            Debug.Log("잠금파일 해독 키 사용됨");
+            return true;  // 키 사용 성공
+        }
+        else
+        {
+            Debug.Log("사용할 수 있는 잠금파일 해독 키가 없습니다.");
+            return false;  // 키가 없으면 실패
+        }
+    }
 }
