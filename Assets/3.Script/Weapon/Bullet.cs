@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
             }
         }
 
-        Debug.Log("Bullet activated with damage: " + statusManager.AttackPower);
+        // Debug.Log("Bullet activated with damage: " + statusManager.AttackPower);
         if (rb != null)
         {
             // 총알이 활성화될 때 방향을 설정합니다.

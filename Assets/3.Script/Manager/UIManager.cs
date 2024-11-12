@@ -323,13 +323,13 @@ public class UIManager : MonoBehaviour
     // ================ My Documents Section ================
     public void GenerateItemList()
     {
-        Debug.Log("GenerateItemList");
+        // Debug.Log("GenerateItemList");
 
         foreach (Transform child in ContentItemGroup)
         {
             Destroy(child.gameObject);
         }
-        Debug.Log("자식 제거 완료");
+        // Debug.Log("자식 제거 완료");
 
         foreach (var kvp in itemManager.itemList)
         {
@@ -371,7 +371,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        Debug.Log("추가 완료");
+        // Debug.Log("추가 완료");
     }
 
     public void SetItemImage(Image buttonImage, Item.ItemType itemType)
