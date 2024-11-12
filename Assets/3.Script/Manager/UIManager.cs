@@ -59,6 +59,8 @@ public class UIManager : MonoBehaviour
     public Text MonsterCount;
     private bool HUDIsActive;
     public GameObject HUDGroup;
+    public GameObject MiniMap;
+
     // Window UI
     public GameObject WindowUI;
     public GameObject MyPC_UI;
@@ -308,11 +310,13 @@ public class UIManager : MonoBehaviour
         {
             HUDIsActive = true;
             HUDGroup.SetActive(true);
+            MiniMap.SetActive(true);
         }
         else
         {
             HUDIsActive = false;
             HUDGroup.SetActive(false);
+            MiniMap.SetActive(false);
         }
     }
 
