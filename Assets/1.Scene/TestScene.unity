@@ -2074,7 +2074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2443,6 +2443,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 799021660968035091, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
+      propertyPath: m_ColliderPaths.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 799021660968035091, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[1].x
       value: 9.99997
       objectReference: {fileID: 0}
@@ -2585,6 +2589,10 @@ PrefabInstance:
     - target: {fileID: 799021661508720172, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_Name
       value: Donwload_room
+      objectReference: {fileID: 0}
+    - target: {fileID: 799021661508720172, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3801199399408970692, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_Enabled
@@ -4322,7 +4330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225069159751, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225069159751, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4878,7 +4886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5827509736998898413, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5827509736998898413, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -5333,7 +5341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775612154647321993, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}
