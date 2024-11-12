@@ -4,26 +4,45 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 5f; // 총알 속도
-    public int damage = 1; // 총알 데미지
+    public float speed; // 총알 속도
     public Rigidbody2D rb;
-    public float lifetime = 10f; // 총알이 활성화된 상태를 유지할 시간
+    private float lifetime;
+
     private PoolingManager pool;
+    private StatusManager statusManager;
+
     // Start is called before the first frame update
     void Start()
     {
-         pool = PoolingManager.Instance;
+        pool = PoolingManager.Instance;
+        statusManager = StatusManager.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (rb != null)
+        {
+            Vector2 currentDirection = rb.velocity.normalized;
+            rb.velocity = currentDirection * statusManager.BulletSpeed;
+            lifetime = statusManager.BulletMaximumRange / statusManager.BulletSpeed;
+        }
     }
 
     private void OnEnable()
     {
-        // Debug.Log("Bullet activated with damage: " + damage);
+        if (statusManager == null || rb == null)
+        {
+            statusManager = StatusManager.Instance;
+            rb = GetComponent<Rigidbody2D>();
+            if (rb == null || statusManager == null)
+            {
+                Debug.LogError("Bullet initialization error: StatusManager or Rigidbody2D is not set up.");
+                return;
+            }
+        }
+
+        // Debug.Log("Bullet activated with damage: " + statusManager.AttackPower);
         if (rb != null)
         {
             // 총알이 활성화될 때 방향을 설정합니다.
@@ -33,8 +52,9 @@ public class Bullet : MonoBehaviour
             Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
 
             // 발사 방향으로 힘을 적용
-            rb.AddForce(direction * speed, ForceMode2D.Impulse);
+            rb.AddForce(direction * statusManager.BulletSpeed, ForceMode2D.Impulse);
         }
+        lifetime = statusManager.BulletMaximumRange / statusManager.BulletSpeed;
         StartCoroutine(DisableAfterTime(lifetime));
     }
     private IEnumerator DisableAfterTime(float time)
@@ -43,26 +63,10 @@ public class Bullet : MonoBehaviour
         gameObject.SetActive(false); // 비활성화
         pool.bulletPool.Enqueue(this);
     }
+
     private void OnCollisionTrigger2D(Collision2D collision)
     {
         gameObject.SetActive(false); // 비활성화
-    }
-
-    public void SetAttackPower(int power)
-    {
-        // Debug.Log("ChangePower");
-        damage += power; 
-    }
-
-    public void SetBulletSpeed(float newspeed)
-    {
-        speed += newspeed;
-        Debug.Log("ChangeSpeed" + speed);
-    }
-
-    public float GetBulletSpeed()
-    {
-        return speed;
     }
 }
 

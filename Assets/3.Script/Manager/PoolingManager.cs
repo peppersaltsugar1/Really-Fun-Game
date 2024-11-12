@@ -12,6 +12,8 @@ public class PoolingManager : MonoBehaviour
     public int monsterCount = 50;
     public Queue<Bullet> bulletPool = new Queue<Bullet>();
     public Transform shotPoint;
+
+
     public static PoolingManager Instance
     {
         get
@@ -43,6 +45,7 @@ public class PoolingManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
     void Start()
     {
         BulletMake(0);
@@ -55,7 +58,6 @@ public class PoolingManager : MonoBehaviour
         {
             // 총알 프리팹을 선택합니다. (여기서는 랜덤으로 선택하지만 필요에 따라 수정 가능)
             GameObject bulletPrefab = bulletList[bulletNum];
-            // 총알 프리팹을 인스턴스화하고 초기화합니다.
             GameObject bulletObject = Instantiate(bulletPrefab);
             bulletObject.SetActive(false); // 비활성화하여 풀에 추가
 
@@ -72,23 +74,4 @@ public class PoolingManager : MonoBehaviour
 
         }
     }
-
-    public void RefreshBulletDamage(int newDamage)
-    {
-        foreach (Bullet bullet in bulletPool)
-        {
-            bullet.SetAttackPower(newDamage); // 기존 데미지에 대한 보정을 해줍니다.
-            // Debug.Log("Refreshed bullet with new damage: " + bullet.damage);
-        }
-    }
-
-    public void RefreshBulletSpeed(float newSpeed)
-    {
-        foreach (Bullet bullet in bulletPool)
-        {
-            bullet.SetBulletSpeed(newSpeed); // 기존 데미지에 대한 보정을 해줍니다.
-            Debug.Log("Refreshed bullet with new speed: " + bullet.speed);
-        }
-    }
-
 }

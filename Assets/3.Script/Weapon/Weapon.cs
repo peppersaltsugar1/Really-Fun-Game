@@ -17,7 +17,6 @@ public class Weapon : MonoBehaviour
     {
         weaponType = WeaponType.BasicWeapon;
         firePoint = gameObject.transform;
-        UseBasicWeapon();
     }
 
     // Update is called once per frame
@@ -35,20 +34,6 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void UseWeapon()
-    {
-        switch (weaponType)
-        {
-            case WeaponType.BasicWeapon:
-                UseBasicWeapon();
-                break;
-        }
-    }
-
-    public void UseBasicWeapon()
-    {
-        attackSpeed = 0.5f;
-    }
     public void Fire()
     {
         Debug.Log("Fire");
@@ -74,14 +59,6 @@ public class Weapon : MonoBehaviour
                 bulletRb.velocity = direction * bullet.speed; // 일정한 속도로 발사
             }
         }
-        /*PoolingManager poolingManager = PoolingManager.Instance;
-        if (poolingManager.bulletPool.Count > 0)
-        {
-            Bullet bullet = poolingManager.bulletPool.Dequeue();
-            bullet.transform.position = transform.position;
-            bullet.transform.rotation = transform.rotation;
-            bullet.gameObject.SetActive(true);
-        }*/
     }
     private void TryFire()
     {

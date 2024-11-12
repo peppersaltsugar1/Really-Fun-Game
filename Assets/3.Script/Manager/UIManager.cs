@@ -50,12 +50,16 @@ public class UIManager : MonoBehaviour
     public Text PlayTimeText;
     public Text DeathSign;
     public bool HPUIActive;
+    public bool isESCDisabled = false;
 
     // HUD
     public Text KeyCount;
     public Text CoinCount;
     public Text BombCount;
     public Text MonsterCount;
+    private bool HUDIsActive;
+    public GameObject HUDGroup;
+    public GameObject MiniMap;
 
     // Window UI
     public GameObject WindowUI;
@@ -272,11 +276,14 @@ public class UIManager : MonoBehaviour
         // Basic UI Setting
         ReStartButton.onClick.AddListener(FReStartButton);
         GoToDesktop.onClick.AddListener(FDesktop_Button);
+
+        // HUD
+        HUDIsActive = true;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
         {
             if (mapGenerator.currentMapClear)
             {
@@ -296,16 +303,33 @@ public class UIManager : MonoBehaviour
     {
         MonsterCount.text = monsterNum.ToString();
     }
+
+    public void HUDAcitvationControl()
+    {
+        if (!HUDIsActive)
+        {
+            HUDIsActive = true;
+            HUDGroup.SetActive(true);
+            MiniMap.SetActive(true);
+        }
+        else
+        {
+            HUDIsActive = false;
+            HUDGroup.SetActive(false);
+            MiniMap.SetActive(false);
+        }
+    }
+
     // ================ My Documents Section ================
     public void GenerateItemList()
     {
-        Debug.Log("GenerateItemList");
+        // Debug.Log("GenerateItemList");
 
         foreach (Transform child in ContentItemGroup)
         {
             Destroy(child.gameObject);
         }
-        Debug.Log("자식 제거 완료");
+        // Debug.Log("자식 제거 완료");
 
         foreach (var kvp in itemManager.itemList)
         {
@@ -347,7 +371,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        Debug.Log("추가 완료");
+        // Debug.Log("추가 완료");
     }
 
     public void SetItemImage(Image buttonImage, Item.ItemType itemType)
@@ -467,6 +491,7 @@ public class UIManager : MonoBehaviour
             {
                 WindowUI.SetActive(false);
                 HPUIActiveSetting();
+                HUDAcitvationControl();
                 Time.timeScale = 1;
             }
             else
@@ -477,6 +502,7 @@ public class UIManager : MonoBehaviour
                 GenerateItemList();
                 UpdateStorage();
                 HPUIActiveSetting();
+                HUDAcitvationControl();
 
                 // UI를 활성화하고 게임을 일시 정지
                 if (Start_UI == null)
@@ -637,6 +663,7 @@ public class UIManager : MonoBehaviour
 
     public void ProgramInstallUI(int index)
     {
+        isESCDisabled = true;
         CurrentUIIndex = index;
         switch (index)
         {
@@ -644,6 +671,8 @@ public class UIManager : MonoBehaviour
                 Time.timeScale = 0.0f;
                 DownLoadUI.SetActive(true);
                 DownLoadUI0.SetActive(true);
+                HPUIActiveSetting();
+                HUDAcitvationControl();
                 break;
             case 1:
                 DownLoadUI1.SetActive(true);
@@ -741,6 +770,9 @@ public class UIManager : MonoBehaviour
                 break;
         }
         DownLoadUI.SetActive(false);
+        HPUIActiveSetting();
+        HUDAcitvationControl();
+        isESCDisabled = false;
         Time.timeScale = 1.0f;
     }
 

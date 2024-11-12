@@ -53,7 +53,8 @@ public class ProgramManager : MonoBehaviour
             PInstance = FindObjectOfType<PoolingManager>();
             if (PInstance != null)
             {
-                PInstance.RefreshBulletDamage(NewProgram.AttackPower);
+                //PInstance.RefreshBulletDamage(NewProgram.AttackPower);
+                statusManager.AttackPower += NewProgram.AttackPower;
             }
         }
 
@@ -65,7 +66,8 @@ public class ProgramManager : MonoBehaviour
 
                 if (weapon != null)
                 {
-                    weapon.SetAttackSpeed(NewProgram.AttackSpeed);
+                    statusManager.AttackSpeed += NewProgram.AttackSpeed;
+                    //weapon.SetAttackSpeed(NewProgram.AttackSpeed);
                 }
             }
         }
@@ -81,7 +83,7 @@ public class ProgramManager : MonoBehaviour
 
             if (PInstance != null)
             {
-                PInstance.RefreshBulletSpeed(NewProgram.BulletSpeed);
+                statusManager.BulletSpeed += NewProgram.BulletSpeed;
             }
         }
 
@@ -105,7 +107,7 @@ public class ProgramManager : MonoBehaviour
 
             if (Instance != null)
             {
-                PInstance.RefreshBulletDamage(-ProgramList[ProgramNumber].AttackPower);
+                statusManager.AttackPower -= ProgramList[ProgramNumber].AttackPower;
             }
         }
 
@@ -134,7 +136,7 @@ public class ProgramManager : MonoBehaviour
 
             if (Instance != null)
             {
-                PInstance.RefreshBulletSpeed(-ProgramList[ProgramNumber].BulletSpeed);
+                statusManager.BulletSpeed -= ProgramList[ProgramNumber].BulletSpeed;
             }
         }
 

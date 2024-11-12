@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HiddenMap
       objectReference: {fileID: 0}
+    - target: {fileID: 3916948408607238519, guid: 103044b5fc331cb48964258bb01de2f2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7787948876014618632, guid: 103044b5fc331cb48964258bb01de2f2, type: 3}
       propertyPath: m_RootOrder
       value: 12
@@ -1353,6 +1357,8 @@ MonoBehaviour:
   B_AttackPushPower: 3
   B_WeaponDistance: 1
   B_AngleRange: 35
+  B_BulletSpeed: 5
+  B_BulletMaximumRange: 5
   B_MoveSpeed: 5.5
   B_Coin: 10
   B_CurrentStorage: 0
@@ -1369,6 +1375,8 @@ MonoBehaviour:
   AttackPushPower: 0
   WeaponDistance: 0
   AngleRange: 0
+  BulletSpeed: 0
+  BulletMaximumRange: 0
   MoveSpeed: 0
   Coin: 0
   CurrentStorage: 0
@@ -1447,6 +1455,7 @@ MonoBehaviour:
   CoinCount: {fileID: 572815676}
   BombCount: {fileID: 985695756}
   MonsterCount: {fileID: 627821066}
+  HUDGroup: {fileID: 1605721303}
   WindowUI: {fileID: 1200379641}
   MyPC_UI: {fileID: 1817699988}
   DownLoad_UI: {fileID: 805845045}
@@ -1555,7 +1564,7 @@ MonoBehaviour:
   - {fileID: 6926711150965903544, guid: 7814bc03f737a8f49a4b0ecd6e4399c5, type: 3}
   monsterList: []
   bulletBox: {fileID: 717143426}
-  bulletCount: 200
+  bulletCount: 30
   monsterCount: 0
   shotPoint: {fileID: 0}
 --- !u!4 &598970838
@@ -1588,6 +1597,12 @@ MonoBehaviour:
   playerCamera: {fileID: 2127303045}
   cinemachine: {fileID: 1311487367}
   cinemachineVir: {fileID: 1311487365}
+  chargeCamera: 0
+  guardCamera: 0
+  trashCamera: 0
+  cafeCamera: 0
+  downloadCamera: 0
+  shopCamera: 0
 --- !u!114 &598970840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,6 +2583,10 @@ PrefabInstance:
     - target: {fileID: 799021661508720172, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_Name
       value: Donwload_room
+      objectReference: {fileID: 0}
+    - target: {fileID: 3801199399408970692, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
@@ -5312,7 +5331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775612154647321993, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}

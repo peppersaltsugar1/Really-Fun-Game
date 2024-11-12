@@ -25,6 +25,8 @@ public class StatusManager : MonoBehaviour
     public float B_AttackPushPower; // When Player Attacking, Push Power
     public float B_WeaponDistance; // Distance Between Player and Weapon
     public float B_AngleRange = 35f; // Player Weapon Angle Range
+    public float B_BulletSpeed = 5.0f; // Bullet Speed
+    public float B_BulletMaximumRange; // 총알 사거리
 
     // Other Status
     public float B_MoveSpeed; // 이동속도
@@ -46,11 +48,15 @@ public class StatusManager : MonoBehaviour
     private Coroutine healing_coroutine;
     private float HitCoolTime;
     private bool IsHit = false;
+
     public float AttackPower; // 공격력
     public float AttackSpeed;  // 공격속도
     public float AttackPushPower; // 어택시 밀격
     public float WeaponDistance; // 캐릭터~무기 거리
     public float AngleRange; // 캐릭터 무기 각도 범위
+    public float BulletSpeed;
+    public float BulletMaximumRange;
+
     public float MoveSpeed;
     public int Coin;
     public int CurrentStorage;
@@ -85,11 +91,15 @@ public class StatusManager : MonoBehaviour
         Elect = B_Elect;
         HealCoolTime = B_HealCoolTime;
         HitCoolTime = B_HitCoolTime;
+
         AttackPower = B_AttackPower;
         AttackSpeed = B_AttackSpeed;
         AttackPushPower = B_AttackPushPower;
         WeaponDistance = B_WeaponDistance;
         AngleRange = B_AngleRange;
+        BulletSpeed = B_BulletSpeed;
+        BulletMaximumRange = B_BulletMaximumRange;
+
         MoveSpeed = B_MoveSpeed;
         Coin = B_Coin;
         CurrentStorage = B_CurrentStorage;

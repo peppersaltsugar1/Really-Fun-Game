@@ -17,7 +17,7 @@ public class ItemManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            itemList = new SortedDictionary<string, List<Item>>(); 
+            itemList = new SortedDictionary<string, List<Item>>(new CoinComparer());
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -36,6 +36,31 @@ public class ItemManager : MonoBehaviour
     {
         
     }
+
+    // 코인 순서에 맞춰 정렬하기 위한 비교기
+    public class CoinComparer : IComparer<string>
+    {
+        private readonly Dictionary<string, int> customOrder = new Dictionary<string, int>
+        {
+            { "(1) 메가 바이트 코인", 1 },
+            { "(5) 메가 바이트 코인", 2 },
+            { "(10) 메가 바이트 코인", 3 },
+            { "(15) 메가 바이트 코인", 4 }
+        };
+
+        public int Compare(string x, string y)
+        {
+            // 커스텀 정렬 순서가 있는 경우, 해당 순서로 정렬
+            if (customOrder.ContainsKey(x) && customOrder.ContainsKey(y))
+            {
+                return customOrder[x].CompareTo(customOrder[y]);
+            }
+            // 코인이 아닌 경우 사전 순으로 정렬
+            return x.CompareTo(y);
+        }
+    }
+
+
 
     public bool AddItem(Item item)
     {
