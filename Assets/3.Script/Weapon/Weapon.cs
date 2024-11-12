@@ -36,7 +36,7 @@ public class Weapon : MonoBehaviour
 
     public void Fire()
     {
-        Debug.Log("Fire");
+        // Debug.Log("Fire");
         PoolingManager poolingManager = PoolingManager.Instance;
         if (poolingManager.bulletPool.Count > 0)
         {
