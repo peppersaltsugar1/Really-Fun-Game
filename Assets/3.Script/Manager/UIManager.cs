@@ -23,14 +23,9 @@ public class UIManager : MonoBehaviour
     public Button GoToDesktop;
     public Text PlayTimeText;
     public Text DeathSign;
-    public bool HPUIActive;
-    public bool isESCDisabled = false;
 
     // Window UI
     public GameObject WindowUI;
-
-    // First Start Check
-    private GameObject Start_UI;
 
     // Left_Button 
     public Button MyPC_Button;
@@ -47,38 +42,6 @@ public class UIManager : MonoBehaviour
 
     // BulletManger
     private PoolingManager BInstance;
-
-    // Program UI
-    private int CurrentProgram = -1;
-
-    public GameObject DownLoadUI;
-    public bool FinishedInstall = false;
-
-    public Image ProgramImage0;
-    public Image ProgramImage1;
-    public Image ProgramImage2;
-    public Image ProgramImage3;
-
-    public GameObject DownLoadUI0;
-    public Button UI_0_Next;
-    public Button UI_0_Exit;
-    public Button UI_0_Cancel;
-
-    public GameObject DownLoadUI1;
-    public Button UI_1_Before;
-    public Button UI_1_Exit;
-    public Button UI_1_Next;
-    public Button UI_1_Cancel;
-    public Text UI_1_Info;
-
-    public GameObject DownLoadUI2;
-    public Animator DAnimator;
-
-    public GameObject DownLoadUI3;
-    public Button UI_3_Exit;
-    public Button UI_3_End;
-
-    public int CurrentUIIndex;
 
     // Manger
     private StatusManager statusManager;
@@ -99,6 +62,7 @@ public class UIManager : MonoBehaviour
     private UI_5_NetWork ui_5_NetWork = null;
     private UI_6_Control ui_6_Control = null;
     private UI_7_Help ui_7_Help = null;
+    private UI_8_ProgramInstall ui_8_ProgramInstall = null;
 
     private void Awake()
     {
@@ -127,12 +91,10 @@ public class UIManager : MonoBehaviour
     {
         BInstance = FindObjectOfType<PoolingManager>();
         statusManager = StatusManager.Instance;
-        HPUIActive = true;
 
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
-        Start_UI = null;
 
         // Left Button Setting
         MyPC_Button.onClick.AddListener(FMyPC_Button);
@@ -147,20 +109,6 @@ public class UIManager : MonoBehaviour
         UnderBar_Button.onClick.AddListener(CloseWindowUI);
         X_Button.onClick.AddListener(CloseWindowUI);
 
-
-        UI_0_Next.onClick.AddListener(FNextButton);
-        UI_0_Cancel.onClick.AddListener(FDownLoadUIExit);
-        UI_0_Exit.onClick.AddListener(FDownLoadUIExit);
-
-        UI_1_Before.onClick.AddListener(FBeforeButton);
-        UI_1_Next.onClick.AddListener(FNextButton);
-        UI_1_Cancel.onClick.AddListener(FDownLoadUIExit);
-        UI_1_Exit.onClick.AddListener(FDownLoadUIExit);
-
-        UI_3_End.onClick.AddListener(FDownLoadUIExit);
-        UI_3_Exit.onClick.AddListener(FDownLoadUIExit);
-
-
         // Basic UI Setting
         ReStartButton.onClick.AddListener(FReStartButton);
         GoToDesktop.onClick.AddListener(FDesktop_Button);
@@ -173,13 +121,14 @@ public class UIManager : MonoBehaviour
         ui_5_NetWork = UI_5_NetWork.Instance;
         ui_6_Control = UI_6_Control.Instance;
         ui_7_Help = UI_7_Help.Instance;
+        ui_8_ProgramInstall = UI_8_ProgramInstall.Instance;
 
         ui_0_HUD.HpBarSet();
     }
 
     void Update()
     {
-        if (!isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
+        if (!ui_8_ProgramInstall.isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
         {
             if (mapGenerator.currentMapClear)
             {
@@ -188,7 +137,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // UI 모듈화
+    // ================ UI 모듈화 ================
     private void CloseAllUI()
     {
         ui_1_MyPC.CloseUI();
@@ -269,127 +218,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // ================ Program Section (분리 예정) ================
-    public void ProgramInstallUI(int index)
-    {
-        isESCDisabled = true;
-        CurrentUIIndex = index;
-        switch (index)
-        {
-            case 0:
-                Time.timeScale = 0.0f;
-                DownLoadUI.SetActive(true);
-                DownLoadUI0.SetActive(true);
-                ui_0_HUD.CloseUI();
-                break;
-            case 1:
-                DownLoadUI1.SetActive(true);
-                break;
-            case 2:
-                DownLoadUI2.SetActive(true);
-                DAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-                StartCoroutine(PlayInstallAnimation());
-                break;
-            case 3:
-                FinishedInstall = true;
-                DownLoadUI3.SetActive(true);
-                break;
-            default:
-                Debug.Log("Out of Index");
-                break;
-        }
-    }
-
-    private IEnumerator PlayInstallAnimation()
-    {
-        DAnimator.speed = 0.5f;
-        Debug.Log("In Coroutine");
-        int animationNum = Random.Range(0, 5);
-
-        Debug.Log("Num : " + animationNum);
-        float animationDuration = 2f;
-
-        switch (animationNum)
-        {
-            case 0:
-                DAnimator.SetTrigger("Bar_1");
-                animationDuration = 6.0f;
-                break;
-            case 1:
-                DAnimator.SetTrigger("Bar_2");
-                animationDuration = 12.0f;
-                break;
-            case 2:
-                DAnimator.SetTrigger("Bar_3");
-                animationDuration = 13.0f;
-                break;
-            case 3:
-                DAnimator.SetTrigger("Bar_4");
-                animationDuration = 12.0f;
-                break;
-            case 4:
-                DAnimator.SetTrigger("Bar_5");
-                animationDuration = 6.0f;
-                break;
-            default:
-                Debug.Log("Out of Index");
-                break;
-        }
-
-        yield return new WaitForSecondsRealtime(animationDuration);
-
-        DownLoadUI2.SetActive(false);
-        ProgramInstallUI(CurrentUIIndex + 1);
-    }
-
-    public void FNextButton()
-    {
-        switch (CurrentUIIndex)
-        {
-            case 0:
-                DownLoadUI0.SetActive(false);
-                ProgramInstallUI(CurrentUIIndex + 1);
-                break;
-            case 1:
-                DownLoadUI1.SetActive(false);
-                ProgramInstallUI(CurrentUIIndex + 1);
-                break;
-            default:
-                Debug.Log("Out of Index");
-                break;
-        }
-    }
-
-    public void FDownLoadUIExit()
-    {
-        switch (CurrentUIIndex)
-        {
-            case 0:
-                DownLoadUI0.SetActive(false);
-                break;
-            case 1:
-                DownLoadUI1.SetActive(false);
-                break;
-            case 3:
-                DownLoadUI3.SetActive(false);
-                break;
-            default:
-                Debug.Log("Out of Index");
-                break;
-        }
-        DownLoadUI.SetActive(false);
-        ui_0_HUD.OpenUI();
-        isESCDisabled = false;
-        Time.timeScale = 1.0f;
-    }
-
-    public void FBeforeButton()
-    {
-        CurrentUIIndex = CurrentUIIndex - 1;
-        DownLoadUI1.SetActive(false);
-        DownLoadUI0.SetActive(true);
-    }
-
+    // ================ UI 모듈화 ================
 
     // ================ Start, End, GameOver Section ================
     public void PlayerIsDead()
@@ -420,7 +249,6 @@ public class UIManager : MonoBehaviour
 
 
         DeathUI.SetActive(true);
-        // HPUIActiveSetting();
     }
 
     public void FReStartButton()
@@ -428,7 +256,6 @@ public class UIManager : MonoBehaviour
         DeathUI.SetActive(false);
         Time.timeScale = 1;
         statusManager.InitializeStatus();
-        // HPUIActiveSetting();
 
         ui_0_HUD.HpBarSet();
         GameManager.Instance.ReStartGame();

@@ -8,8 +8,9 @@ public class ProgramRoom : MonoBehaviour
     public List<PInformation> ProgramList = new List<PInformation>();
     public int ProgramID;
     public SpriteRenderer spriteRenderer;
+
     ProgramManager programManager;
-    UIManager uiManager;
+    UI_8_ProgramInstall ui_8_ProgramInstall;
 
     private bool Checking = false;
 
@@ -17,7 +18,8 @@ public class ProgramRoom : MonoBehaviour
     void Start()
     {
         programManager = ProgramManager.Instance;
-        uiManager = UIManager.Instance;
+        ui_8_ProgramInstall = UI_8_ProgramInstall.Instance;
+
         ProgramID = Random.Range(0, ProgramList.Count);
         SetProgramImage(ProgramID);
     }
@@ -27,7 +29,7 @@ public class ProgramRoom : MonoBehaviour
     {
         if(Checking)
         {
-            if(uiManager.FinishedInstall)
+            if(ui_8_ProgramInstall.FinishedInstall)
             {
                 AddProgram();
             }
@@ -40,9 +42,9 @@ public class ProgramRoom : MonoBehaviour
         {
             // UI Open
             Checking = true;
-            uiManager.FinishedInstall = false;
-            uiManager.ProgramInstallUI(0);
-            uiManager.UI_1_Info.text = ProgramList[ProgramID].Explanation;
+            ui_8_ProgramInstall.FinishedInstall = false;
+            ui_8_ProgramInstall.OpenUI();
+            ui_8_ProgramInstall.UI_1_Info.text = ProgramList[ProgramID].Explanation;
         }
     }
 
@@ -64,10 +66,10 @@ public class ProgramRoom : MonoBehaviour
         if (sprites != null && ProgramList[ProgramID].spriteIndex >= 0 && ProgramList[ProgramID].spriteIndex < sprites.Length)
         {
             spriteRenderer.sprite = sprites[ProgramList[ProgramID].spriteIndex];
-            UIManager.Instance.ProgramImage0.sprite = sprites[ProgramList[ProgramID].spriteIndex]; UIManager.Instance.ProgramImage0.sprite = sprites[ProgramList[ProgramID].spriteIndex];
-            UIManager.Instance.ProgramImage1.sprite = sprites[ProgramList[ProgramID].spriteIndex];
-            UIManager.Instance.ProgramImage2.sprite = sprites[ProgramList[ProgramID].spriteIndex];
-            UIManager.Instance.ProgramImage3.sprite = sprites[ProgramList[ProgramID].spriteIndex];
+            ui_8_ProgramInstall.ProgramImage0.sprite = sprites[ProgramList[ProgramID].spriteIndex]; 
+            ui_8_ProgramInstall.ProgramImage1.sprite = sprites[ProgramList[ProgramID].spriteIndex];
+            ui_8_ProgramInstall.ProgramImage2.sprite = sprites[ProgramList[ProgramID].spriteIndex];
+            ui_8_ProgramInstall.ProgramImage3.sprite = sprites[ProgramList[ProgramID].spriteIndex];
         }
         else
         {
