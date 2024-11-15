@@ -210,7 +210,7 @@ public class UI_4_LocalDisk : MonoBehaviour
                             }
                             else
                             {
-                                Debug.Log("여기");
+                                // Debug.Log("여기");
                                 switch (connectedMap.Type)
                                 {
                                     case Map.MapType.Middle:
@@ -560,7 +560,7 @@ public class UI_4_LocalDisk : MonoBehaviour
         // 마지막 자식의 Text 변경
         int lastIndex = adressParent.transform.childCount - 1;
         Text lastChildText = adressParent.transform.GetChild(lastIndex).GetComponentInChildren<Text>();
-        Debug.Log(lastChildText.text);
+        // Debug.Log(lastChildText.text);
         lastChildText.text = lastChildText.text.Replace(">", "");
         /*adressText.text = adressText.text.TrimEnd('>');*/
         Canvas.ForceUpdateCanvases();

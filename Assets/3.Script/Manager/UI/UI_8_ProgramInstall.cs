@@ -12,7 +12,7 @@ public class UI_8_ProgramInstall : MonoBehaviour
 
     // Detail
     public bool isESCDisabled = false;
-    private int CurrentProgram = -1;
+    private int CurrentProgram;
 
     public bool FinishedInstall = false;
 
@@ -231,10 +231,10 @@ public class UI_8_ProgramInstall : MonoBehaviour
                 Debug.Log("Out of Index");
                 break;
         }
-        CloseUI();
         ui_0_HUD.OpenUI();
         isESCDisabled = false;
         Time.timeScale = 1.0f;
+        CloseUI();
     }
 
     public void FBeforeButton()

@@ -21,7 +21,7 @@ public class UI_0_HUD : MonoBehaviour
     [SerializeField]
     private int interval;
     
-    //
+    // 
     private int hpNum = 0;
 
     // Left side text
@@ -72,6 +72,7 @@ public class UI_0_HUD : MonoBehaviour
     void Start()
     {
         statusManager = StatusManager.Instance;
+        HpBarSet();
     }
 
     // Update is called once per frame

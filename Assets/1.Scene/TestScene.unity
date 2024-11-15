@@ -1315,13 +1315,13 @@ GameObject:
   - component: {fileID: 598970838}
   - component: {fileID: 598970837}
   - component: {fileID: 598970836}
-  - component: {fileID: 598970835}
-  - component: {fileID: 598970834}
   - component: {fileID: 598970833}
-  - component: {fileID: 598970840}
-  - component: {fileID: 598970839}
-  - component: {fileID: 598970841}
   - component: {fileID: 598970842}
+  - component: {fileID: 598970840}
+  - component: {fileID: 598970841}
+  - component: {fileID: 598970839}
+  - component: {fileID: 598970834}
+  - component: {fileID: 598970835}
   - component: {fileID: 598970843}
   - component: {fileID: 598970844}
   - component: {fileID: 598970850}
@@ -1565,9 +1565,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_W_HUD: {fileID: 1718490187}
-  hpPrefabsList: []
-  canvas: {fileID: 0}
-  interval: 0
+  hpPrefabsList:
+  - {fileID: 874952623909198039, guid: d7941e76c7975844bb8f8a68dd0824a6, type: 3}
+  - {fileID: 6450412930878453804, guid: 1b51a653e734c424ca0c287232c37712, type: 3}
+  - {fileID: 8016665736267170001, guid: 9f472c881dca1344f88d26e568171250, type: 3}
+  - {fileID: 3585480957747634437, guid: 4e9cb7256d12cc94d9fa3dfcecc8797c, type: 3}
+  canvas: {fileID: 817483665}
+  interval: 48
   KeyCount: {fileID: 568233029}
   CoinCount: {fileID: 572815676}
   BombCount: {fileID: 985695756}
@@ -1726,7 +1730,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_W_DownLoad: {fileID: 805845045}
-  Button_Program_Prefab: {fileID: 1982756979}
+  Button_Program_Prefab: {fileID: 1858372590668824651, guid: aa890e418dad00c468ffbcd597596a01, type: 3}
   i_Program_Detail_Image_Prefab: {fileID: 1178481460}
   t_Program_Detail_Name_Prefab: {fileID: 93913376}
   t_Program_Detail_Explanation_Prefab: {fileID: 1911121331}
@@ -1747,7 +1751,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI_W_ProgramInstall: {fileID: 4643454225879247819}
   isESCDisabled: 0
-  DownLoadUI: {fileID: 0}
   FinishedInstall: 0
   ProgramImage0: {fileID: 4643454225879247818}
   ProgramImage1: {fileID: 4643454225879247817}
@@ -2257,6 +2260,11 @@ MonoBehaviour:
 --- !u!1 &805845045 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4643454225074459526, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &817483665 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4643454225346771035, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
   m_PrefabInstance: {fileID: 4643454225879247795}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &875664612 stripped
@@ -4157,11 +4165,6 @@ MonoBehaviour:
 --- !u!1 &1951477122 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4643454226209474097, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
-  m_PrefabInstance: {fileID: 4643454225879247795}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1982756979 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6465648450919999531, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
   m_PrefabInstance: {fileID: 4643454225879247795}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1985714566 stripped

@@ -40,9 +40,6 @@ public class UIManager : MonoBehaviour
     public Button UnderBar_Button;
     public Button X_Button;
 
-    // BulletManger
-    private PoolingManager BInstance;
-
     // Manger
     private StatusManager statusManager;
 
@@ -52,7 +49,7 @@ public class UIManager : MonoBehaviour
     {
         UI_MyPC, UI_DownLoad, UI_MyDocument, UI_LocalDisk, UI_NetWork, UI_Control, UI_Help
     }
-    private bool uiIsOpen = false;
+    private bool uiIsOpen;
     private UI LastOpenUINum = UI.UI_MyPC;
     private UI_0_HUD ui_0_HUD = null;
     private UI_1_MyPC ui_1_MyPC = null;
@@ -89,12 +86,12 @@ public class UIManager : MonoBehaviour
     }
     void Start()
     {
-        BInstance = FindObjectOfType<PoolingManager>();
         statusManager = StatusManager.Instance;
 
 
         // UI Panel 비활성화 시작
         WindowUI.SetActive(false);
+        CloseWindowUI();
 
         // Left Button Setting
         MyPC_Button.onClick.AddListener(FMyPC_Button);
@@ -122,14 +119,13 @@ public class UIManager : MonoBehaviour
         ui_6_Control = UI_6_Control.Instance;
         ui_7_Help = UI_7_Help.Instance;
         ui_8_ProgramInstall = UI_8_ProgramInstall.Instance;
-
-        ui_0_HUD.HpBarSet();
     }
 
     void Update()
     {
         if (!ui_8_ProgramInstall.isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
         {
+            Debug.Log("ui_8_ProgramInstall.isESCDisabled" + ui_8_ProgramInstall.isESCDisabled);
             if (mapGenerator.currentMapClear)
             {
                 WindowUISetActive();
