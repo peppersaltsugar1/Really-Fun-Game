@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class LocalDiskUI : MonoBehaviour
 {
-    UIManager uiManager;
+    UI_4_LocalDisk ui_4_LocalDisk;
     public GameObject telMap;
     TeleportManager telManger;
     // Start is called before the first frame update
     private void Awake()
     {
-        uiManager = UIManager.Instance;
+        ui_4_LocalDisk = UI_4_LocalDisk.Instance;
         telManger = TeleportManager.Instance;
     }
 
@@ -18,7 +18,7 @@ public class LocalDiskUI : MonoBehaviour
  
     private void OnEnable()
     {
-        uiManager.RoomUISet();
+        ui_4_LocalDisk.RoomUISet();
     }
     private void OnDisable()
     {
@@ -26,6 +26,6 @@ public class LocalDiskUI : MonoBehaviour
     }
     public void LocalDiskTel()
     {
-        uiManager.SetWindowUI();
+        // ui_4_LocalDisk.SetWindowUI();
     }
 }

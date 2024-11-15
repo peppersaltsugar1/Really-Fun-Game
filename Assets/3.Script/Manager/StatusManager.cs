@@ -7,6 +7,7 @@ public class StatusManager : MonoBehaviour
 {
     public static StatusManager Instance;
     private UIManager uiManager;
+    private UI_0_HUD ui_0_HUD;
 
     // When game is started, this base status used to Initializing Status based on this list.
     // Player Base Status
@@ -78,6 +79,7 @@ public class StatusManager : MonoBehaviour
     void Start()
     {
         uiManager = UIManager.Instance;
+        ui_0_HUD = UI_0_HUD.Instance;
         InitializeStatus();
     }
 
@@ -124,7 +126,7 @@ public class StatusManager : MonoBehaviour
         if (ShieldHp > 0)
         {
             ShieldHp -= damage;
-            uiManager.ShiledSet();
+            ui_0_HUD.ShiledSet();
 
             if (ShieldHp <= 0)
             {
@@ -139,7 +141,7 @@ public class StatusManager : MonoBehaviour
         if (Elect > 0)
         {
             Elect -= damage;
-            uiManager.ElectDel();
+            ui_0_HUD.ElectDel();
 
             if (Elect <= 0)
             {
@@ -155,11 +157,11 @@ public class StatusManager : MonoBehaviour
         if (TemHp > 0)
         {
             TemHp -= damage;
-            uiManager.HpSet();
+            ui_0_HUD.HpSet();
 
             if (TemHp <= 0)
             {
-                uiManager.TemHpDel();
+                ui_0_HUD.TemHpDel();
                 TemHp = 0;
             }
 
@@ -171,7 +173,7 @@ public class StatusManager : MonoBehaviour
         if (Shield > 0 && Shield * 3 >= CurrentHp)
         {
             Shield -= 1;
-            uiManager.ShiledOff();
+            ui_0_HUD.ShiledOff();
 
             if (Shield <= 0)
             {
@@ -187,7 +189,7 @@ public class StatusManager : MonoBehaviour
         if (CurrentHp > 0)
         {
             CurrentHp -= damage;
-            uiManager.HpSet();
+            ui_0_HUD.HpSet();
 
             if (CurrentHp <= 0)
             {
@@ -223,7 +225,7 @@ public class StatusManager : MonoBehaviour
     public void TemHpUp(int temHpNum)
     {
         TemHp += temHpNum;
-        uiManager.TemHpSet();
+        ui_0_HUD.TemHpSet();
     }
 
     public void Heal(int healNum)
