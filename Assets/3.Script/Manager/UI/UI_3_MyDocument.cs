@@ -81,6 +81,7 @@ public class UI_3_MyDocument : MonoBehaviour
         if (UI_W_MyDocument != null)
         {
             UI_W_MyDocument.SetActive(true);
+            // Debug.Log("OpenUI : UI_3_MyDocument");
         }
     }
 
@@ -89,6 +90,7 @@ public class UI_3_MyDocument : MonoBehaviour
         if (UI_W_MyDocument != null)
         {
             UI_W_MyDocument.SetActive(false);
+            // Debug.Log("CloseUI : UI_3_MyDocument");
         }
     }
 

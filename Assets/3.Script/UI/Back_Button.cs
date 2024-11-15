@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Back_Button : MonoBehaviour
 {
-    UIManager uiManager;
+    UI_4_LocalDisk ui_4_LocalDisk;
     MapGenerator mapGenerator;
     // Start is called before the first frame update
     void Start()
     {
-        uiManager = UIManager.Instance;
+        ui_4_LocalDisk = UI_4_LocalDisk.Instance;
         mapGenerator = FindObjectOfType<MapGenerator>();
     }
 
@@ -18,11 +18,11 @@ public class Back_Button : MonoBehaviour
 
     public void BackButton()
     {
-        if (uiManager.adressList.Count > 1)
+        if (ui_4_LocalDisk.adressList.Count > 1)
         {
-            Map targetMap = uiManager.adressList[uiManager.adressList.Count - 2];
+            Map targetMap = ui_4_LocalDisk.adressList[ui_4_LocalDisk.adressList.Count - 2];
             int targetIndex = mapGenerator.mapList.IndexOf(targetMap);
-            uiManager.LocalDisckUISet(targetIndex);
+            ui_4_LocalDisk.LocalDisckUISet(targetIndex);
         }
     }
 }

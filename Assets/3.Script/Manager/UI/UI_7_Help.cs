@@ -58,6 +58,7 @@ public class UI_7_Help : MonoBehaviour
         if (UI_W_Help != null)
         {
             UI_W_Help.SetActive(true);
+            // Debug.Log("OpenUI : UI_7_Help");
         }
     }
 
@@ -66,6 +67,7 @@ public class UI_7_Help : MonoBehaviour
         if (UI_W_Help != null)
         {
             UI_W_Help.SetActive(false);
+            // Debug.Log("CloseUI : UI_7_Help");
         }
     }
 }

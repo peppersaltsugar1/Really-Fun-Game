@@ -62,6 +62,7 @@ public class UI_5_NetWork : MonoBehaviour
         if (UI_W_NetWork != null)
         {
             UI_W_NetWork.SetActive(true);
+            // Debug.Log("OpenUI : UI_5_NetWork");
         }
     }
 
@@ -70,6 +71,7 @@ public class UI_5_NetWork : MonoBehaviour
         if (UI_W_NetWork != null)
         {
             UI_W_NetWork.SetActive(false);
+            // Debug.Log("CloseUI : UI_5_NetWork");
         }
     }
 

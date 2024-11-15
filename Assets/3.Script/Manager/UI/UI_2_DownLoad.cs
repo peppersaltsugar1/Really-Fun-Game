@@ -74,6 +74,7 @@ public class UI_2_DownLoad : MonoBehaviour
         if (UI_W_DownLoad != null)
         {
             UI_W_DownLoad.SetActive(true);
+            // Debug.Log("OpenUI : UI_2_DownLoad");
         }
     }
 
@@ -82,6 +83,7 @@ public class UI_2_DownLoad : MonoBehaviour
         if (UI_W_DownLoad != null)
         {
             UI_W_DownLoad.SetActive(false);
+            // Debug.Log("CloseUI : UI_2_DownLoad");
         }
     }
 

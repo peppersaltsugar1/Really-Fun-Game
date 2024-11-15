@@ -104,6 +104,7 @@ public class UI_6_Control : MonoBehaviour
         if (UI_W_Control != null)
         {
             UI_W_Control.SetActive(true);
+            // Debug.Log("OpenUI : UI_6_Control");
         }
     }
 
@@ -112,6 +113,7 @@ public class UI_6_Control : MonoBehaviour
         if (UI_W_Control != null)
         {
             UI_W_Control.SetActive(false);
+            // Debug.Log("CloseUI : UI_6_Control");
         }
     }
 

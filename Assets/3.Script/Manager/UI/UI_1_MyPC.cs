@@ -73,6 +73,7 @@ public class UI_1_MyPC : MonoBehaviour
         if(UI_W_MyPC != null)
         {
             UI_W_MyPC.SetActive(true);
+            // Debug.Log("OpenUI : UI_1_MyPC");
         }
     }
 
@@ -81,6 +82,7 @@ public class UI_1_MyPC : MonoBehaviour
         if (UI_W_MyPC != null)
         {
             UI_W_MyPC.SetActive(false);
+            // Debug.Log("CloseUI : UI_1_MyPC");
         }
     }
 
@@ -88,12 +90,17 @@ public class UI_1_MyPC : MonoBehaviour
     {
         if (statusManager != null && poolingManager != null)
         {
+            Debug.Log("UpdateStats");
             AttackText.text = statusManager.AttackPower.ToString();
             AttackSpeedText.text = statusManager.AttackSpeed.ToString();
             BulletVelocityText.text = poolingManager.bulletPool.Peek().speed.ToString();
             RangeText.text = statusManager.AngleRange.ToString();
             MoveSpeedText.text = statusManager.MoveSpeed.ToString();
             Storage.text = statusManager.CurrentStorage.ToString();
+        }
+        else
+        {
+            Debug.LogError("UpdateStats");
         }
     }
 }

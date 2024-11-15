@@ -67,12 +67,12 @@ public class Map : MonoBehaviour
                 }
             }
             currentMonsterNum = checkMonsterNum;
-            uiManager.MonsterCountHUDSet(checkMonsterNum);
+            UI_0_HUD.Instance.MonsterCountHUDSet(checkMonsterNum);
         }
         else
         {
             currentMonsterNum = 0;
-            uiManager.MonsterCountHUDSet(checkMonsterNum);
+            UI_0_HUD.Instance.MonsterCountHUDSet(checkMonsterNum);
         }
     }
 }
