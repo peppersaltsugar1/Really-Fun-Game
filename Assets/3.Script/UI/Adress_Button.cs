@@ -6,21 +6,21 @@ using UnityEngine.UI;
 public class Adress_Button : MonoBehaviour
 {
     MapGenerator mapGenerator;
-    UIManager uiManager;
+    UI_4_LocalDisk ui_4_LocalDisk;
 
     // Start is called before the first frame update
     void Start()
     {
         mapGenerator = FindObjectOfType<MapGenerator>();
-        uiManager = UIManager.Instance;
+        ui_4_LocalDisk = UI_4_LocalDisk.Instance;
     }
 
     public void AdressButton()
     {
         Debug.Log("버튼눌림");
         int index = transform.GetSiblingIndex()-1;
-        int targetIndex = mapGenerator.mapList.IndexOf(uiManager.adressList[index]);
-        uiManager.LocalDisckUISet(targetIndex);
+        int targetIndex = mapGenerator.mapList.IndexOf(ui_4_LocalDisk.adressList[index]);
+        ui_4_LocalDisk.LocalDisckUISet(targetIndex);
 
     }
 }

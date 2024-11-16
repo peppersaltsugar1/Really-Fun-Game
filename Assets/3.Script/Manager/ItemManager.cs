@@ -10,7 +10,7 @@ public class ItemManager : MonoBehaviour
     StatusManager statusManager;
     UIManager uIManager;
     public SortedDictionary<string, List<Item>> itemList;
-
+    private UI_0_HUD ui_0_HUD;
 
     private void Awake()
     {
@@ -29,6 +29,7 @@ public class ItemManager : MonoBehaviour
     {
         statusManager = StatusManager.Instance;
         uIManager = UIManager.Instance;
+        ui_0_HUD = UI_0_HUD.Instance;
     }
 
     // Update is called once per frame
@@ -82,7 +83,7 @@ public class ItemManager : MonoBehaviour
             itemList[item.ItemName] = new List<Item> { item };
         }
 
-        uIManager.UpdateHUD();
+        ui_0_HUD.UpdateHUD();
         statusManager.CurrentStorage += item.ItemSize;
         return true;
     }
@@ -96,7 +97,7 @@ public class ItemManager : MonoBehaviour
             if (itemList[item.ItemName].Count == 0)
             {
                 itemList.Remove(item.ItemName);
-                uIManager.UpdateHUD();
+                ui_0_HUD.UpdateHUD();
             }
         }
     }
@@ -168,7 +169,7 @@ public class ItemManager : MonoBehaviour
                 itemList.Remove(keyName);
             }
 
-            uIManager.UpdateHUD(); // HUD 업데이트
+            ui_0_HUD.UpdateHUD(); // HUD 업데이트
             Debug.Log("잠금파일 해독 키 사용됨");
             return true;  // 키 사용 성공
         }

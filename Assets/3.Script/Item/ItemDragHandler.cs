@@ -9,11 +9,13 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private Transform originalParent;  // 드래그 전 원래 부모 저장
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
+    UI_3_MyDocument ui_3_MyDocument;
 
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        ui_3_MyDocument = UI_3_MyDocument.Instance;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -36,8 +38,8 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // WindowUI 바깥으로 드롭했을 경우 아이템 버리기
             Debug.Log("Item Dropped Outside WindowUI, Item Deleted");
             ItemManager.Instance.RemoveItem(item);
-            UIManager.Instance.UpdateStorage();
-            UIManager.Instance.RemoveItemDetail();
+            ui_3_MyDocument.UpdateStorage();
+            ui_3_MyDocument.RemoveItemDetail();
             Destroy(gameObject);
         }
         else
@@ -45,7 +47,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             // 원래 자리로 복귀
             transform.SetParent(originalParent);
             rectTransform.anchoredPosition = Vector2.zero;
-            UIManager.Instance.GenerateItemList();
+            ui_3_MyDocument.GenerateItemList();
         }
         canvasGroup.blocksRaycasts = true;
     }
