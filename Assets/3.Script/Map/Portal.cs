@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Portal : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class Portal : MonoBehaviour
     public bool isLock;
     bool isRightMove = true;
     Animator portalAnimator;
+    Animator lockAnimator;
+    GameObject lockObj;
     ItemManager itemManager;
     // Start is called before the first frame update
     private void Awake()
@@ -22,6 +25,14 @@ public class Portal : MonoBehaviour
         isUse = true;
         portalAnimator = GetComponent<Animator>();
         itemManager = ItemManager.Instance;
+        lockObj = transform.Find("Lock")?.gameObject;
+        Transform lockTransform = transform.Find("Lock");
+        if (lockTransform != null)
+        {
+            lockAnimator = lockTransform.GetComponent<Animator>();
+            isLock = true;
+        }
+        
 
     }
     void Start()
@@ -37,6 +48,8 @@ public class Portal : MonoBehaviour
         if (parentMap != null)
         {
             portalAnimator.SetBool("Clear", parentMap.isClear);
+            portalAnimator.SetBool("isOpen", parentMap.isClear);
+
         }
     }
 
@@ -52,6 +65,7 @@ public class Portal : MonoBehaviour
                     if (itemManager.KeyUse())
                     {
                         isLock = false;  // 키 사용 성공시 잠금 해제
+                        lockAnimator.SetBool("KeyOpen", true);
                     }
                     else
                     {
@@ -60,7 +74,7 @@ public class Portal : MonoBehaviour
                 }
             }
         }
-        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true)
+        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true&&isLock)
         {
             int currentPortalIndex = transform.parent.GetSiblingIndex();
             int connectPortalIndex = connectPortal.transform.parent.GetSiblingIndex();
@@ -92,6 +106,11 @@ public class Portal : MonoBehaviour
         teleportManager.PortalUse_co(this);
     }
 
-
+    
+    private IEnumerator Open_co()
+    {
+        yield return new WaitForSeconds(1f);
+        gameObject.SetActive(false); // 오브젝트 비활성화
+    }
 }
 

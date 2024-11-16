@@ -1353,6 +1353,8 @@ MonoBehaviour:
   B_AttackPushPower: 3
   B_WeaponDistance: 1
   B_AngleRange: 35
+  B_BulletSpeed: 5
+  B_BulletMaximumRange: 0
   B_MoveSpeed: 5.5
   B_Coin: 10
   B_CurrentStorage: 0
@@ -1369,6 +1371,8 @@ MonoBehaviour:
   AttackPushPower: 0
   WeaponDistance: 0
   AngleRange: 0
+  BulletSpeed: 0
+  BulletMaximumRange: 0
   MoveSpeed: 0
   Coin: 0
   CurrentStorage: 0
@@ -1443,10 +1447,13 @@ MonoBehaviour:
   PlayTimeText: {fileID: 904976443}
   DeathSign: {fileID: 1773590639}
   HPUIActive: 0
+  isESCDisabled: 0
   KeyCount: {fileID: 568233029}
   CoinCount: {fileID: 572815676}
   BombCount: {fileID: 985695756}
   MonsterCount: {fileID: 627821066}
+  HUDGroup: {fileID: 0}
+  MiniMap: {fileID: 0}
   WindowUI: {fileID: 1200379641}
   MyPC_UI: {fileID: 1817699988}
   DownLoad_UI: {fileID: 805845045}
@@ -4139,7 +4146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225069159751, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225069159751, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -4691,7 +4698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5827509736998898413, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5827509736998898413, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.y
