@@ -9,6 +9,9 @@ public class TeleportManager : MonoBehaviour
     GameManager gameManager;
     [SerializeField]
     MapGenerator mapGenerator;
+    [Header("텔레포트 되는거리")]
+    [SerializeField]
+    float playerTelDis;
     private void Awake()
     {
         if (null == instance)
@@ -49,11 +52,42 @@ public class TeleportManager : MonoBehaviour
     
     public void PlayerTeleport(Player player,Portal currentPortal,Portal connectPortal)
     {
-        /*StartCoroutine(PlayerTeleport_Co(currentPortal, connectPortal));*/
+
+        // 부모 객체 (Map) 확인
+        Transform currentMap = currentPortal.transform.parent;
+        Transform connectMap = connectPortal.transform.parent;
+
+        // MapGenerator의 자식 객체로부터 index 확인
+        int currentMapIndex = currentMap.GetSiblingIndex();       // 현재 맵의 인덱스
+        int connectMapIndex = connectMap.GetSiblingIndex();       // 연결될 맵의 인덱스
+
+        // 기본 이동 위치 (connectPortal 위치)
+        Vector2 newPosition = connectPortal.transform.position;
+
+        // 인덱스를 비교하여 이동 방향 조정
+        if (connectMapIndex < currentMapIndex)
+        {
+            // connectMap의 인덱스가 더 낮음 → 왼쪽으로 이동
+            newPosition.x -= playerTelDis; // 필요에 따라 값을 조정
+        }
+        else if (connectMapIndex > currentMapIndex)
+        {
+            // connectMap의 인덱스가 더 높음 → 오른쪽으로 이동
+            newPosition.x += playerTelDis; // 필요에 따라 값을 조정
+        }
+
+        // 플레이어 이동
+        player.transform.position = newPosition;
+
+        // 포탈 사용 가능 여부 설정
         currentPortal.isUse = false;
         connectPortal.isUse = false;
-        Vector2 newPosition = connectPortal.transform.position;
-        player.transform.position = newPosition;
+        if (connectMap.GetComponent<Map>().Type == Map.MapType.RandomSpecial || 
+            connectMap.GetComponent<Map>().Type == Map.MapType.Shop || 
+            connectMap.GetComponent<Map>().Type == Map.MapType.Download)
+        {
+            cameraManager.SpecialMapCamera(connectMap.GetComponent<Map>());
+        }
     }
     public void MapTeleportPortal(GameObject moveMap,bool isRightMove,GameObject currentMap)
     {

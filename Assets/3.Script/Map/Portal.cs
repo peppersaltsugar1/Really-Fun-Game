@@ -74,7 +74,7 @@ public class Portal : MonoBehaviour
                 }
             }
         }
-        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true&&isLock)
+        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true&&!isLock)
         {
             int currentPortalIndex = transform.parent.GetSiblingIndex();
             int connectPortalIndex = connectPortal.transform.parent.GetSiblingIndex();
