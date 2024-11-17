@@ -11,7 +11,9 @@ public class TeleportManager : MonoBehaviour
     MapGenerator mapGenerator;
     [Header("텔레포트 되는거리")]
     [SerializeField]
-    float playerTelDis;
+    float playerTelDisX;
+    [SerializeField]
+    float playerTelDisY;
     private void Awake()
     {
         if (null == instance)
@@ -68,12 +70,15 @@ public class TeleportManager : MonoBehaviour
         if (connectMapIndex < currentMapIndex)
         {
             // connectMap의 인덱스가 더 낮음 → 왼쪽으로 이동
-            newPosition.x -= playerTelDis; // 필요에 따라 값을 조정
+            newPosition.x -= playerTelDisX; // 필요에 따라 값을 조정
+            newPosition.y += playerTelDisY;
         }
         else if (connectMapIndex > currentMapIndex)
         {
             // connectMap의 인덱스가 더 높음 → 오른쪽으로 이동
-            newPosition.x += playerTelDis; // 필요에 따라 값을 조정
+            newPosition.x += playerTelDisX; // 필요에 따라 값을 조정
+            newPosition.y += playerTelDisY;
+
         }
 
         // 플레이어 이동
