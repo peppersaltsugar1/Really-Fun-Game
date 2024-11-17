@@ -1398,6 +1398,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProgramList: []
+  bulletMa: {fileID: 2100000, guid: 81db91b383f8daa4caf1f945e0e6c22b, type: 2}
+  interval: 3
 --- !u!114 &598970835
 MonoBehaviour:
   m_ObjectHideFlags: 0

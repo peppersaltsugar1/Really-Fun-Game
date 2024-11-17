@@ -146,15 +146,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d30fe898aeda8f24798123dead467b1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProgramName: "\uD30C\uC6CC \uD3EC\uC778\uD2B8 \uC5C52"
-  Explanation: "\uD30C\uC6CC\uAC00 \uD798\uC774 \uB118\uCE69\uB2C8\uB2E4.2"
-  PowerExplanation: "\uACF5\uACA9\uB825 +1, \uACF5\uACA9\uC18D\uB3C4 +0.5 2"
+  ProgramName: "\uC5B4\uD0DD \uC774\uD399\uD2B8"
+  Explanation: 
+  PowerExplanation: "\uAC15\uD55C\uD798\uC5D0 \uB530\uB974\uB294 \uB300\uAC00"
   AddCoin: 0
   HPHeal: 0
-  AttackPower: 1
-  AttackSpeed: 0.5
-  MoveSpeed: 10
+  AttackPower: 0
+  AttackSpeed: 0
+  MoveSpeed: 0
   BulletSpeed: 0
+  AttackPerUp: 1
+  AttackSpeedPerUp: 0.5
+  MoveSpeedPerUp: 0
+  bulletSpeedPerUp: 0
+  AttackPerDown: 0
+  AttackSpeedPerDown: 0
+  MoveSpeedPerDown: 0
+  bulletSpeedPerDown: 0
+  DeleteIsPossible: 1
   spriteRenderer: {fileID: 7057630825208698870}
   spriteSheetName: Program 1~20_AbilityIncrease
-  spriteIndex: 0
+  spriteIndex: 7

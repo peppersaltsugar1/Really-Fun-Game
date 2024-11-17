@@ -151,14 +151,18 @@ MonoBehaviour:
   PowerExplanation: "\uD22C\uC0AC\uCCB4 \uD06C\uAE30 \uADF9\uB300 \uC99D\uAC00"
   AddCoin: 0
   HPHeal: 0
-  AttackPower: 0
+  AttackPower: 3
   AttackSpeed: 0
   MoveSpeed: 0
   BulletSpeed: 0
-  AttackPer: 3
-  AttackSpeedPer: 0.4
-  MoveSpeedPer: 0
-  bulletSpeedPer: 0
+  AttackPerUp: 0
+  AttackSpeedPerUp: 0
+  MoveSpeedPerUp: 0
+  bulletSpeedPerUp: 0
+  AttackPerDown: 0
+  AttackSpeedPerDown: 0.4
+  MoveSpeedPerDown: 0
+  bulletSpeedPerDown: 0
   DeleteIsPossible: 1
   spriteRenderer: {fileID: 7057630825208698870}
   spriteSheetName: Program 1~20_AbilityIncrease

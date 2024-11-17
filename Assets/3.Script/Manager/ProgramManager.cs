@@ -132,7 +132,7 @@ public class ProgramManager : MonoBehaviour
 
             if (PInstance != null)
             {
-                statusManager.AttackPower *= NewProgram.AttackPerDown;
+                statusManager.AttackPower *= ( 1 - NewProgram.AttackPerDown);
             }
         }
         if (NewProgram.AttackSpeedPerDown != 0)
@@ -141,7 +141,7 @@ public class ProgramManager : MonoBehaviour
 
             if (PInstance != null)
             {
-                statusManager.AttackSpeed *= NewProgram.AttackSpeedPerDown;
+                statusManager.AttackSpeed *= (1 - NewProgram.AttackSpeedPerDown);
             }
         }
         if (NewProgram.MoveSpeedPerDown != 0)
@@ -150,7 +150,7 @@ public class ProgramManager : MonoBehaviour
 
             if (PInstance != null)
             {
-                statusManager.MoveSpeed *= NewProgram.MoveSpeedPerDown;
+                statusManager.MoveSpeed *= (1 - NewProgram.MoveSpeedPerDown);
             }
         }
         if (NewProgram.bulletSpeedPerDown != 0)
@@ -159,7 +159,7 @@ public class ProgramManager : MonoBehaviour
 
             if (PInstance != null)
             {
-                statusManager.BulletSpeed *=  NewProgram.bulletSpeedPerDown;
+                statusManager.BulletSpeed *= (1 - NewProgram.bulletSpeedPerDown);
             }
         }
         if (NewProgram.ProgramName =="어택 이펙트")
@@ -256,6 +256,42 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed -= statusManager.BulletSpeed * ProgramList[ProgramNumber].bulletSpeedPerUp;
             }
         }
+        if (ProgramList[ProgramNumber].AttackPerDown != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackPower /= (1 - ProgramList[ProgramNumber].AttackPerDown);
+            }
+        }
+        if (ProgramList[ProgramNumber].AttackSpeedPerDown != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackSpeed /= (1 - ProgramList[ProgramNumber].AttackSpeedPerDown);
+            }
+        }
+        if (ProgramList[ProgramNumber].MoveSpeedPerDown != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.MoveSpeed /= (1 - ProgramList[ProgramNumber].MoveSpeedPerDown);
+            }
+        }
+        if (ProgramList[ProgramNumber].bulletSpeedPerDown != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.BulletSpeed /= (1 - ProgramList[ProgramNumber].bulletSpeedPerDown);
+            }
+        }
         if (ProgramList[ProgramNumber].ProgramName == "어택 이펙트")
         {
             StopCoroutine(AttackEffect_co());
@@ -264,18 +300,20 @@ public class ProgramManager : MonoBehaviour
     }
     private IEnumerator AttackEffect_co()
     {
-
+        //코루틴시작됨
         // Bullet 오브젝트의 원본 머테리얼을 가져오기
 
         while (true) // 무한 루프
         {
+            Debug.Log("투명도변경시작");
             // 알파 값을 0.5와 1 사이로 랜덤하게 변경
-            float alpha = Random.Range(0.5f, 1f);
+            float alpha = Random.Range(1, 10) * 0.1f;
 
             // 색상 변경 (현재 알파값 적용)
             Color color = bulletMa.color;
             color.a = alpha;
             bulletMa.color = color;
+
 
             // 다음 변경까지 대기 (interval만큼 대기)
             yield return new WaitForSeconds(interval);
