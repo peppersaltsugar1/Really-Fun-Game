@@ -19,11 +19,16 @@ public class PInformation : MonoBehaviour
     public float AttackSpeedPerUp = 0;
     public float MoveSpeedPerUp = 0;
     public float bulletSpeedPerUp = 0;
-    [Header("퍼센트 감소")]
+    [Header("퍼센트 만큼감소")]
     public float AttackPerDown = 0;
     public float AttackSpeedPerDown = 0;
     public float MoveSpeedPerDown = 0;
     public float bulletSpeedPerDown = 0;
+    [Header("퍼센트로 설정")]
+    public float SetAttackPer = 0;
+    public float SetAttackSpeedPer = 0;
+    public float SetMoveSpeedPer = 0;
+    public float SetbulletSpeedPer = 0;
 
     public bool DeleteIsPossible = true;
 

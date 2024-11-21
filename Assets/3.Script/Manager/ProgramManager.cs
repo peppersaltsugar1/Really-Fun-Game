@@ -90,6 +90,7 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed += NewProgram.BulletSpeed;
             }
         }
+        //퍼센트 만큼 올리기
         if (NewProgram.AttackPerUp != 0)
         {
             PInstance = FindObjectOfType<PoolingManager>();
@@ -126,6 +127,7 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed += statusManager.BulletSpeed * NewProgram.bulletSpeedPerUp;
             }
         }
+        //퍼센트만큼 깎기
         if (NewProgram.AttackPerDown != 0)
         {
             PInstance = FindObjectOfType<PoolingManager>();
@@ -160,6 +162,43 @@ public class ProgramManager : MonoBehaviour
             if (PInstance != null)
             {
                 statusManager.BulletSpeed *= (1 - NewProgram.bulletSpeedPerDown);
+            }
+        }
+        //퍼센트로 만들기
+        if (NewProgram.SetAttackPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackPower *= NewProgram.SetAttackPer;
+            }
+        }
+        if (NewProgram.SetAttackSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackSpeed *= NewProgram.SetAttackSpeedPer;
+            }
+        }
+        if (NewProgram.SetMoveSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.MoveSpeed *= NewProgram.SetMoveSpeedPer;
+            }
+        }
+        if (NewProgram.SetbulletSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.BulletSpeed *=  NewProgram.SetbulletSpeedPer;
             }
         }
         if (NewProgram.ProgramName =="어택 이펙트")
@@ -219,7 +258,7 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed -= ProgramList[ProgramNumber].BulletSpeed;
             }
         }
-      
+         //퍼센트 올린만큼 내리기
         if (ProgramList[ProgramNumber].AttackPerUp != 0)
         {
             PInstance = FindObjectOfType<PoolingManager>();
@@ -256,6 +295,7 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed -= statusManager.BulletSpeed * ProgramList[ProgramNumber].bulletSpeedPerUp;
             }
         }
+        //퍼센트 내린만큼 올리기
         if (ProgramList[ProgramNumber].AttackPerDown != 0)
         {
             PInstance = FindObjectOfType<PoolingManager>();
@@ -292,6 +332,44 @@ public class ProgramManager : MonoBehaviour
                 statusManager.BulletSpeed /= (1 - ProgramList[ProgramNumber].bulletSpeedPerDown);
             }
         }
+        //퍼센트 된거 돌리기
+        if (ProgramList[ProgramNumber].SetAttackPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackPower /=  ProgramList[ProgramNumber].SetAttackPer;
+            }
+        }
+        if (ProgramList[ProgramNumber].SetAttackSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.AttackSpeed /= ProgramList[ProgramNumber].SetAttackSpeedPer;
+            }
+        }
+        if (ProgramList[ProgramNumber].SetbulletSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.BulletSpeed /= ProgramList[ProgramNumber].SetbulletSpeedPer;
+            }
+        }
+        if (ProgramList[ProgramNumber].SetMoveSpeedPer != 0)
+        {
+            PInstance = FindObjectOfType<PoolingManager>();
+
+            if (PInstance != null)
+            {
+                statusManager.MoveSpeed /=  ProgramList[ProgramNumber].SetMoveSpeedPer;
+            }
+        }
+
         if (ProgramList[ProgramNumber].ProgramName == "어택 이펙트")
         {
             StopCoroutine(AttackEffect_co());
