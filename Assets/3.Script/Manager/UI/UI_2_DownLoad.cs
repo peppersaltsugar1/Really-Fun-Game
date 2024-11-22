@@ -60,7 +60,6 @@ public class UI_2_DownLoad : MonoBehaviour
     void Start()
     {
         programManager = ProgramManager.Instance;
-        GenerateProgramList();
     }
 
     // Update is called once per frame
@@ -74,6 +73,7 @@ public class UI_2_DownLoad : MonoBehaviour
         if (UI_W_DownLoad != null)
         {
             UI_W_DownLoad.SetActive(true);
+            GenerateProgramList();
             // Debug.Log("OpenUI : UI_2_DownLoad");
         }
     }
