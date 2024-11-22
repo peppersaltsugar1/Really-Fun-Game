@@ -773,6 +773,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &476045952 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1048301592835495405, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &500504382 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4643454225774139124, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
@@ -1515,7 +1520,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 760236444}
-  playerTelDis: 0
+  playerTelDisX: 0
+  playerTelDisY: 0
 --- !u!114 &598970841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1717,6 +1723,8 @@ MonoBehaviour:
   t_Item_Detail_Name_Prefab: {fileID: 229259765}
   t_Item_Detail_Explanation_Prefab: {fileID: 1349615781}
   t_Item_Detail_Size_Prefab: {fileID: 500504382}
+  DeleteButton: {fileID: 476045952}
+  UseButton: {fileID: 1349980806}
   i_StorageView: {fileID: 384400893}
   t_StorageRate: {fileID: 1417882954}
   ContentItemGroup: {fileID: 1154533214}
@@ -2874,6 +2882,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1349980806 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2023676488639523643, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1356998979
 GameObject:
   m_ObjectHideFlags: 3
@@ -4692,6 +4705,10 @@ PrefabInstance:
       propertyPath: m_Type
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4643454225235429906, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -536468512, guid: c056aa960ea597a4c9e99291c6d523af, type: 3}
     - target: {fileID: 4643454225235429906, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_FillAmount
       value: 1

@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager.UI;
@@ -20,11 +21,16 @@ public class UI_3_MyDocument : MonoBehaviour
     public Text t_Item_Detail_Name_Prefab;
     public Text t_Item_Detail_Explanation_Prefab;
     public Text t_Item_Detail_Size_Prefab;
+    public GameObject DeleteButton;
+    public GameObject UseButton;
 
     public Image i_StorageView;
     public Text t_StorageRate;
 
     public Transform ContentItemGroup;
+
+    // Current Selected Item;
+    private Item currentItem = null;
 
     // Manager
     private ItemManager itemManager = null;
@@ -67,7 +73,8 @@ public class UI_3_MyDocument : MonoBehaviour
     {
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
-        GenerateItemList();
+
+        // DeleteButton.GetComponent<Button>().AddList
     }
 
     // Update is called once per frame
@@ -80,7 +87,11 @@ public class UI_3_MyDocument : MonoBehaviour
     {
         if (UI_W_MyDocument != null)
         {
+            GenerateItemList();
             UI_W_MyDocument.SetActive(true);
+
+            // Detail Panel
+            RemoveItemDetail();
             // Debug.Log("OpenUI : UI_3_MyDocument");
         }
     }
@@ -164,17 +175,15 @@ public class UI_3_MyDocument : MonoBehaviour
             case Item.ItemType.ProgramRecycle:
                 spriteSheetName = "Item/use_DropItem";
                 break;
+            case Item.ItemType.Heal:
+            case Item.ItemType.TemHp:
+            case Item.ItemType.Shiled:
+            case Item.ItemType.Spark:
+                spriteSheetName = "Sprites/Items/Heal";
+                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
+                itemSprite = sprites[ImageIndex];
+                break;
 
-            /* 힐 아이템  추가할 것
-            //  case Item.ItemType.Heal:
-            //  case Item.ItemType.TemHp:
-            //  case Item.ItemType.Shiled:
-            //  case Item.ItemType.Spark:
-            //      spriteSheetName = "Sprites/Items/Heal";
-                    sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                    itemSprite = sprites[ImageIndex];
-            //      break;
-            */
 
             default:
                 Debug.LogError("Unknown item type.");
@@ -196,11 +205,18 @@ public class UI_3_MyDocument : MonoBehaviour
 
     public void OpenItemDetail(Item CurItem)
     {
+        currentItem = CurItem;
         Image DetailImage = i_Item_Detail_Image_Prefab.GetComponent<Image>();
         SetItemImage(DetailImage, CurItem.itemType);
         t_Item_Detail_Name_Prefab.text = CurItem.ItemName;
         t_Item_Detail_Explanation_Prefab.text = CurItem.ItemInfomation;
         t_Item_Detail_Size_Prefab.text = CurItem.ItemSize.ToString() + "MB";
+        
+        if(CurItem.IsDeletable) DeleteButton.SetActive(true);
+        else DeleteButton.SetActive(false);
+
+        if(CurItem.IsUsable) UseButton.SetActive(true);
+        else UseButton.SetActive(false);
     }
 
     public void UpdateStorage()
@@ -211,38 +227,44 @@ public class UI_3_MyDocument : MonoBehaviour
 
     public void RemoveItemDetail()
     {
+        currentItem = null;
         Image DetailImage = i_Item_Detail_Image_Prefab.GetComponent<Image>();
         DetailImage.sprite = null;
         t_Item_Detail_Name_Prefab.text = "";
         t_Item_Detail_Explanation_Prefab.text = "";
         t_Item_Detail_Size_Prefab.text = "";
+
+        // 버튼 비활성화
+        DeleteButton.SetActive(false);
+        UseButton.SetActive(false);
     }
 
-    public void FItemDelete_Button()
+    private void FItemUse_Button()
     {
-        //if (CurrentProgram != -1)
-        //{
-        //    programManager.RemoveProgram(CurrentProgram);
-        //    CurrentProgram = -1;
+        if (itemManager != null)
+        {
+            itemManager.RemoveItem(currentItem);
+            Debug.Log("사용 기능 구현해야 함");
+        }
 
-        //    // i_Program_Detail_Image_Prefab
-        //    t_Program_Detail_Name_Prefab.text = "";
-        //    t_Program_Detail_Explanation_Prefab.text = "";
-        //    t_Program_Detail_PowerExplanation_Prefab.text = "";
+        // 리스트 갱신
+        GenerateItemList();
+        // 디테일 창 삭제
+        RemoveItemDetail();
+    }
 
 
-        //    GenerateProgramList();
-        //}
+    private void FItemDelete_Button()
+    {
+        if (itemManager != null)
+        {
+            itemManager.RemoveItem(currentItem);
+            Debug.Log("삭제 기능 구현해야 함");
+        }
 
-        //Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
-
-        //if (detailImage != null)
-        //{
-        //    detailImage.sprite = null;
-        //}
-        //else
-        //{
-        //    Debug.LogError("Image component not found");
-        //}
+        // 리스트 갱신
+        GenerateItemList();
+        // 디테일 창 삭제
+        RemoveItemDetail();
     }
 }

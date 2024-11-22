@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aaf9181be62305247b0dd27addf2a13b
+guid: 174409500a6bb214eb9d37ffef48ae89
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -1004,11 +1004,9 @@ TextureImporter:
       use_Hearth_16: -182249320
       use_Hearth_27: 999735605
       use_Hearth_11: -1441772376
-      use_Hearth_32: 1088239178
       use_Hearth_39: 506303500
       use_Hearth_9: -1549533539
       use_Hearth_23: 1198056658
-      use_Hearth_37: -2004174763
       use_Hearth_12: -1998071448
       use_Hearth_36: -1745187984
       use_Hearth_18: 1061799290
@@ -1024,10 +1022,12 @@ TextureImporter:
       use_Hearth_1: 29533988
       use_Hearth_4: 1767880316
       use_Hearth_38: 1913667085
+      use_Hearth_32: 1088239178
+      use_Hearth_37: -2004174763
       use_Hearth_5: -1802432332
-      use_Hearth_28: -410167637
       use_Hearth_21: 1887912274
       use_Hearth_19: 1707808945
+      use_Hearth_28: -410167637
       use_Hearth_6: -619685035
   spritePackingTag: 
   pSDRemoveMatte: 0

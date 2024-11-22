@@ -17,12 +17,12 @@ public class Item : MonoBehaviour
     */
     public enum ItemType
     {
-        Coin1, Coin5, Coin10, Coin15, Key, CardPack, ProgramRemove, ProgramRecycle, Heal, TemHp, Shiled, Spark
+        Coin1, Coin5, Coin10, Coin15, Key, CardPack, ForcedDeletion, ProgramRemove, ProgramRecycle, Heal, TemHp, Shiled, Spark
     }
 
     // 스프라이트 내 인덱스를 저장하는 배열. 현재 ProgramRecycle 번호까지만 저장되어 있음
-    public static int[] ImageNumber = {0, 1, 6, 11, 2, 1, 4, 3 };
-    
+    public static int[] ImageNumber = {0, 1, 6, 11,     2,       1,       4,       0,        3,          7  };
+                                    //  ---코인--- /    키  /  카드팩/ 강제삭제/제거키트/ 재활용키트 /   HP  /
 
     public int itemScore;
     private GameManager gameManager;
@@ -32,7 +32,8 @@ public class Item : MonoBehaviour
     public string ItemName;
     public string ItemInfomation;
     public int ItemSize;
-    public bool IsAvailable;
+    public bool IsUsable = true;
+    public bool IsDeletable = true;
     private bool isPickedUp = false; // 아이템이 이미 처리되었는지 여부
     //아이템종
     // Start is called before the first frame update
@@ -71,8 +72,9 @@ public class Item : MonoBehaviour
                 case ItemType.ProgramRemove:
                     ProgramRemoveItem();
                     break;
-                // 아래 것들은 추가 예정
-                /*
+                case ItemType.ProgramRecycle:
+                    ProgramRecycleItem();
+                    break;
                 case ItemType.Heal:
                     HealItem();
                     break;
@@ -85,7 +87,7 @@ public class Item : MonoBehaviour
                 case ItemType.Spark:
                     SparkItem();
                     break;
-                */
+                
             }
         }
     }
@@ -127,6 +129,7 @@ public class Item : MonoBehaviour
             Debug.Log("ItemManager is not find");
         }
     }
+
     private void KeyItem()
     {
         AddItem();
@@ -144,30 +147,34 @@ public class Item : MonoBehaviour
         AddItem();
         Debug.Log("제거툴 기능 구현 안되어 있음");
     }
-
+    private void ProgramRecycleItem()
+    {
+        AddItem();
+        Debug.Log("프로그램 재활용 기능 구현 안되어 있음");
+    }
 
     // 아래 것들은 추가 예정
-    /*
+
     private void HealItem()
     {
-
+        Debug.Log("힐 아이템 기능 구현 안되어 있음");
     }
 
     private void TemHpItem()
     {
-
+        Debug.Log("임시체력 아이템 기능 구현 안되어 있음");
     }
 
     private void ShiledItem()
     {
-
+        Debug.Log("실드 아이템 기능 구현 안되어 있음");
     }
 
     private void SparkItem()
     {
-
+        Debug.Log("전기 아이템 기능 구현 안되어 있음");
     }
-    */
+    
 
 
 

@@ -61,8 +61,6 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-
-
     public bool AddItem(Item item)
     {
         if (statusManager.CurrentStorage + item.ItemSize > statusManager.B_MaxStorage)
@@ -120,6 +118,7 @@ public class ItemManager : MonoBehaviour
         }
         return KeyCount;
     }
+
     public int GetCoinCount()
     {
         int CoinCount = 0;

@@ -140,4 +140,5 @@ MonoBehaviour:
   ItemName: "(5) \uBA54\uAC00 \uBC14\uC774\uD2B8 \uCF54\uC778"
   ItemInfomation: "\uB098\uB098\uB098\uB098\uB098"
   ItemSize: 12
-  IsAvailable: 0
+  IsUsable: 0
+  IsDeletable: 1
