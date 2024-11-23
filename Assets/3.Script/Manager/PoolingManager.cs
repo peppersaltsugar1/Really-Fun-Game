@@ -74,4 +74,19 @@ public class PoolingManager : MonoBehaviour
 
         }
     }
+    public void ReMakeBullet(int bulletIndex) 
+    {
+        // 기존 총알 제거
+        while (bulletPool.Count > 0)
+        {
+            Bullet bullet = bulletPool.Dequeue(); // 큐에서 총알을 꺼냄
+            if (bullet != null && bullet.gameObject != null)
+            {
+                Destroy(bullet.gameObject); // 게임 오브젝트 삭제
+            }
+        }
+
+        // 큐 비워짐, 총알 새로 생성
+        BulletMake(bulletIndex); // `currentBulletNum`은 새로 만들 총알의 번호
+    }
 }
