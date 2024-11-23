@@ -153,7 +153,6 @@ public class TeleportManager : MonoBehaviour
     }
     public void StartPlayerTel()
     {
-        Debug.Log(gameManager);
         gameManager.player.transform.position = mapGenerator.mapList[0].transform.Find("TeleportPoint").transform.position;
     }
     public void HiddenTel()

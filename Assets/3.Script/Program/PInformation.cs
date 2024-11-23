@@ -29,10 +29,6 @@ public class PInformation : MonoBehaviour
     public float SetAttackSpeedPer = 0;
     public float SetMoveSpeedPer = 0;
     public float SetbulletSpeedPer = 0;
-    [Header("총알크기변경")]
-    public float BulletScalePerUP = 0;
-    public float BulletScalePerDown = 0;
-    public float SetBulletScalePer = 0;
 
     public bool DeleteIsPossible = true;
 
