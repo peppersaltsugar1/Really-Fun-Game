@@ -1399,7 +1399,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProgramList: []
   bulletMa: {fileID: 2100000, guid: 81db91b383f8daa4caf1f945e0e6c22b, type: 2}
+  monBulletMa: {fileID: 2100000, guid: d610683136ecdc746b34a9bceb3e9327, type: 2}
   interval: 3
+  playerWeapon: {fileID: 304676761}
 --- !u!114 &598970835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1515,7 +1517,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 760236444}
-  playerTelDis: 0
+  playerTelDisX: 0
+  playerTelDisY: 0
 --- !u!114 &598970841
 MonoBehaviour:
   m_ObjectHideFlags: 0

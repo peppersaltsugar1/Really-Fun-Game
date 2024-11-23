@@ -16,7 +16,12 @@ public class ProgramManager : MonoBehaviour
     [SerializeField]
     Material bulletMa;
     [SerializeField]
+    Material monBulletMa;
+    [SerializeField]
     float interval;
+    [Header("유니티 관련")]
+    [SerializeField]
+    Weapon playerWeapon;
     private void Awake()
     {
         if (Instance == null)
@@ -29,7 +34,25 @@ public class ProgramManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    private void Start()
+    {
+        PInstance = PoolingManager.Instance;
+    }
+    private void OnDisable()
+    {
+        if (bulletMa != null)
+        {
+            Color playerColor = bulletMa.color;
+            playerColor.a = 1f; // 알파값 수정
+            bulletMa.color = playerColor; // 색상에 알파값 반영
+        }
+        if (monBulletMa != null)
+        {
+            Color monsterColor = monBulletMa.color;
+            monsterColor.a = 1f; // 알파값 수정
+            monBulletMa.color = monsterColor; // 색상에 알파값 반영
+        }
+    }
     public void AddProgramList(PInformation NewProgram)
     {
         ProgramList.Add(NewProgram);
@@ -54,7 +77,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.AttackPower != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
             if (PInstance != null)
             {
                 //PInstance.RefreshBulletDamage(NewProgram.AttackPower);
@@ -83,7 +106,7 @@ public class ProgramManager : MonoBehaviour
 
         if (NewProgram.BulletSpeed != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -93,7 +116,7 @@ public class ProgramManager : MonoBehaviour
         //퍼센트 만큼 올리기
         if (NewProgram.AttackPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -102,7 +125,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.AttackSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -111,7 +134,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.MoveSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -120,7 +143,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.bulletSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -130,7 +153,7 @@ public class ProgramManager : MonoBehaviour
         //퍼센트만큼 깎기
         if (NewProgram.AttackPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -139,7 +162,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.AttackSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -148,7 +171,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.MoveSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -157,7 +180,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.bulletSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -167,16 +190,15 @@ public class ProgramManager : MonoBehaviour
         //퍼센트로 만들기
         if (NewProgram.SetAttackPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
-
             if (PInstance != null)
             {
+                
                 statusManager.AttackPower *= NewProgram.SetAttackPer;
             }
         }
         if (NewProgram.SetAttackSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -185,8 +207,6 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.SetMoveSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
-
             if (PInstance != null)
             {
                 statusManager.MoveSpeed *= NewProgram.SetMoveSpeedPer;
@@ -194,16 +214,88 @@ public class ProgramManager : MonoBehaviour
         }
         if (NewProgram.SetbulletSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+
 
             if (PInstance != null)
             {
-                statusManager.BulletSpeed *=  NewProgram.SetbulletSpeedPer;
+                statusManager.BulletSpeed *= NewProgram.SetbulletSpeedPer;
             }
         }
+        //총알크기 변경
+        if (NewProgram.BulletScalePerUP != 0)
+        {
+            switch (playerWeapon.weaponType)
+            {
+                case Weapon.WeaponType.BasicWeapon:
+                    Bullet changeBullet = PInstance.bulletList[0].GetComponent<Bullet>();
+                    // 기존 크기에 BulletScalePerUP 비율만큼 크기를 증가
+                    Vector3 currentScale = changeBullet.transform.localScale;
+                    float scaleFactor = 1 + NewProgram.BulletScalePerUP; // 1 + 0.2 => 1.2배
+                    changeBullet.transform.localScale = new Vector3(
+                        currentScale.x * scaleFactor,
+                        currentScale.y * scaleFactor,
+                        currentScale.z * scaleFactor
+                    );
+                    PInstance.ReMakeBullet(0);
+                    break;
+            }
+
+        }
+        if (NewProgram.BulletScalePerDown != 0)
+        {
+            switch (playerWeapon.weaponType)
+            {
+                case Weapon.WeaponType.BasicWeapon:
+                    Bullet changeBullet = PInstance.bulletList[0].GetComponent<Bullet>();
+
+                    // 기존 크기에 BulletScalePerUP 비율만큼 크기를 증가
+                    Vector3 currentScale = changeBullet.transform.localScale;
+                    float scaleFactor = 1 - NewProgram.BulletScalePerDown; // 1 + 0.2 => 1.2배
+                    changeBullet.transform.localScale = new Vector3(
+                        currentScale.x * scaleFactor,
+                        currentScale.y * scaleFactor,
+                        currentScale.z * scaleFactor
+                    );
+                    PInstance.ReMakeBullet(0);
+                    break;
+            }
+
+        }
+        if (NewProgram.SetBulletScalePer != 0)
+        {
+            switch (playerWeapon.weaponType)
+            {
+                case Weapon.WeaponType.BasicWeapon:
+                    Bullet changeBullet = PInstance.bulletList[0].GetComponent<Bullet>();
+
+                    // 기존 크기에 BulletScalePerUP 비율만큼 크기를 증가
+                    Vector3 currentScale = changeBullet.transform.localScale;
+                    float scaleFactor = NewProgram.SetBulletScalePer;
+                    changeBullet.transform.localScale = new Vector3(
+                        currentScale.x * scaleFactor,
+                        currentScale.y * scaleFactor,
+                        currentScale.z * scaleFactor
+                    );
+                    PInstance.ReMakeBullet(0);
+                    break;
+            }
+
+        }
+        //알파값 바꿔서 변경하기
         if (NewProgram.ProgramName =="어택 이펙트")
         {
-            StartCoroutine(AttackEffect_co());
+            if (bulletMa != null)
+            {
+                Color playerColor = bulletMa.color;
+                playerColor.a = 0.4f; // 알파값 수정
+                bulletMa.color = playerColor; // 색상에 알파값 반영
+            }
+            if (monBulletMa != null)
+            {
+                Color monsterColor = monBulletMa.color;
+                monsterColor.a = 0.2f; // 알파값 수정
+                monBulletMa.color = monsterColor; // 색상에 알파값 반영
+            }
         }
 
         // Debug.Log("AddProgram");
@@ -222,7 +314,7 @@ public class ProgramManager : MonoBehaviour
 
         if (ProgramList[ProgramNumber].AttackPower != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (Instance != null)
             {
@@ -251,7 +343,7 @@ public class ProgramManager : MonoBehaviour
 
         if (ProgramList[ProgramNumber].BulletSpeed != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (Instance != null)
             {
@@ -261,7 +353,7 @@ public class ProgramManager : MonoBehaviour
          //퍼센트 올린만큼 내리기
         if (ProgramList[ProgramNumber].AttackPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -270,7 +362,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].AttackSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -279,7 +371,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].MoveSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -288,7 +380,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].bulletSpeedPerUp != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -298,7 +390,7 @@ public class ProgramManager : MonoBehaviour
         //퍼센트 내린만큼 올리기
         if (ProgramList[ProgramNumber].AttackPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -307,7 +399,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].AttackSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -316,7 +408,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].MoveSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -325,7 +417,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].bulletSpeedPerDown != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -335,7 +427,7 @@ public class ProgramManager : MonoBehaviour
         //퍼센트 된거 돌리기
         if (ProgramList[ProgramNumber].SetAttackPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -344,7 +436,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].SetAttackSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -353,7 +445,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].SetbulletSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -362,7 +454,7 @@ public class ProgramManager : MonoBehaviour
         }
         if (ProgramList[ProgramNumber].SetMoveSpeedPer != 0)
         {
-            PInstance = FindObjectOfType<PoolingManager>();
+            
 
             if (PInstance != null)
             {
@@ -372,11 +464,22 @@ public class ProgramManager : MonoBehaviour
 
         if (ProgramList[ProgramNumber].ProgramName == "어택 이펙트")
         {
-            StopCoroutine(AttackEffect_co());
+            if (bulletMa != null)
+            {
+                Color playerColor = bulletMa.color;
+                playerColor.a = 1f; // 알파값 수정
+                bulletMa.color = playerColor; // 색상에 알파값 반영
+            }
+            if (monBulletMa != null)
+            {
+                Color monsterColor = monBulletMa.color;
+                monsterColor.a = 1f; // 알파값 수정
+                monBulletMa.color = monsterColor; // 색상에 알파값 반영
+            }
         }
         ProgramList.RemoveAt(ProgramNumber);
     }
-    private IEnumerator AttackEffect_co()
+    /*private IEnumerator AttackEffect_co()
     {
         //코루틴시작됨
         // Bullet 오브젝트의 원본 머테리얼을 가져오기
@@ -396,6 +499,6 @@ public class ProgramManager : MonoBehaviour
             // 다음 변경까지 대기 (interval만큼 대기)
             yield return new WaitForSeconds(interval);
         }
-    } 
+    } */
     
 }

@@ -7,11 +7,19 @@ public class Bullet : MonoBehaviour
     public float speed; // 총알 속도
     public Rigidbody2D rb;
     private float lifetime;
-
+    [SerializeField]
+    private Material bulletMa;
     private PoolingManager pool;
     private StatusManager statusManager;
-
-    // Start is called before the first frame update
+    [Header("총알 기본값")]
+    [SerializeField]
+    private float sizeX;
+    [SerializeField]
+    private float sizeY;
+    [SerializeField]
+    private float sizeZ;
+    [SerializeField]
+    private float colorA;
     void Start()
     {
         pool = PoolingManager.Instance;
@@ -67,6 +75,19 @@ public class Bullet : MonoBehaviour
     private void OnCollisionTrigger2D(Collision2D collision)
     {
         gameObject.SetActive(false); // 비활성화
+    }
+    public void SizeReset()
+    {
+        transform.localScale = new Vector3(sizeX, sizeY, sizeZ);
+        // 현재 색상 가져오기
+        Color color = bulletMa.color;
+
+        // 알파값을 설정한 값으로 변경
+        color.a = colorA;
+
+        // 색상 다시 설정
+        bulletMa.color = color;
+        
     }
 }
 
