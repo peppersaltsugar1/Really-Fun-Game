@@ -101,6 +101,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rb: {fileID: -3090217285472055506}
+  bulletMa: {fileID: 2100000, guid: 81db91b383f8daa4caf1f945e0e6c22b, type: 2}
+  sizeX: 0.4
+  sizeY: 0.4
+  sizeZ: 1
+  colorA: 255
 --- !u!50 &-3090217285472055506
 Rigidbody2D:
   serializedVersion: 4

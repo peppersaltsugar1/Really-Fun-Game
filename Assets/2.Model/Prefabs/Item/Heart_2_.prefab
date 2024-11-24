@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1929105377066906981}
   - component: {fileID: 1929105377066906980}
   - component: {fileID: 1929105377066907003}
+  - component: {fileID: -4352490935026839045}
   m_Layer: 0
   m_Name: Heart_2_
   m_TagString: Untagged
@@ -97,6 +98,24 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
+--- !u!114 &-4352490935026839045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929105377066907002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemScore: 2
+  itemType: 8
+  ItemName: 
+  ItemInfomation: 
+  ItemSize: 0
+  IsAvailable: 0
 --- !u!1 &1929105377469686012
 GameObject:
   m_ObjectHideFlags: 0
