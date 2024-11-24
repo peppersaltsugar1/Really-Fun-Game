@@ -1371,7 +1371,7 @@ MonoBehaviour:
   B_MoveSpeed: 5.5
   B_Coin: 10
   B_CurrentStorage: 0
-  B_MaxStorage: 10
+  B_MaxStorage: 30
   MaxHp: 0
   CurrentHp: 0
   TemHp: 0
@@ -1404,7 +1404,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProgramList: []
   bulletMa: {fileID: 2100000, guid: 81db91b383f8daa4caf1f945e0e6c22b, type: 2}
+  monBulletMa: {fileID: 2100000, guid: d610683136ecdc746b34a9bceb3e9327, type: 2}
   interval: 3
+  playerWeapon: {fileID: 304676761}
 --- !u!114 &598970835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1519,8 +1521,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapGenerator: {fileID: 760236444}
-  playerTelDisX: 0
-  playerTelDisY: 0
+  playerTelDisX: 0.3
+  playerTelDisY: -0.5
 --- !u!114 &598970841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5436,6 +5438,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5083391989199922404, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727642635268283004, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5827509736998898413, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}

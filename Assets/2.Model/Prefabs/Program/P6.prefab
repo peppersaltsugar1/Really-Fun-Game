@@ -160,16 +160,16 @@ MonoBehaviour:
   MoveSpeedPerUp: 0
   bulletSpeedPerUp: 0
   AttackPerDown: 0
-  AttackSpeedPerDown: 0.4
+  AttackSpeedPerDown: 0
   MoveSpeedPerDown: 0
   bulletSpeedPerDown: 0
   SetAttackPer: 0
-  SetAttackSpeedPer: 0
+  SetAttackSpeedPer: 0.4
   SetMoveSpeedPer: 0
   SetbulletSpeedPer: 0
-  BulletScalePerUP: 2
+  BulletScalePerUP: 0
   BulletScalePerDown: 0
-  SetBulletScalePer: 0
+  SetBulletScalePer: 3
   DeleteIsPossible: 1
   spriteRenderer: {fileID: 7057630825208698870}
   spriteSheetName: Program 1~20_AbilityIncrease

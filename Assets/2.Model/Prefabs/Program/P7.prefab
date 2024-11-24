@@ -168,7 +168,7 @@ MonoBehaviour:
   SetMoveSpeedPer: 0
   SetbulletSpeedPer: 0
   BulletScalePerUP: 0
-  BulletScalePerDown: 2
+  BulletScalePerDown: 3
   SetBulletScalePer: 0
   DeleteIsPossible: 1
   spriteRenderer: {fileID: 7057630825208698870}
