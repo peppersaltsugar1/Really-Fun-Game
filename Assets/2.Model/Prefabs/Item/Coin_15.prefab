@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 7838192375094085828}
   - component: {fileID: 7838192375094085829}
   - component: {fileID: 7838192375094085835}
+  - component: {fileID: 5382409015347157794}
   - component: {fileID: 4991601733171823590}
+  - component: {fileID: 3570637035137691845}
   - component: {fileID: 3253618411867196462}
   m_Layer: 0
   m_Name: Coin_15
@@ -107,6 +109,27 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &5382409015347157794
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838192375094085830}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!58 &4991601733171823590
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -123,6 +146,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.29
+--- !u!58 &3570637035137691845
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7838192375094085830}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.09
 --- !u!114 &3253618411867196462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,4 +179,5 @@ MonoBehaviour:
   ItemName: "(15) \uBA54\uAC00 \uBC14\uC774\uD2B8 \uCF54\uC778"
   ItemInfomation: "\uBC14\uB098\uB098"
   ItemSize: 14
-  IsAvailable: 0
+  IsUsable: 1
+  IsDeletable: 1

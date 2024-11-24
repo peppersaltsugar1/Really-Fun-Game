@@ -17,6 +17,7 @@ public class UI_3_MyDocument : MonoBehaviour
 
     // Detail
     public GameObject Button_Item_Prefab;
+    public GameObject DragIcon_Prefab;
     public GameObject i_Item_Detail_Image_Prefab;
     public Text t_Item_Detail_Name_Prefab;
     public Text t_Item_Detail_Explanation_Prefab;
@@ -74,7 +75,8 @@ public class UI_3_MyDocument : MonoBehaviour
         itemManager = ItemManager.Instance;
         statusManager = StatusManager.Instance;
 
-        // DeleteButton.GetComponent<Button>().AddList
+        DeleteButton.GetComponentInChildren<Button>().onClick.AddListener(FItemDelete_Button);
+        UseButton.GetComponentInChildren<Button>().onClick.AddListener(FItemUse_Button);
     }
 
     // Update is called once per frame
@@ -124,6 +126,7 @@ public class UI_3_MyDocument : MonoBehaviour
                 ItemDragHandler dragHandler = newButton.AddComponent<ItemDragHandler>();  // ItemDragHandler 추가
                 dragHandler.item = itemInfo;  // 아이템 정보 전달
                 dragHandler.windowUI = WindowUI;  // WindowUI 오브젝트 참조 전달
+                dragHandler.Button_Drag_Prefab = DragIcon_Prefab;
 
                 Transform childImageTransform = newButton.transform.Find("Image");
                 Transform childTextTransform = newButton.transform.Find("Text");
@@ -154,48 +157,18 @@ public class UI_3_MyDocument : MonoBehaviour
 
     public void SetItemImage(Image buttonImage, Item.ItemType itemType)
     {
-        string spriteSheetName = "";
         Sprite[] sprites;
         Sprite itemSprite = null;
-        int ImageIndex = Item.ImageNumber[(int)itemType];
+        int ImageIndex = itemManager.GetImageIndex(itemType);
+        string spriteSheetName = itemManager.GetSpriteSheetName(itemType);
 
-        // 이미지 설정
-        // 아이템 타입에 따른 이미지 경로 설정
-        switch (itemType)
-        {
-            case Item.ItemType.Coin1:
-            case Item.ItemType.Coin5:
-            case Item.ItemType.Coin10:
-            case Item.ItemType.Coin15:
-                spriteSheetName = "Item/use_Coin";
-                break;
-            case Item.ItemType.Key:
-            case Item.ItemType.CardPack:
-            case Item.ItemType.ProgramRemove:
-            case Item.ItemType.ProgramRecycle:
-                spriteSheetName = "Item/use_DropItem";
-                break;
-            case Item.ItemType.Heal:
-            case Item.ItemType.TemHp:
-            case Item.ItemType.Shiled:
-            case Item.ItemType.Spark:
-                spriteSheetName = "Sprites/Items/Heal";
-                sprites = Resources.LoadAll<Sprite>(spriteSheetName);
-                itemSprite = sprites[ImageIndex];
-                break;
-
-
-            default:
-                Debug.LogError("Unknown item type.");
-                return;
-        }
         sprites = Resources.LoadAll<Sprite>(spriteSheetName);
         itemSprite = sprites[ImageIndex];
 
         if (itemSprite != null)
         {
             buttonImage.sprite = itemSprite;
-            Debug.Log($"Item Image loaded: {itemType} -> {itemSprite.name}");
+            // Debug.Log($"Item Image loaded: {itemType} -> {itemSprite.name}");
         }
         else
         {
@@ -244,6 +217,7 @@ public class UI_3_MyDocument : MonoBehaviour
         if (itemManager != null)
         {
             itemManager.RemoveItem(currentItem);
+            UpdateStorage();
             Debug.Log("사용 기능 구현해야 함");
         }
 
@@ -253,13 +227,12 @@ public class UI_3_MyDocument : MonoBehaviour
         RemoveItemDetail();
     }
 
-
     private void FItemDelete_Button()
     {
         if (itemManager != null)
         {
-            itemManager.RemoveItem(currentItem);
-            Debug.Log("삭제 기능 구현해야 함");
+            itemManager.DropDownItem(currentItem);
+            UpdateStorage();
         }
 
         // 리스트 갱신

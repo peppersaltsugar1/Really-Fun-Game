@@ -4,25 +4,11 @@ using UnityEngine;
 using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour
-{   /*  
-        - 돈  = 바이트 코인 (byte Coin)(1,5,10,15)
-        - 열쇠 = 압축 폴더,.
-        - 지뢰 키트 = 제2 공격 수단
-        - 프로그램 및 제거 제거 툴 = 소지 프로그램 삭제
-        0번 프로그램제거키트 : (사용)프로그램 제거 기능, 
-        1번 카드팩 : (사용) 히든방 입장, 
-        2번  열쇠 : (소지)열쇠방 입장시 사용, 
-        3번 프로그램 재활용 : (사용)해당 방의 프로그램을 다른 프로그램으로 바꿔버림, 
-        4번 제거키트 : (소지)강제삭제시 사용
-    */
+{
     public enum ItemType
     {
         Coin1, Coin5, Coin10, Coin15, Key, CardPack, ForcedDeletion, ProgramRemove, ProgramRecycle, Heal, TemHp, Shiled, Spark
     }
-
-    // 스프라이트 내 인덱스를 저장하는 배열. 현재 ProgramRecycle 번호까지만 저장되어 있음
-    public static int[] ImageNumber = {0, 1, 6, 11,     2,       1,       4,       0,        3,          7  };
-                                    //  ---코인--- /    키  /  카드팩/ 강제삭제/제거키트/ 재활용키트 /   HP  /
 
     public int itemScore;
     private GameManager gameManager;
@@ -34,14 +20,17 @@ public class Item : MonoBehaviour
     public int ItemSize;
     public bool IsUsable = true;
     public bool IsDeletable = true;
-    private bool isPickedUp = false; // 아이템이 이미 처리되었는지 여부
-    //아이템종
+    private bool isPickedUp = false;
+
+    Rigidbody2D rb = null;
+
     // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.Instance;
         statusManager = StatusManager.Instance;
         itemManager = ItemManager.Instance;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -49,12 +38,30 @@ public class Item : MonoBehaviour
     {
 
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isPickedUp) return;
 
         if (collision.gameObject.CompareTag("Player"))
         {
+            if(statusManager.MaxStorage - statusManager.CurrentStorage < ItemSize )
+            {
+                if (rb != null)
+                {
+                    Vector2 pushDirection = (transform.position - collision.transform.position).normalized;
+
+                    // Add a small force to move the item
+                    float pushForce = 5f; // 힘의 크기
+                    rb.drag = 5f;
+                    rb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
+                    StartCoroutine(StopAfterDelay(0.3f));
+                }
+                else
+                {
+                    Debug.LogError("rb is null");
+                }    
+            }
             switch (itemType)
             {
                 case ItemType.Coin1:
@@ -68,6 +75,9 @@ public class Item : MonoBehaviour
                     break;
                 case ItemType.CardPack:
                     CardPackItem();
+                    break;
+                case ItemType.ForcedDeletion:
+                    ForcedDeletionItem();
                     break;
                 case ItemType.ProgramRemove:
                     ProgramRemoveItem();
@@ -110,6 +120,7 @@ public class Item : MonoBehaviour
         }
     }
 
+    // Item Usage Effect Section
     private void CoinItem()
     {
         Debug.Log("Item CoinItem");
@@ -142,18 +153,23 @@ public class Item : MonoBehaviour
         Debug.Log("카드팩 기능 구현 안되어 있음");
     }
 
+    private void ForcedDeletionItem()
+    {
+        AddItem();
+        Debug.Log("강제삭제 기능 구현 안되어 있음");
+    }
+
     private void ProgramRemoveItem()
     {
         AddItem();
         Debug.Log("제거툴 기능 구현 안되어 있음");
     }
+
     private void ProgramRecycleItem()
     {
         AddItem();
         Debug.Log("프로그램 재활용 기능 구현 안되어 있음");
     }
-
-    // 아래 것들은 추가 예정
 
     private void HealItem()
     {
@@ -174,8 +190,13 @@ public class Item : MonoBehaviour
     {
         Debug.Log("전기 아이템 기능 구현 안되어 있음");
     }
-    
 
+
+    IEnumerator StopAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        rb.velocity = Vector2.zero;
+    }
 
 
 }

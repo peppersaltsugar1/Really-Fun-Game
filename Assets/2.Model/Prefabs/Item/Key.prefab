@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3493010809884244004}
   - component: {fileID: 3493010809884244011}
+  - component: {fileID: 418350787550785046}
   - component: {fileID: 4722041858675237471}
+  - component: {fileID: 7790508015605575166}
   - component: {fileID: 5834137732045786937}
   m_Layer: 0
   m_Name: Key
@@ -86,6 +88,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &418350787550785046
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493010809884244010}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!58 &4722041858675237471
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -102,6 +125,22 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!58 &7790508015605575166
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3493010809884244010}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.16
 --- !u!114 &5834137732045786937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,4 +158,5 @@ MonoBehaviour:
   ItemName: "\uC7A0\uAE08\uD30C\uC77C \uD574\uB3C5 \uD0A4"
   ItemInfomation: "\uB098\uB294\uD0A4\uC774\uC9C0\uC694"
   ItemSize: 15
-  IsAvailable: 0
+  IsUsable: 1
+  IsDeletable: 1

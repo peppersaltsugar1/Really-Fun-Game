@@ -1371,7 +1371,7 @@ MonoBehaviour:
   B_MoveSpeed: 5.5
   B_Coin: 10
   B_CurrentStorage: 0
-  B_MaxStorage: 250
+  B_MaxStorage: 10
   MaxHp: 0
   CurrentHp: 0
   TemHp: 0
@@ -1449,7 +1449,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4b02f10e03931740abb6a6d4440cf01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPoint: {fileID: 0}
   player: {fileID: 304676760}
   StartTime: 0
 --- !u!114 &598970837
@@ -1561,6 +1560,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5240e273b9da154698d4e4be40ad243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  P_Coin1: {fileID: 1170710182440163479, guid: 7293d59055ad73a4c9a48677a4746cd3, type: 3}
+  P_Coin5: {fileID: 1064887551674864821, guid: 61632e8658b1f1946a54f336a7d0b6bb, type: 3}
+  P_Coin10: {fileID: 4995363567987008512, guid: a826936b74d84af4cbf27fd80cc18ee2, type: 3}
+  P_Coin15: {fileID: 7838192375094085830, guid: da7982b4785eda745938099136b863c3, type: 3}
+  P_Key: {fileID: 3493010809884244010, guid: 3563abba6bbf2304eabe9495f54f3c95, type: 3}
+  P_CardPack: {fileID: 4943023787842292164, guid: 6403b3922e922f045aed15deb7b2518f, type: 3}
+  P_ForcedDeletion: {fileID: 8125631454653816227, guid: f02d2cd75ee7e3f44841a2b7983a6fb1, type: 3}
+  P_ProgramRemove: {fileID: 4456502218440765486, guid: 2c2122a3bdbf4554db38daa5839254ac, type: 3}
+  P_ProgramRecycle: {fileID: 8925765296901602493, guid: f0d367dd30c80ed4c94b1aac11182ad1, type: 3}
+  P_Heal: {fileID: 0}
+  P_TemHp: {fileID: 0}
+  P_Shiled: {fileID: 0}
+  P_Spark: {fileID: 0}
 --- !u!114 &598970843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1718,7 +1730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI_W_MyDocument: {fileID: 1408666381}
   WindowUI: {fileID: 1200379641}
-  Button_Item_Prefab: {fileID: 6726605133139501504, guid: 5485e1b4ea13d2948941bfd972fa27b2, type: 3}
+  Button_Item_Prefab: {fileID: 6726605133139501504, guid: 97ad7239d431e97479931dab8627933d, type: 3}
+  DragIcon_Prefab: {fileID: 6726605133139501504, guid: 5485e1b4ea13d2948941bfd972fa27b2, type: 3}
   i_Item_Detail_Image_Prefab: {fileID: 1313924432}
   t_Item_Detail_Name_Prefab: {fileID: 229259765}
   t_Item_Detail_Explanation_Prefab: {fileID: 1349615781}

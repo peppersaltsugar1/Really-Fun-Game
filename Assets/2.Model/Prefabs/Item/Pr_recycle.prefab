@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8925765296901602483}
   - component: {fileID: 8925765296901602492}
-  - component: {fileID: 1968107909487332270}
+  - component: {fileID: 8329235404602553111}
   - component: {fileID: 3618824352056398366}
+  - component: {fileID: 4409492900923307077}
+  - component: {fileID: 1968107909487332270}
   m_Layer: 0
   m_Name: Pr_recycle
   m_TagString: Untagged
@@ -86,25 +88,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1968107909487332270
-MonoBehaviour:
+--- !u!50 &8329235404602553111
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8925765296901602493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemScore: 1
-  itemType: 7
-  ItemName: "\uD504\uB85C\uADF8\uB7A8 \uB9AC\uC0AC\uC774\uD074 \uD504\uB85C\uD1A0\uCF5C"
-  ItemInfomation: "\uD504\uB85C\uADF8\uB7A8 \uB9AC\uC0AC\uC774\uD074 \uD504\uB85C\uD1A0\uCF5C"
-  ItemSize: 15
-  IsUsable: 1
-  IsDeletable: 1
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!60 &3618824352056398366
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -136,3 +140,38 @@ PolygonCollider2D:
       - {x: 0.3409934, y: 0.37296772}
       - {x: -0.3696537, y: 0.37119046}
       - {x: -0.5155832, y: 0.23319687}
+--- !u!58 &4409492900923307077
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8925765296901602493}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.16
+--- !u!114 &1968107909487332270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8925765296901602493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c5816842097a8442889f3c4a6f31a14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemScore: 1
+  itemType: 8
+  ItemName: "\uD504\uB85C\uADF8\uB7A8 \uB9AC\uC0AC\uC774\uD074 \uD504\uB85C\uD1A0\uCF5C"
+  ItemInfomation: "\uD504\uB85C\uADF8\uB7A8 \uB9AC\uC0AC\uC774\uD074 \uD504\uB85C\uD1A0\uCF5C"
+  ItemSize: 15
+  IsUsable: 1
+  IsDeletable: 1

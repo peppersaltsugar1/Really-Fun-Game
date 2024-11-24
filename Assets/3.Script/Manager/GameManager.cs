@@ -3,7 +3,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance = null;
-    public Transform playerPoint;
     public Player player;
     public float StartTime;
     private MapGenerator mg;
@@ -66,4 +65,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public Player GetPlayer()
+    {
+        if(player != null)
+            return player;
+        else 
+            return null;
+    }
 }
