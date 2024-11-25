@@ -22,6 +22,10 @@ public class Item : MonoBehaviour
     public bool IsDeletable = true;
     private bool isPickedUp = false;
 
+    // 물리력
+    public float PushForce;
+    public float DragForce; 
+
     Rigidbody2D rb = null;
 
     // Start is called before the first frame update
@@ -52,10 +56,10 @@ public class Item : MonoBehaviour
                     Vector2 pushDirection = (transform.position - collision.transform.position).normalized;
 
                     // Add a small force to move the item
-                    float pushForce = 5f; // 힘의 크기
-                    rb.drag = 5f;
-                    rb.AddForce(pushDirection * pushForce, ForceMode2D.Impulse);
-                    StartCoroutine(StopAfterDelay(0.3f));
+                    float pushForce = PushForce;
+                    rb.drag = DragForce;
+                    rb.AddForce(pushDirection * pushForce);
+                    StartCoroutine(StopAfterDelay(0.5f));
                 }
                 else
                 {
@@ -194,7 +198,7 @@ public class Item : MonoBehaviour
 
     IEnumerator StopAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         rb.velocity = Vector2.zero;
     }
 

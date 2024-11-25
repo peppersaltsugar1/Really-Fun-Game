@@ -11,6 +11,7 @@ public class UI_8_ProgramInstall : MonoBehaviour
     public GameObject UI_W_ProgramInstall = null;
 
     // Detail
+    public Animator OP_ED_animator;
     public bool isESCDisabled = false;
     private int CurrentProgram;
 
@@ -98,6 +99,10 @@ public class UI_8_ProgramInstall : MonoBehaviour
 
         UI_3_End.onClick.AddListener(FDownLoadUIExit);
         UI_3_Exit.onClick.AddListener(FDownLoadUIExit);
+
+
+        DAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        OP_ED_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     // Update is called once per frame
@@ -141,7 +146,6 @@ public class UI_8_ProgramInstall : MonoBehaviour
                 break;
             case 2:
                 DownLoadUI2.SetActive(true);
-                DAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
                 StartCoroutine(PlayInstallAnimation());
                 break;
             case 3:
@@ -157,7 +161,6 @@ public class UI_8_ProgramInstall : MonoBehaviour
     private IEnumerator PlayInstallAnimation()
     {
         DAnimator.speed = 0.5f;
-        Debug.Log("In Coroutine");
         int animationNum = Random.Range(0, 5);
 
         Debug.Log("Num : " + animationNum);
@@ -216,6 +219,17 @@ public class UI_8_ProgramInstall : MonoBehaviour
 
     public void FDownLoadUIExit()
     {
+        if (OP_ED_animator != null)
+        {
+            Time.timeScale = 1.0f;
+            OP_ED_animator.SetTrigger("Ending");
+            StartCoroutine(PlayCloseAnimation());
+        }
+    }
+
+    private IEnumerator PlayCloseAnimation()
+    {
+        yield return new WaitForSecondsRealtime(0.2f);
         switch (CurrentUIIndex)
         {
             case 0:
@@ -233,7 +247,6 @@ public class UI_8_ProgramInstall : MonoBehaviour
         }
         ui_0_HUD.OpenUI();
         isESCDisabled = false;
-        Time.timeScale = 1.0f;
         CloseUI();
     }
 

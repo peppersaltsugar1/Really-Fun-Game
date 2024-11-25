@@ -107,6 +107,8 @@ MonoBehaviour:
   ItemSize: 5
   IsUsable: 1
   IsDeletable: 1
+  PushForce: 10
+  DragForce: 1
 --- !u!50 &2763728282180127979
 Rigidbody2D:
   serializedVersion: 4

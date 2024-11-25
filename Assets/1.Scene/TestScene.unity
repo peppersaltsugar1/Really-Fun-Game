@@ -1776,6 +1776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_W_ProgramInstall: {fileID: 4643454225879247819}
+  OP_ED_animator: {fileID: 1694450565}
   isESCDisabled: 0
   FinishedInstall: 0
   ProgramImage0: {fileID: 4643454225879247818}
@@ -2215,7 +2216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2201725203080318159, guid: 18d2d8f72f0d36949a918a8ef57f1f8c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2590,7 +2591,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 799021660968035091, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 799021660968035091, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[1].x
@@ -2738,7 +2739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 799021661508720172, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3801199399408970692, guid: b226b7800d4e1db4fb155a6d4d04b1ff, type: 3}
       propertyPath: m_Enabled
@@ -3533,6 +3534,11 @@ MonoBehaviour:
 --- !u!1 &1662586170 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4643454226465859209, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1694450565 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8572721147972484349, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
   m_PrefabInstance: {fileID: 4643454225879247795}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1696043594
@@ -5608,6 +5614,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8572721147972484349, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+      propertyPath: m_UpdateMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8572721147972484349, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8614377748307420449, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5937,7 +5951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775612154647321993, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c66a0f8554bfa6144ac836b8c093b02c, type: 3}

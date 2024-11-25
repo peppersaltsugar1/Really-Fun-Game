@@ -152,8 +152,8 @@ public class ItemManager : MonoBehaviour
 
         Vector3 pushDirection = (droppedItem.transform.position - player.transform.position).normalized;
         rb = droppedItem.GetComponent<Rigidbody2D>();
-        rb.drag = 5f;
-        rb.AddForce(pushDirection * 1.5f, ForceMode2D.Impulse);
+        rb.drag = item.DragForce;
+        rb.AddForce(pushDirection * item.PushForce, ForceMode2D.Impulse);
         StartCoroutine(StopAfterDelay(0.3f));
     }
 
