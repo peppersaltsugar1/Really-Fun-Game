@@ -29,9 +29,9 @@ public class Item : MonoBehaviour
     Rigidbody2D rb = null;
 
     // 아이템 흡수 효과
-    private float followSpeed = 10f;
-    private float GetDistance = 1f; // 흡수 거리 (Destroy 조건)
-    private float maxDistance = 10f; // 최대 추적 거리
+    public float followSpeed = 10f;
+    public float GetDistance = 1f; // 흡수 거리 (Destroy 조건)
+    public float maxDistance = 10f; // 최대 추적 거리
     private Transform playerTransform;
     private bool isTracking = false;
 
@@ -53,18 +53,17 @@ public class Item : MonoBehaviour
 
             if (distanceToPlayer <= GetDistance)
             {
+                // 흡수 범위 이내: 아이템 획득
                 ItemTypeToFun();
-                Debug.Log("Item absorbed by player!");
             }
             else if (distanceToPlayer > maxDistance)
             {
                 // 최대 거리 이상: 추적 중단
                 isTracking = false;
-                Debug.Log("Player is too far. Stopping tracking.");
             }
             else
             {
-                // 추적: 플레이어 방향으로 이동
+                // 추적: 플레이어 추적
                 Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
                 transform.position += directionToPlayer * followSpeed * Time.deltaTime;
             }
