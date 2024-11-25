@@ -170,7 +170,8 @@ MonoBehaviour:
   BulletScalePerUP: 0
   BulletScalePerDown: 3
   SetBulletScalePer: 0
-  DeleteIsPossible: 1
+  IsUsable: 0
+  IsDeletable: 0
   spriteRenderer: {fileID: 7057630825208698870}
   spriteSheetName: Program 1~20_AbilityIncrease
   spriteIndex: 6

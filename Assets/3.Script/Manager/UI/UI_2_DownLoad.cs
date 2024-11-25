@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +20,7 @@ public class UI_2_DownLoad : MonoBehaviour
     public Text t_Program_Detail_PowerExplanation_Prefab;
 
     public Transform ContentProgramGroup;
+    public Button ProgramUseButton;
     public Button ProgramDeleteButton;
     private int CurrentProgram = -1;
 
@@ -60,6 +63,9 @@ public class UI_2_DownLoad : MonoBehaviour
     void Start()
     {
         programManager = ProgramManager.Instance;
+
+        ProgramUseButton.onClick.AddListener(FUse_Button);
+        ProgramDeleteButton.onClick.AddListener(FDelete_Button);
     }
 
     // Update is called once per frame
@@ -74,7 +80,6 @@ public class UI_2_DownLoad : MonoBehaviour
         {
             UI_W_DownLoad.SetActive(true);
             GenerateProgramList();
-            // Debug.Log("OpenUI : UI_2_DownLoad");
         }
     }
 
@@ -83,7 +88,7 @@ public class UI_2_DownLoad : MonoBehaviour
         if (UI_W_DownLoad != null)
         {
             UI_W_DownLoad.SetActive(false);
-            // Debug.Log("CloseUI : UI_2_DownLoad");
+            RemoveProgramDetail();
         }
     }
 
@@ -175,9 +180,45 @@ public class UI_2_DownLoad : MonoBehaviour
         ProgramDeleteButton.gameObject.SetActive(true);
 
         Debug.Log("OpenProgramDetail");
+
+
+        DeActivateButtonGroup();
+
+        if (programManager.ProgramList[index].IsUsable)
+            ProgramUseButton.gameObject.SetActive(true);
+
+        if (programManager.ProgramList[index].IsDeletable)
+            ProgramDeleteButton.gameObject.SetActive(true);
+    }
+
+    public void RemoveProgramDetail()
+    {
+        t_Program_Detail_Name_Prefab.text = "";
+        t_Program_Detail_Explanation_Prefab.text = "";
+        t_Program_Detail_PowerExplanation_Prefab.text = "";
+
+        // Image Setting
+        Image detailImage = i_Program_Detail_Image_Prefab.GetComponent<Image>();
+        detailImage = null;
+
+        DeActivateButtonGroup();
     }
 
     public void FDelete_Button()
+    {
+        Debug.Log("제거");
+        RemoveProgram();
+    }
+
+    public void FUse_Button()
+    {
+        // 프로그램 사용 기능 구현
+        Debug.Log("사용 기능 구현 해야함");
+
+        RemoveProgram();
+    }
+
+    private void RemoveProgram()
     {
         if (CurrentProgram != -1)
         {
@@ -203,5 +244,13 @@ public class UI_2_DownLoad : MonoBehaviour
         {
             Debug.LogError("Image component not found");
         }
+
+        DeActivateButtonGroup();
+    }
+
+    private void DeActivateButtonGroup()
+    {
+        ProgramUseButton.gameObject.SetActive(false);
+        ProgramDeleteButton.gameObject.SetActive(false);
     }
 }

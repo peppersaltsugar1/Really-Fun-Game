@@ -28,6 +28,13 @@ public class Item : MonoBehaviour
 
     Rigidbody2D rb = null;
 
+    // 아이템 흡수 효과
+    private float followSpeed = 10f;
+    private float GetDistance = 1f; // 흡수 거리 (Destroy 조건)
+    private float maxDistance = 10f; // 최대 추적 거리
+    private Transform playerTransform;
+    private bool isTracking = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,7 +47,28 @@ public class Item : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isTracking && playerTransform != null)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
+            if (distanceToPlayer <= GetDistance)
+            {
+                ItemTypeToFun();
+                Debug.Log("Item absorbed by player!");
+            }
+            else if (distanceToPlayer > maxDistance)
+            {
+                // 최대 거리 이상: 추적 중단
+                isTracking = false;
+                Debug.Log("Player is too far. Stopping tracking.");
+            }
+            else
+            {
+                // 추적: 플레이어 방향으로 이동
+                Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+                transform.position += directionToPlayer * followSpeed * Time.deltaTime;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,8 +77,10 @@ public class Item : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            if(statusManager.MaxStorage - statusManager.CurrentStorage < ItemSize )
+            // 용량 부족한 경우
+            if (statusManager.MaxStorage - statusManager.CurrentStorage < ItemSize)
             {
+                isTracking = false;
                 if (rb != null)
                 {
                     Vector2 pushDirection = (transform.position - collision.transform.position).normalized;
@@ -64,45 +94,56 @@ public class Item : MonoBehaviour
                 else
                 {
                     Debug.LogError("rb is null");
-                }    
+                }
             }
-            switch (itemType)
+            else
             {
-                case ItemType.Coin1:
-                case ItemType.Coin5:
-                case ItemType.Coin10:
-                case ItemType.Coin15:
-                    CoinItem();
-                    break;
-                case ItemType.Key:
-                    KeyItem();
-                    break;
-                case ItemType.CardPack:
-                    CardPackItem();
-                    break;
-                case ItemType.ForcedDeletion:
-                    ForcedDeletionItem();
-                    break;
-                case ItemType.ProgramRemove:
-                    ProgramRemoveItem();
-                    break;
-                case ItemType.ProgramRecycle:
-                    ProgramRecycleItem();
-                    break;
-                case ItemType.Heal:
-                    HealItem();
-                    break;
-                case ItemType.TemHp:
-                    TemHpItem();
-                    break;
-                case ItemType.Shiled:
-                    ShiledItem();
-                    break;
-                case ItemType.Spark:
-                    SparkItem();
-                    break;
-                
+                Debug.Log("흡수 효과 on");
+                // 흡수 효과 
+                playerTransform = collision.transform;
+                isTracking = true;
             }
+        }
+    }
+
+    private void ItemTypeToFun()
+    {
+        // 아이템 기능
+        switch (itemType)
+        {
+            case ItemType.Coin1:
+            case ItemType.Coin5:
+            case ItemType.Coin10:
+            case ItemType.Coin15:
+                CoinItem();
+                break;
+            case ItemType.Key:
+                KeyItem();
+                break;
+            case ItemType.CardPack:
+                CardPackItem();
+                break;
+            case ItemType.ForcedDeletion:
+                ForcedDeletionItem();
+                break;
+            case ItemType.ProgramRemove:
+                ProgramRemoveItem();
+                break;
+            case ItemType.ProgramRecycle:
+                ProgramRecycleItem();
+                break;
+            case ItemType.Heal:
+                HealItem();
+                break;
+            case ItemType.TemHp:
+                TemHpItem();
+                break;
+            case ItemType.Shiled:
+                ShiledItem();
+                break;
+            case ItemType.Spark:
+                SparkItem();
+                break;
         }
     }
 

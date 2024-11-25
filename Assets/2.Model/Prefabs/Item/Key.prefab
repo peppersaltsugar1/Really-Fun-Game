@@ -124,7 +124,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 1.54
 --- !u!58 &7790508015605575166
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -159,4 +159,6 @@ MonoBehaviour:
   ItemInfomation: "\uB098\uB294\uD0A4\uC774\uC9C0\uC694"
   ItemSize: 15
   IsUsable: 1
-  IsDeletable: 1
+  IsDeletable: 0
+  PushForce: 5
+  DragForce: 5

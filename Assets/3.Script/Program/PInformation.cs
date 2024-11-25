@@ -34,9 +34,10 @@ public class PInformation : MonoBehaviour
     public float BulletScalePerDown = 0;
     public float SetBulletScalePer = 0;
 
-    public bool DeleteIsPossible = true;
+    public bool IsUsable = true;
+    public bool IsDeletable = true;
 
-    
+
 
     // Image Setting
     public SpriteRenderer spriteRenderer;

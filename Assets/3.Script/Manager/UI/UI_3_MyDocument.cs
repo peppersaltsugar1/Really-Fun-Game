@@ -77,6 +77,9 @@ public class UI_3_MyDocument : MonoBehaviour
 
         DeleteButton.GetComponentInChildren<Button>().onClick.AddListener(FItemDelete_Button);
         UseButton.GetComponentInChildren<Button>().onClick.AddListener(FItemUse_Button);
+
+
+        RemoveItemDetail();
     }
 
     // Update is called once per frame
@@ -91,9 +94,6 @@ public class UI_3_MyDocument : MonoBehaviour
         {
             GenerateItemList();
             UI_W_MyDocument.SetActive(true);
-
-            // Detail Panel
-            RemoveItemDetail();
             // Debug.Log("OpenUI : UI_3_MyDocument");
         }
     }
@@ -103,6 +103,7 @@ public class UI_3_MyDocument : MonoBehaviour
         if (UI_W_MyDocument != null)
         {
             UI_W_MyDocument.SetActive(false);
+            RemoveItemDetail();
             // Debug.Log("CloseUI : UI_3_MyDocument");
         }
     }
