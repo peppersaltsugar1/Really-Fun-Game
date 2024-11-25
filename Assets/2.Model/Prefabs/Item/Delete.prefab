@@ -109,6 +109,10 @@ MonoBehaviour:
   IsDeletable: 1
   PushForce: 10
   DragForce: 1
+  followSpeed: 10
+  GetDistance: 1
+  maxDistance: 10
+  isDroped: 0
 --- !u!50 &2763728282180127979
 Rigidbody2D:
   serializedVersion: 4
@@ -145,7 +149,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.54
+  m_Radius: 0.9
 --- !u!58 &5934133942757342940
 CircleCollider2D:
   m_ObjectHideFlags: 0

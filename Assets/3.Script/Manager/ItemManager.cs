@@ -148,7 +148,9 @@ public class ItemManager : MonoBehaviour
         DesignateGameObject(item.itemType);
 
         Vector3 offset = player.transform.position + (isRight ? new Vector3(0.9f, 0, 0) : new Vector3(-0.8f, 0, 0));
-        GameObject droppedItem = Instantiate(SpawnObject, offset, Quaternion.identity);
+        droppedItem = Instantiate(SpawnObject, offset, Quaternion.identity);
+
+        droppedItem.GetComponent<Item>().isDroped = true;
 
         Vector3 pushDirection = (droppedItem.transform.position - player.transform.position).normalized;
         rb = droppedItem.GetComponent<Rigidbody2D>();
@@ -165,6 +167,8 @@ public class ItemManager : MonoBehaviour
 
         Vector3 offset = player.transform.position + new Vector3(0, -1.2f, 0); 
         droppedItem = Instantiate(SpawnObject, offset, Quaternion.identity);
+
+        droppedItem.GetComponent<Item>().isDroped = true;
 
         Vector3 pushDirection = (droppedItem.transform.position - player.transform.position).normalized;
         rb = droppedItem.GetComponent<Rigidbody2D>();
@@ -195,6 +199,7 @@ public class ItemManager : MonoBehaviour
     IEnumerator StopAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        droppedItem.GetComponent<Item>().isDroped = false;
         rb.velocity = Vector2.zero;
     }
 

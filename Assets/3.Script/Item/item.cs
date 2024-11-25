@@ -34,6 +34,7 @@ public class Item : MonoBehaviour
     public float maxDistance = 10f; // 최대 추적 거리
     private Transform playerTransform;
     private bool isTracking = false;
+    public bool isDroped = false;
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +44,7 @@ public class Item : MonoBehaviour
         itemManager = ItemManager.Instance;
         rb = GetComponent<Rigidbody2D>();
     }
-
+     
     // Update is called once per frame
     void Update()
     {
@@ -100,7 +101,8 @@ public class Item : MonoBehaviour
                 Debug.Log("흡수 효과 on");
                 // 흡수 효과 
                 playerTransform = collision.transform;
-                isTracking = true;
+                if(isDroped == false)
+                    isTracking = true;
             }
         }
     }
