@@ -90,7 +90,7 @@ public class UI_1_MyPC : MonoBehaviour
     {
         if (statusManager != null && poolingManager != null)
         {
-            Debug.Log("UpdateStats");
+            // Debug.Log("UpdateStats");
             AttackText.text = statusManager.AttackPower.ToString();
             AttackSpeedText.text = statusManager.AttackSpeed.ToString();
             BulletVelocityText.text = poolingManager.bulletPool.Peek().speed.ToString();

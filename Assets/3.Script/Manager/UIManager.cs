@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     {
         UI_MyPC, UI_DownLoad, UI_MyDocument, UI_LocalDisk, UI_NetWork, UI_Control, UI_Help
     }
-    private bool uiIsOpen;
+
     private UI LastOpenUINum = UI.UI_MyPC;
     private UI_0_HUD ui_0_HUD = null;
     private UI_1_MyPC ui_1_MyPC = null;
@@ -125,7 +125,7 @@ public class UIManager : MonoBehaviour
     {
         if (!ui_8_ProgramInstall.isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ui_8_ProgramInstall.isESCDisabled" + ui_8_ProgramInstall.isESCDisabled);
+            // Debug.Log("ui_8_ProgramInstall.isESCDisabled" + ui_8_ProgramInstall.isESCDisabled);
             if (mapGenerator.currentMapClear)
             {
                 WindowUISetActive();
@@ -150,7 +150,6 @@ public class UIManager : MonoBehaviour
         if (WindowUI != null)
         {
             WindowUI.SetActive(false);
-            uiIsOpen = false;
         }
     }
 
@@ -160,7 +159,6 @@ public class UIManager : MonoBehaviour
             return;
 
         WindowUI.SetActive(true);
-        uiIsOpen = true;
 
         switch (LastOpenUINum)
         {

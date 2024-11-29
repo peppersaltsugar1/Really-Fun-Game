@@ -1499,6 +1499,11 @@ MonoBehaviour:
   Coin: 0
   CurrentStorage: 0
   MaxStorage: 0
+  DragForce: 10
+  DropForce: 1
+  AbsorptionSpeed: 10
+  GetDistance: 1
+  MaxDistance: 10
 --- !u!114 &598970834
 MonoBehaviour:
   m_ObjectHideFlags: 0

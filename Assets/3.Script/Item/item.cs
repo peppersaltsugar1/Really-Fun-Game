@@ -22,16 +22,9 @@ public class Item : MonoBehaviour
     public bool IsDeletable = true;
     private bool isPickedUp = false;
 
-    // 물리력
-    public float PushForce;
-    public float DragForce; 
-
     Rigidbody2D rb = null;
 
     // 아이템 흡수 효과
-    public float followSpeed = 10f;
-    public float GetDistance = 1f; // 흡수 거리 (Destroy 조건)
-    public float maxDistance = 10f; // 최대 추적 거리
     private Transform playerTransform;
     private bool isTracking = false;
     public bool isDroped = false;
@@ -52,12 +45,12 @@ public class Item : MonoBehaviour
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (distanceToPlayer <= GetDistance)
+            if (distanceToPlayer <= statusManager.GetDistance)
             {
                 // 흡수 범위 이내: 아이템 획득
                 ItemTypeToFun();
             }
-            else if (distanceToPlayer > maxDistance)
+            else if (distanceToPlayer > statusManager.MaxDistance)
             {
                 // 최대 거리 이상: 추적 중단
                 isTracking = false;
@@ -66,7 +59,7 @@ public class Item : MonoBehaviour
             {
                 // 추적: 플레이어 추적
                 Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
-                transform.position += directionToPlayer * followSpeed * Time.deltaTime;
+                transform.position += directionToPlayer * statusManager.AbsorptionSpeed * Time.deltaTime;
             }
         }
     }
@@ -86,9 +79,9 @@ public class Item : MonoBehaviour
                     Vector2 pushDirection = (transform.position - collision.transform.position).normalized;
 
                     // Add a small force to move the item
-                    float pushForce = PushForce;
-                    rb.drag = DragForce;
-                    rb.AddForce(pushDirection * pushForce);
+                    float DropForce = statusManager.DropForce;
+                    rb.drag = statusManager.DragForce;
+                    rb.AddForce(pushDirection * DropForce);
                     StartCoroutine(StopAfterDelay(0.5f));
                 }
                 else
@@ -98,7 +91,6 @@ public class Item : MonoBehaviour
             }
             else
             {
-                Debug.Log("흡수 효과 on");
                 // 흡수 효과 
                 playerTransform = collision.transform;
                 if(isDroped == false)
@@ -169,7 +161,7 @@ public class Item : MonoBehaviour
     // Item Usage Effect Section
     private void CoinItem()
     {
-        Debug.Log("Item CoinItem");
+        // Debug.Log("Item CoinItem");
         statusManager.CoinUp(itemScore);
         if (itemManager != null)
         {
