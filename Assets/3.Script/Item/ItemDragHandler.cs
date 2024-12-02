@@ -74,18 +74,15 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             if (IsPointerInRightSide(eventData.position))
             {
                 // 오른쪽 영역에 아이템 생성
-                Debug.Log("오른쪽 영역에 아이템 생성");
+                // Debug.Log("Right Side Generate Item");
                 itemManager.DropItem(item, true);
             }
             else
             {
                 // 왼쪽 영역에 아이템 생성
-                Debug.Log("왼쪽 영역에 아이템 생성");
+                // Debug.Log("Left Side Generate Item");
                 itemManager.DropItem(item, false);
             }
-
-            // WindowUI 바깥으로 드롭했을 경우 아이템 버리기
-            // itemManager.DropItem(item);
 
             ui_3_MyDocument.UpdateStorage();
             ui_3_MyDocument.RemoveItemDetail();

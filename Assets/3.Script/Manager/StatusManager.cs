@@ -10,7 +10,7 @@ public class StatusManager : MonoBehaviour
     private UI_0_HUD ui_0_HUD;
 
     // When game is started, this base status used to Initializing Status based on this list.
-    // Player Base Status
+    [Header("Player Base Status")]
     public float B_MaxHp;
     public float B_CurrentHp;
     public float B_TemHp;
@@ -37,7 +37,7 @@ public class StatusManager : MonoBehaviour
 
     // When player in game, playing with this status
     // This status are no need to reset.
-    // Player Dynamic Status
+    [Header("Player Dynamic Status")]
     public float MaxHp; // 최대 체력
     public float CurrentHp; // 현재 체력
     public float TemHp; // 임시 체력(아이템)
@@ -62,6 +62,13 @@ public class StatusManager : MonoBehaviour
     public int Coin;
     public int CurrentStorage;
     public int MaxStorage;
+
+    [Header("Item Drop Physical Force")]
+    public float DragForce;   
+    public float DropForce;
+    public float AbsorptionSpeed;
+    public float GetDistance;
+    public float MaxDistance;
 
     void Awake()
     {

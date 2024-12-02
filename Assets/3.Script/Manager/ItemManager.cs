@@ -110,7 +110,7 @@ public class ItemManager : MonoBehaviour
             return false;
         }
 
-        Debug.Log("ItemManager AddItem"); 
+        // Debug.Log("ItemManager AddItem"); 
         if (itemList.ContainsKey(item.ItemName))
         {
             // 같은 이름의 아이템이 이미 존재하는 경우 리스트에 추가
@@ -154,8 +154,8 @@ public class ItemManager : MonoBehaviour
 
         Vector3 pushDirection = (droppedItem.transform.position - player.transform.position).normalized;
         rb = droppedItem.GetComponent<Rigidbody2D>();
-        rb.drag = item.DragForce;
-        rb.AddForce(pushDirection * item.PushForce, ForceMode2D.Impulse);
+        rb.drag = statusManager.DragForce;
+        rb.AddForce(pushDirection * statusManager.DropForce, ForceMode2D.Impulse);
         StartCoroutine(StopAfterDelay(0.3f));
     }
 
