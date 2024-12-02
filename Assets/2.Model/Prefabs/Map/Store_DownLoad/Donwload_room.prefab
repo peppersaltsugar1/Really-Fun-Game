@@ -5148,6 +5148,7 @@ MonoBehaviour:
   PortalNum: 1
   mapName: Download
   isClear: 0
+  currentMonsterNum: 0
   nowPosition: 0
 --- !u!61 &5385974689665318923
 BoxCollider2D:
@@ -5341,6 +5342,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 799021661508720171}
     m_Modifications:
+    - target: {fileID: 3771237068345362976, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+      propertyPath: m_Size.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3771237068345362976, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.34
+      objectReference: {fileID: 0}
     - target: {fileID: 7751288568014158312, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
       propertyPath: m_Name
       value: Door_Out
