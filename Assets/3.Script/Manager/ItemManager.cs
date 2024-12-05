@@ -22,15 +22,31 @@ public class ItemManager : MonoBehaviour
     public GameObject P_Coin5;
     public GameObject P_Coin10;
     public GameObject P_Coin15;
+    public GameObject P_Coin100;
     public GameObject P_Key;
     public GameObject P_CardPack;
     public GameObject P_ForcedDeletion;
     public GameObject P_ProgramRemove;
+    public GameObject P_ExpansionKit_1;
+    public GameObject P_ExpansionKit_2;
+    public GameObject P_ExpansionKit_3;
     public GameObject P_ProgramRecycle;
+    public GameObject P_Card_Clover;
+    public GameObject P_Card_Spade;
+    public GameObject P_Card_Hearth;
+    public GameObject P_Card_Dia;
+    public GameObject P_Ticket_Random;
+    public GameObject P_Ticket_Down;
+    public GameObject P_Ticket_Shop;
+    public GameObject P_Ticket_Special;
+    public GameObject P_Ticket_BlackShop;
+    public GameObject P_Ticket_Boss;
+
     public GameObject P_Heal;
     public GameObject P_TemHp;
     public GameObject P_Shiled;
     public GameObject P_Spark;
+
 
     GameObject SpawnObject = null;
     GameObject droppedItem = null;
@@ -42,12 +58,26 @@ public class ItemManager : MonoBehaviour
         { ItemType.Coin5, 1 },
         { ItemType.Coin10, 6 },
         { ItemType.Coin15, 11 },
+        { ItemType.Coin100, 16 },
         { ItemType.Key, 2 },
         { ItemType.CardPack, 1 },
         { ItemType.ForcedDeletion, 4 },
         { ItemType.ProgramRemove, 0 },
+        { ItemType.ExpansionKit_1, 17 },
+        { ItemType.ExpansionKit_2, 18 },
+        { ItemType.ExpansionKit_3, 19 },
         { ItemType.ProgramRecycle, 3 },
-        { ItemType.Heal, 7 }
+        { ItemType.Card_Spade, 5 },
+        { ItemType.Card_Clover, 6 },
+        { ItemType.Card_Hearth, 7 },
+        { ItemType.Card_Dia, 8 },
+        { ItemType.Ticket_Shop, 9 },
+        { ItemType.Ticket_Down, 10 },
+        { ItemType.Ticket_Special, 11 },
+        { ItemType.Ticket_Random, 12 },
+        { ItemType.Ticket_BlackShop, 13 },
+        { ItemType.Ticket_Boss, 14 }
+
 
     };
 
@@ -87,7 +117,8 @@ public class ItemManager : MonoBehaviour
             { "(1) 메가 바이트 코인", 1 },
             { "(5) 메가 바이트 코인", 2 },
             { "(10) 메가 바이트 코인", 3 },
-            { "(15) 메가 바이트 코인", 4 }
+            { "(15) 메가 바이트 코인", 4 },
+            { "(100) 메가 바이트 코인", 5 }
         };
 
         public int Compare(string x, string y)
@@ -184,15 +215,32 @@ public class ItemManager : MonoBehaviour
             case Item.ItemType.Coin1: SpawnObject = P_Coin1; break;
             case Item.ItemType.Coin5: SpawnObject = P_Coin5; break;
             case Item.ItemType.Coin10: SpawnObject = P_Coin10; break;
+            case Item.ItemType.Coin15: SpawnObject = P_Coin15; break;
+            case Item.ItemType.Coin100: SpawnObject = P_Coin100; break;
             case Item.ItemType.Key: SpawnObject = P_Key; break;
             case Item.ItemType.CardPack: SpawnObject = P_CardPack; break;
             case Item.ItemType.ForcedDeletion: SpawnObject = P_ForcedDeletion; break;
             case Item.ItemType.ProgramRemove: SpawnObject = P_ProgramRemove; break;
+            case Item.ItemType.ExpansionKit_1: SpawnObject = P_ExpansionKit_1; break;
+            case Item.ItemType.ExpansionKit_2: SpawnObject = P_ExpansionKit_2; break;
+            case Item.ItemType.ExpansionKit_3: SpawnObject = P_ExpansionKit_3; break;
             case Item.ItemType.ProgramRecycle: SpawnObject = P_ProgramRecycle; break;
+            case Item.ItemType.Card_Clover: SpawnObject = P_Card_Clover; break;
+            case Item.ItemType.Card_Spade: SpawnObject = P_Card_Spade; break;
+            case Item.ItemType.Card_Hearth: SpawnObject = P_Card_Hearth; break;
+            case Item.ItemType.Card_Dia: SpawnObject = P_Card_Dia; break;
+            case Item.ItemType.Ticket_Random: SpawnObject = P_Ticket_Random; break;
+            case Item.ItemType.Ticket_Down: SpawnObject = P_Ticket_Down; break;
+            case Item.ItemType.Ticket_Shop: SpawnObject = P_Ticket_Shop; break;
+            case Item.ItemType.Ticket_Special: SpawnObject = P_Ticket_Special; break;
+            case Item.ItemType.Ticket_BlackShop: SpawnObject = P_Ticket_BlackShop; break;
+            case Item.ItemType.Ticket_Boss: SpawnObject = P_Ticket_Boss; break;
             case Item.ItemType.Heal: SpawnObject = P_Heal; break;
             case Item.ItemType.TemHp: SpawnObject = P_TemHp; break;
             case Item.ItemType.Shiled: SpawnObject = P_Shiled; break;
             case Item.ItemType.Spark: SpawnObject = P_Spark; break;
+
+
         }
     }
 
@@ -240,6 +288,10 @@ public class ItemManager : MonoBehaviour
         if (ItemManager.Instance.itemList.ContainsKey("(15) 메가 바이트 코인"))
         {
             CoinCount += 15 * ItemManager.Instance.itemList["(15) 메가 바이트 코인"].Count;
+        }
+        if (ItemManager.Instance.itemList.ContainsKey("(100) 메가 바이트 코인"))
+        {
+            CoinCount += 100 * ItemManager.Instance.itemList["(100) 메가 바이트 코인"].Count;
         }
         return CoinCount;
     }
@@ -294,7 +346,7 @@ public class ItemManager : MonoBehaviour
     }
 
     public string GetSpriteSheetName(ItemType itemType)
-    {
+    {                
         string spriteSheetName = "";
         switch (itemType)
         {
@@ -304,11 +356,25 @@ public class ItemManager : MonoBehaviour
             case Item.ItemType.Coin15:
                 spriteSheetName = "Item/use_Coin";
                 break;
+            case Item.ItemType.Coin100:
             case Item.ItemType.Key:
             case Item.ItemType.CardPack:
             case Item.ItemType.ForcedDeletion:
             case Item.ItemType.ProgramRemove:
+            case Item.ItemType.ExpansionKit_1:
+            case Item.ItemType.ExpansionKit_2:
+            case Item.ItemType.ExpansionKit_3:
             case Item.ItemType.ProgramRecycle:
+            case Item.ItemType.Card_Clover:
+            case Item.ItemType.Card_Spade:
+            case Item.ItemType.Card_Hearth:
+            case Item.ItemType.Card_Dia:
+            case Item.ItemType.Ticket_Random:
+            case Item.ItemType.Ticket_Down:
+            case Item.ItemType.Ticket_Shop:
+            case Item.ItemType.Ticket_Special:
+            case Item.ItemType.Ticket_BlackShop:
+            case Item.ItemType.Ticket_Boss:
                 spriteSheetName = "Item/use_DropItem";
                 break;
             case Item.ItemType.Heal:

@@ -1,4 +1,5 @@
 using Mono.Cecil.Cil;
+using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.PackageManager.UI;
@@ -20,10 +21,12 @@ public class UI_3_MyDocument : MonoBehaviour
     public GameObject DragIcon_Prefab;
     public GameObject i_Item_Detail_Image_Prefab;
     public Text t_Item_Detail_Name_Prefab;
-    public Text t_Item_Detail_Explanation_Prefab;
+    public TextMeshProUGUI t_Item_Detail_Explanation_Prefab;
     public Text t_Item_Detail_Size_Prefab;
     public GameObject DeleteButton;
     public GameObject UseButton;
+    public GameObject UseButtonBlack;
+
 
     public Image i_StorageView;
     public Text t_StorageRate;
@@ -77,7 +80,6 @@ public class UI_3_MyDocument : MonoBehaviour
 
         DeleteButton.GetComponentInChildren<Button>().onClick.AddListener(FItemDelete_Button);
         UseButton.GetComponentInChildren<Button>().onClick.AddListener(FItemUse_Button);
-
 
         RemoveItemDetail();
     }
@@ -185,12 +187,12 @@ public class UI_3_MyDocument : MonoBehaviour
         t_Item_Detail_Name_Prefab.text = CurItem.ItemName;
         t_Item_Detail_Explanation_Prefab.text = CurItem.ItemInfomation;
         t_Item_Detail_Size_Prefab.text = CurItem.ItemSize.ToString() + "MB";
-        
-        if(CurItem.IsDeletable) DeleteButton.SetActive(true);
+
+        if (CurItem.IsDeletable) DeleteButton.SetActive(true);
         else DeleteButton.SetActive(false);
 
-        if(CurItem.IsUsable) UseButton.SetActive(true);
-        else UseButton.SetActive(false);
+        if (CurItem.IsUsable) { UseButton.SetActive(true); UseButtonBlack.SetActive(false); }
+        else { UseButton.SetActive(false); UseButtonBlack.SetActive(true); }
     }
 
     public void UpdateStorage()
@@ -211,6 +213,7 @@ public class UI_3_MyDocument : MonoBehaviour
         // 버튼 비활성화
         DeleteButton.SetActive(false);
         UseButton.SetActive(false);
+        UseButtonBlack.SetActive(false);
     }
 
     private void FItemUse_Button()
