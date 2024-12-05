@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemScore: 5
-  itemType: 8
+  itemType: 7
   ItemName: "\uAC15\uC81C\uC0AD\uC81C \uD504\uB85C\uC138\uC2A4"
   ItemInfomation: "\r \uAC15\uC81C \uC0AD\uC81C \uD504\uB85C\uC138\uC2A4\uB294 \uC790\uC0AC\uC758
     \uC704\uB300\uD55C \uBC1C\uBA85\uD488\uC785\uB2C8\uB2E4.\r  \n \uC774\uB294 \uC545\uC131

@@ -299,16 +299,16 @@ public class ItemManager : MonoBehaviour
     public int GetBombCount()
     {
         int BombCount = 0;
-        if (itemList.ContainsKey("강제삭제 포로토콜"))
+        if (itemList.ContainsKey("강제삭제 포로세스"))
         {
-            BombCount = itemList["강제삭제 포로토콜"].Count;
+            BombCount = itemList["강제삭제 포로세스"].Count;
         }
         return BombCount;
     }
 
     public bool KeyUse()
     {
-        string keyName = "잠금파일 해독 키"; // 찾고자 하는 키의 이름
+        string keyName = "잠금파일 해독키"; // 찾고자 하는 키의 이름
 
         // 키 아이템이 itemList에 있고, 해당 리스트에 아이템이 하나 이상 있는지 확인
         if (itemList.ContainsKey(keyName) && itemList[keyName].Count > 0)
