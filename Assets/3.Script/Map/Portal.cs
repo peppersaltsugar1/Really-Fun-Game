@@ -1,116 +1,63 @@
 using UnityEngine;
-using System.Collections;
 
 public class Portal : MonoBehaviour
 {
-    public Portal connectPortal;
-    public GameObject currentMap;
-    public Collider2D portalCollider;
-    TeleportManager teleportManager;
-    CameraManager cameraManager;
-    public bool isUse;
-    public bool isLock;
-    bool isRightMove = true;
-    Animator portalAnimator;
-    Animator lockAnimator;
-    GameObject lockObj;
-    ItemManager itemManager;
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        portalCollider = GetComponent<Collider2D>();
-        currentMap = transform.parent.gameObject;
-        teleportManager = TeleportManager.Instance;
-        cameraManager = CameraManager.Instance;
-        isUse = true;
-        portalAnimator = GetComponent<Animator>();
-        itemManager = ItemManager.Instance;
-        lockObj = transform.Find("Lock")?.gameObject;
-        Transform lockTransform = transform.Find("Lock");
-        if (lockTransform != null)
-        {
-            lockAnimator = lockTransform.GetComponent<Animator>();
-            isLock = true;
-        }
-        
+    public enum PortalDirection { Left, Right } // 포탈 방향
+    public PortalDirection Direction; // 현재 포탈의 방향
+    public int PortalIndex; // 현재 포탈에서 포탈 인덱스 (왼쪽 포탈은 최대 한개만 존재하고, 인덱스는 0이 기본값,
+                            // 오른쪽 포탈들은 오른쪽 포탈끼리 인덱스를 정하며 0, 1, 2 순으로 할당)
+    public FolderNode ConnectedFolder; // 연결된 폴더 정보
+    public int ParentPortalIndex = 0; // 왼쪽 포탈의 경우 상위 폴더의 몇 번째 포탈에 연결된 것인지를
+                                      // 나타내는 인덱스(0 ~ 2 범위)
 
-    }
-    void Start()
+    private bool isActive = false; // 포탈 활성화 여부
+
+    FolderManager folderManager = null;
+
+    public void Start()
     {
-        
-        
+        folderManager = FolderManager.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
+    // 포탈 활성화 함수
+    public void ActivatePortal()
     {
-        Map parentMap = transform.parent.GetComponent<Map>();
-        if (parentMap != null)
-        {
-            portalAnimator.SetBool("Clear", parentMap.isClear);
-            portalAnimator.SetBool("isOpen", parentMap.isClear);
-
-        }
+        isActive = true;
     }
 
+    public void DeActivatePortal()
+    {
+        isActive = false;
+    }
+
+    // 충돌 감지 함수
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isLock)
+        if (collision.CompareTag("Player") && isActive)
         {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                if (isLock)
-                {
-                    // 키 사용 성공 여부에 따라 isLock 업데이트
-                    if (itemManager.KeyUse())
-                    {
-                        isLock = false;  // 키 사용 성공시 잠금 해제
-                        lockAnimator.SetBool("KeyOpen", true);
-                    }
-                    else
-                    {
-                        isLock = true;  // 키가 없으면 잠금 유지
-                    }
-                }
-            }
+            Debug.Log("Portal Enter");
+            MovePlayerToConnectedFolder();
         }
-        if (collision.gameObject.CompareTag("Player")&& isUse&& currentMap.GetComponent<Map>().isClear==true&&!isLock)
+        else if (collision.CompareTag("Player") && !isActive)
         {
-            int currentPortalIndex = transform.parent.GetSiblingIndex();
-            int connectPortalIndex = connectPortal.transform.parent.GetSiblingIndex();
-
-            Player player = collision.GetComponent<Player>();
-            //플레이어가 충돌할경우 이동할맵을 가져옴
-            GameObject moveMap = connectPortal.transform.parent.gameObject;
-            //플레이어가 충돌한 위치를 계산
-            if(currentPortalIndex < connectPortalIndex)
-            {
-                isRightMove = transform;
-            }
-            else
-            {
-                isRightMove = false;
-            }
-            
-            teleportManager.MapTeleportPortal(moveMap,isRightMove,transform.gameObject);
-            teleportManager.PlayerTeleport(player, this,connectPortal);
-            cameraManager.CameraLimit(moveMap);
-            currentMap = transform.parent.gameObject;
-            currentMap.SetActive(false);
-
+            Debug.Log($"Portal {Direction} {PortalIndex} is not active yet!");
         }
     }
-   
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        teleportManager.PortalUse_co(this);
-    }
 
-    
-    private IEnumerator Open_co()
+    // 플레이어 위치를 이동시킴
+    public void MovePlayerToConnectedFolder()
     {
-        yield return new WaitForSeconds(1f);
-        gameObject.SetActive(false); // 오브젝트 비활성화
+        if (ConnectedFolder == null) return;
+
+        Debug.Log($"Player moved to folder: {ConnectedFolder.FolderName} portalindex : {PortalIndex}");
+
+        if (PortalIndex == 0)
+        {
+            folderManager.MoveToPreviousFolder();
+        }
+        else
+        {
+            folderManager.MoveToNextFolder(PortalIndex);
+        }
     }
 }
-

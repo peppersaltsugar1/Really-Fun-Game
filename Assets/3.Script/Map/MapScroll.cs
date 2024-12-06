@@ -11,14 +11,14 @@ public class MapScroll : MonoBehaviour
 
     public GameObject Parents;
 
-    private Map ParentsPos;
+    private FolderNode ParentsPos;
 
     public float Teleposition;
     public float Resetposition;
 
     void Start()
     {
-        ParentsPos = Parents.GetComponent<Map>();
+        ParentsPos = Parents.GetComponent<FolderNode>();
         
     }
     private void Update()

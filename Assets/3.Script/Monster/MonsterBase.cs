@@ -53,6 +53,8 @@ public class MonsterBase : MonoBehaviour
     protected Animator MAnimator;
     protected Rigidbody2D rb;
 
+    FolderManager folderManager;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -61,7 +63,7 @@ public class MonsterBase : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
         MAnimator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
+        folderManager = FolderManager.Instance;
         DefenseRate = 1.0f;
     }
 
@@ -144,7 +146,7 @@ public class MonsterBase : MonoBehaviour
             {
                 // Debug.Log("Monster Take Damage");
                 Destroy(collision.gameObject);
-                Debug.Log("Attack Damage : " + statusManager.AttackPower * DefenseRate);
+                // Debug.Log("Attack Damage : " + statusManager.AttackPower * DefenseRate);
                 this.HP -= statusManager.AttackPower * DefenseRate;
                 
                 if (HP <= 0)
@@ -158,6 +160,7 @@ public class MonsterBase : MonoBehaviour
     protected virtual void Die()
     {
         Destroy(this.gameObject);
+        folderManager.UpdateMonsterCount(-1);
     }
 
     public bool DetectionPlayerPosition()

@@ -1,0 +1,470 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class FolderGenerator : MonoBehaviour
+{
+    public int MaxFolderCount;
+
+    [Header("Folder Prefab Lists")]
+    public List<GameObject> StartFolderPrefabs1; // 오른쪽 포탈 1개 스타트맵
+    public List<GameObject> StartFolderPrefabs2; // 오른쪽 포탈 2개 스타트맵
+    public List<GameObject> StartFolderPrefabs3; // 오른쪽 포탈 3개 스타트맵
+    public List<GameObject> NormalFolderPrefabs1; // 왼쪽에 포탈이 1개, 오른쪽에 포탈이 1개인 폴더 리스트
+    public List<GameObject> NormalFolderPrefabs2; // 왼쪽에 포탈이 1개, 오른쪽에 포탈이 2개인 폴더 리스트
+    public List<GameObject> NormalFolderPrefabs3; // 왼쪽에 포탈이 1개, 오른쪽에 포탈이 3개인 폴더 리스트
+    public List<GameObject> DownloadFolderPrefabs;
+    public List<GameObject> ShopFolderPrefabs;
+    public List<GameObject> BossFolderPrefabs;
+    public List<GameObject> SpecialFolderPrefabs;
+    public List<GameObject> EndFolderPrefabs;
+
+    private List<FolderNode> spawnedFolders = new List<FolderNode>();
+    private FolderNode rootFolder;
+
+    [Header("Spacing Settings")]
+    public float HorizontalSpacing;
+    public float VerticalSpacing;
+
+    private List<TreeNodeData> TreeTemplete;
+
+    public void GenerateMap()
+    {
+        if (MaxFolderCount < 6)
+        {
+            Debug.LogError("MaxFolderCount must be at least 6 to ensure proper map generation.");
+            return;
+        }
+
+        // 가장 먼저 트리 자료 구조를 생성
+        TreeTemplete = GenerateTreeData(MaxFolderCount);
+
+        // 시작 맵을 생성
+        rootFolder = CreateStartMap();
+
+        // 중간 부분 맵을 생성
+        if (rootFolder != null)
+        {
+            TreeNodeData rootNode = TreeTemplete.Find(node => node.ParentId == null);
+            CreateMiddleMaps(rootFolder, rootNode, Vector3.zero);
+        }
+
+        //// Step 3: Instantiate Root Folder with Selected Prefab
+        //Vector2 startPosition = new Vector2(0, 0);
+        //rootFolder = InstantiateNode(treeRoot, startPosition, null, startPrefab);
+
+        //// Step 4: Connect Portals
+        //ConnectPortals(rootFolder);
+
+        //Debug.Log("Map generation complete.");
+    }
+
+    private FolderNode CreateStartMap()
+    {
+        // 1. 루트 노드 식별
+        TreeNodeData rootNode = TreeTemplete.Find(node => node.ParentId == null);
+        if (rootNode == null)
+        {
+            Debug.LogError("Root node not found in TreeTemplete.");
+            return null;
+        }
+
+        // 2. 자식 개수에 맞는 시작 맵 프리팹 선택
+        int childCount = rootNode.ChildCount;
+        GameObject startPrefab = null;
+
+        switch (childCount)
+        {
+            case 1:
+                startPrefab = StartFolderPrefabs1[UnityEngine.Random.Range(0, StartFolderPrefabs1.Count)];
+                break;
+            case 2:
+                startPrefab = StartFolderPrefabs2[UnityEngine.Random.Range(0, StartFolderPrefabs2.Count)];
+                break;
+            case 3:
+                startPrefab = StartFolderPrefabs3[UnityEngine.Random.Range(0, StartFolderPrefabs3.Count)];
+                break;
+            default:
+                Debug.LogError($"No start prefab found for child count: {childCount}");
+                break;
+        }
+
+        if (startPrefab == null)
+        {
+            Debug.LogError("startPrefab is null.");
+            return null;
+        }
+
+        // 3. 시작 맵 생성
+        GameObject startMap = Instantiate(startPrefab, Vector3.zero, Quaternion.identity);
+
+        // 4. FolderNode 스크립트 찾기
+        FolderNode folderNode = startMap.GetComponent<FolderNode>();
+
+        if (folderNode == null)
+        {
+            Debug.LogError("The selected start map prefab does not contain a FolderNode component.");
+            return null;
+        }
+
+        // FolderNode가 성공적으로 찾은 경우
+        Debug.Log("FolderNode component found successfully.");
+
+        return folderNode;
+    }
+
+    private void CreateMiddleMaps(FolderNode parentFolder, TreeNodeData parentNode, Vector3 parentPosition)
+    {
+        // 1. 자식 노드 탐색
+        foreach (int childId in parentNode.Children)
+        {
+            // 자식 노드 데이터 가져오기
+            TreeNodeData childNode = TreeTemplete.Find(node => node.Id == childId);
+            if (childNode == null)
+            {
+                Debug.LogError($"Child node with ID {childId} not found in TreeTemplete.");
+                continue;
+            }
+
+            // 자식의 자식 노드 수 확인
+            int grandChildCount = childNode.ChildCount;
+
+            // 2. 프리팹 선택
+            GameObject middlePrefab = GetPrefabForFolderType(childNode.Type, grandChildCount);
+            if (middlePrefab == null)
+            {
+                Debug.LogError($"No prefab found for FolderType {childNode.Type}.");
+                continue;
+            }
+
+            // 3. 위치 계산
+            Vector3 childPosition = parentPosition + new Vector3(HorizontalSpacing, 0, 0);
+
+            // 4. 맵 생성
+            GameObject middleMap = Instantiate(middlePrefab, childPosition, Quaternion.identity);
+
+            // 5. FolderNode 설정
+            FolderNode folderNode = middleMap.GetComponent<FolderNode>();
+            if (folderNode == null)
+            {
+                Debug.LogError("The selected map prefab does not contain a FolderNode component.");
+                continue;
+            }
+
+            folderNode.Children = new List<FolderNode>();
+
+            // 부모와 자식 관계 설정
+            parentFolder.AddChild(folderNode);
+
+            // 6. 재귀 호출 (다음 레벨 생성)
+            CreateMiddleMaps(folderNode, childNode, childPosition);
+        }
+    }
+
+    public FolderNode GetRootNode() { return rootFolder; }
+
+    private FolderNode GenerateTreeStructure(int nodeCount)
+    {
+        FolderNode root = new GameObject("StartFolder").AddComponent<FolderNode>();
+        root.Type = FolderNode.FolderType.Start;
+
+        List<FolderNode> validParents = new List<FolderNode> { root };
+        int nextId = 1;
+        int leafCount = 0;
+
+        System.Random random = new System.Random();
+
+        while (nextId < nodeCount || leafCount < 5)
+        {
+            FolderNode parent = validParents[random.Next(validParents.Count)];
+
+            int maxChildren = Mathf.Min(3, nodeCount - nextId);
+            int childCount = random.Next(1, maxChildren + 1);
+
+            for (int i = 0; i < childCount && nextId < nodeCount; i++)
+            {
+                FolderNode child = new GameObject($"Folder_{nextId}").AddComponent<FolderNode>();
+                parent.AddChild(child);
+
+                child.Type = AssignFolderType(nextId, nodeCount);
+                validParents.Add(child);
+                nextId++;
+            }
+
+            if (parent.Children.Count >= 3)
+                validParents.Remove(parent);
+
+            if (nextId >= nodeCount && leafCount < 5)
+            {
+                foreach (var parentNode in validParents)
+                {
+                    FolderNode extraLeaf = new GameObject($"Folder_{nextId}").AddComponent<FolderNode>();
+                    parentNode.AddChild(extraLeaf);
+                    extraLeaf.Type = FolderNode.FolderType.Hidden; // Assign hidden type for extra leaves
+                    leafCount++;
+                    nextId++;
+                    if (leafCount >= 5) break;
+                }
+            }
+        }
+
+        return root;
+    }
+
+    private FolderNode InstantiateNode(FolderNode node, Vector2 position, FolderNode parent, GameObject customPrefab = null)
+    {
+        // 선택된 프리팹 사용
+        GameObject prefab = customPrefab ?? GetPrefabForFolderType(node.Type);
+        GameObject folderObject = Instantiate(prefab, position, Quaternion.identity);
+        FolderNode instantiatedNode = folderObject.GetComponent<FolderNode>();
+
+        instantiatedNode.Type = node.Type;
+        instantiatedNode.FolderName = node.FolderName;
+
+        if (parent != null)
+        {
+            parent.AddChild(instantiatedNode);
+        }
+
+        spawnedFolders.Add(instantiatedNode);
+
+        float childOffset = -VerticalSpacing;
+        foreach (var child in node.Children)
+        {
+            Vector2 childPosition = position + new Vector2(HorizontalSpacing, childOffset);
+            InstantiateNode(child, childPosition, instantiatedNode);
+            childOffset -= VerticalSpacing;
+        }
+
+        return instantiatedNode;
+    }
+
+    private GameObject GetPrefabForFolderType(FolderNode.FolderType type, int childCount = 0)
+    {
+        switch (type)
+        {
+            case FolderNode.FolderType.Middle:
+                if (childCount == 1)
+                    return NormalFolderPrefabs1[UnityEngine.Random.Range(0, NormalFolderPrefabs1.Count)];
+                else if (childCount == 2)
+                    return NormalFolderPrefabs2[UnityEngine.Random.Range(0, NormalFolderPrefabs2.Count)];
+                else if (childCount == 3)
+                    return NormalFolderPrefabs3[UnityEngine.Random.Range(0, NormalFolderPrefabs3.Count)];
+                else
+                    return null;
+            case FolderNode.FolderType.Download:
+                return DownloadFolderPrefabs[UnityEngine.Random.Range(0, DownloadFolderPrefabs.Count)];
+
+            case FolderNode.FolderType.Shop:
+                return ShopFolderPrefabs[UnityEngine.Random.Range(0, ShopFolderPrefabs.Count)];
+
+            case FolderNode.FolderType.Boss:
+                return BossFolderPrefabs[UnityEngine.Random.Range(0, BossFolderPrefabs.Count)];
+
+            case FolderNode.FolderType.End:
+                return EndFolderPrefabs[UnityEngine.Random.Range(0, EndFolderPrefabs.Count)];
+
+            case FolderNode.FolderType.RandomSpecial:
+                return SpecialFolderPrefabs[UnityEngine.Random.Range(0, SpecialFolderPrefabs.Count)];
+
+            default:
+                return null;
+        }
+    }
+
+
+    private FolderNode.FolderType AssignFolderType(int id, int maxNodes)
+    {
+        if (id == 1) return FolderNode.FolderType.Start;
+        if (id == maxNodes) return FolderNode.FolderType.End;
+
+        int randomType = UnityEngine.Random.Range(0, 100);
+        if (randomType < 10) return FolderNode.FolderType.Shop;
+        if (randomType < 20) return FolderNode.FolderType.Download;
+        if (randomType < 30) return FolderNode.FolderType.Boss;
+        if (randomType < 40) return FolderNode.FolderType.RandomSpecial;
+
+        return FolderNode.FolderType.Middle;
+    }
+
+    private void ConnectPortals(FolderNode node)
+    {
+        if (node == null) return;
+
+        // 연결된 포탈 리스트 초기화
+        int rightPortalIndex = 0;
+
+        // 왼쪽 포탈 설정 (부모 노드로 이동)
+        if (node.Parent != null)
+        {
+            Portal leftPortal = node.Left_Portal;
+            if (leftPortal == null)
+            {
+                // 왼쪽 포탈 생성
+                GameObject portalObject = new GameObject($"LeftPortal_{node.FolderName}");
+                portalObject.transform.SetParent(node.transform);
+                leftPortal = portalObject.AddComponent<Portal>();
+                node.Left_Portal = leftPortal;
+            }
+
+            leftPortal.Direction = Portal.PortalDirection.Left;
+            leftPortal.PortalIndex = 0;
+            leftPortal.ConnectedFolder = node.Parent;
+        }
+
+        // 오른쪽 포탈 설정 (자식 노드로 이동)
+        foreach (FolderNode child in node.Children)
+        {
+            Portal rightPortal = null;
+
+            // 오른쪽 포탈 생성
+            if (rightPortalIndex < node.Portals.Length)
+            {
+                rightPortal = node.Portals[rightPortalIndex];
+            }
+            else
+            {
+                GameObject portalObject = new GameObject($"RightPortal_{node.FolderName}_{rightPortalIndex}");
+                portalObject.transform.SetParent(node.transform);
+                rightPortal = portalObject.AddComponent<Portal>();
+                Array.Resize(ref node.Portals, rightPortalIndex + 1);
+                node.Portals[rightPortalIndex] = rightPortal;
+            }
+
+            rightPortal.Direction = Portal.PortalDirection.Right;
+            rightPortal.PortalIndex = rightPortalIndex;
+            rightPortal.ConnectedFolder = child;
+
+            // 자식의 왼쪽 포탈 설정
+            if (child.Left_Portal == null)
+            {
+                GameObject portalObject = new GameObject($"LeftPortal_{child.FolderName}");
+                portalObject.transform.SetParent(child.transform);
+                Portal leftPortal = portalObject.AddComponent<Portal>();
+                child.Left_Portal = leftPortal;
+
+                leftPortal.Direction = Portal.PortalDirection.Left;
+                leftPortal.PortalIndex = rightPortalIndex;
+                leftPortal.ConnectedFolder = node;
+            }
+
+            rightPortalIndex++;
+        }
+
+        // 재귀적으로 자식 노드의 포탈 연결
+        foreach (FolderNode child in node.Children)
+        {
+            ConnectPortals(child);
+        }
+    }
+
+
+    // 트리 구조체 정보를 담고있는 클래스
+    public class TreeNodeData
+    {
+        public int Id { get; set; }               // 고유 ID
+        public int? ParentId { get; set; }        // 부모 ID (루트 노드는 null)
+        public int ChildCount { get; set; }       // 자식 개수
+        public List<int> Children { get; set; }   // 자식 노드 ID 목록
+        public FolderNode.FolderType Type { get; set; } // 노드 타입
+        public bool IsLeaf { get; set; }          // 리프 노드 여부
+        public int Depth { get; set; }            // 트리 깊이
+
+        public TreeNodeData(int id, int? parentId, FolderNode.FolderType type, int depth)
+        {
+            Id = id;
+            ParentId = parentId;
+            Type = type;
+            Depth = depth;
+            Children = new List<int>();
+            ChildCount = 0;
+            IsLeaf = true; // 초기화 시 기본적으로 리프 노드로 설정
+        }
+    }
+    private List<TreeNodeData> GenerateTreeData(int nodeCount)
+    {
+        System.Random random = new System.Random();
+
+        var nodes = new List<TreeNodeData>();
+        int nextId = 1;
+        int leafCount = 0;
+
+        // 1. 루트 노드 생성 및 초기화
+        var root = new TreeNodeData(nextId++, null, FolderNode.FolderType.Start, 0);
+        nodes.Add(root);
+        // Debug.Log($"Root Node Created - ID: {root.Id}, ChildCount: {root.ChildCount}");
+
+        var validParents = new List<TreeNodeData> { root };
+
+        // 2.트리 생성 루프
+        while (nextId <= nodeCount || leafCount < 5)
+        {
+            // 부모 노드 선택
+            if (validParents.Count == 0)
+            {
+                Debug.LogWarning("No valid parents available. Tree generation terminated early.");
+                break;
+            }
+
+            // 부모 노드 선택
+            var parent = validParents[random.Next(validParents.Count)];
+
+            //int maxChildren = Mathf.Min(3, nodeCount - nextId);
+            int maxChildren = Mathf.Min(3 - parent.ChildCount, nodeCount - nextId);
+
+            int childCount = random.Next(1, maxChildren + 1);
+
+            Debug.Log($"Parent Node ID: {parent.Id}, Adding {childCount} Children");
+
+            for (int i = 0; i < childCount && nextId <= nodeCount; i++)
+            {
+                if (parent.ChildCount >= 3) break; // 자식이 최대 개수를 초과하면 중단
+
+                // 자식 노드 생성
+                var child = new TreeNodeData(nextId++, parent.Id, AssignFolderType(nextId, nodeCount), parent.Depth + 1);
+                parent.Children.Add(child.Id);
+                parent.ChildCount++;
+                parent.IsLeaf = false; // 부모가 되었으므로 리프 노드가 아님
+
+                nodes.Add(child);
+                validParents.Add(child);
+
+                // Debug.Log($"Child Node Created - ID: {child.Id}, Parent ID: {parent.Id}");
+            }
+
+            // 부모가 최대 자식을 가졌다면 유효 부모 리스트에서 제거
+            if (parent.ChildCount >= 3)
+            {
+                validParents.Remove(parent);
+                // Debug.Log($"Parent Node ID: {parent.Id} removed from validParents (Max Children Reached)");
+            }
+
+            // 리프 노드 개수 보장
+            if (nextId > nodeCount && leafCount < 5)
+            {
+                foreach (var parentNode in validParents)
+                {
+                    var extraLeaf = new TreeNodeData(nextId++, parentNode.Id, FolderNode.FolderType.Hidden, parentNode.Depth + 1);
+                    parentNode.Children.Add(extraLeaf.Id);
+                    parentNode.ChildCount++;
+                    nodes.Add(extraLeaf);
+                    leafCount++;
+
+                    // Debug.Log($"Extra Leaf Created - ID: {extraLeaf.Id}, Parent ID: {parentNode.Id}");
+
+                    if (leafCount >= 5) break;
+                }
+            }
+        }
+
+        // 디버깅: 최종 트리 구조 출력
+        foreach (var node in nodes)
+        {
+            Debug.Log($"Node ID: {node.Id}, Parent ID: {node.ParentId}, ChildCount: {node.ChildCount}, Depth: {node.Depth}, Type: {node.Type}");
+        }
+
+        return nodes;
+    }
+
+
+}

@@ -17,15 +17,6 @@ public class Player : MonoBehaviour
     private UIManager uiManager;
     private StatusManager statusManager;
 
-
-    // Program(Temp)
-    /*
-    public bool EnomyDelete = false;
-    private float DelayTime = 1.5f;
-    private float NextDeleteTime = 0.0f;
-    public float detectionRadius = 5.0f; 
-    */
-
     void Start()
     {
         playerRigid = gameObject.GetComponent<Rigidbody2D>();

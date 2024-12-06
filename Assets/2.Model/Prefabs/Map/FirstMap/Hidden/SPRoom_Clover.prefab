@@ -1348,6 +1348,7 @@ MonoBehaviour:
   PortalNum: 1
   mapName: 
   isClear: 0
+  currentMonsterNum: 0
   nowPosition: 0
 --- !u!1001 &1496126762777602781
 PrefabInstance:

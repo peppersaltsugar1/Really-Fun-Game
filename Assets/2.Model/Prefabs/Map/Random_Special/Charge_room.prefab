@@ -2440,9 +2440,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 102684320520076894}
-  - component: {fileID: 102684320520076895}
   - component: {fileID: 8700597038058616368}
   - component: {fileID: 8468876518689380352}
+  - component: {fileID: 8320623739860320222}
   m_Layer: 0
   m_Name: Charge_room
   m_TagString: Untagged
@@ -2473,24 +2473,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &102684320520076895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 102684320520076893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a26c18b2394af1428b6eae1a760d570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 4
-  PortalNum: 1
-  mapName: "\uC804\uC6D0 \uC635\uC158"
-  isClear: 0
-  currentMonsterNum: 0
-  nowPosition: 0
 --- !u!61 &8700597038058616368
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2546,6 +2528,28 @@ PolygonCollider2D:
       - {x: -11, y: 8}
       - {x: -11, y: -8}
       - {x: 11, y: -8}
+--- !u!114 &8320623739860320222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 102684320520076893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76724535b150f244ba87fa14bccf15aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentFolder: {fileID: 102684320520076893}
+  FolderName: Charge_room
+  Parent: {fileID: 0}
+  Children: []
+  Type: 4
+  Left_Portal: {fileID: 2214634799482950359}
+  Portals: []
+  MonsterCount: 0
+  IsCleared: 1
+  nowPosition: 0
 --- !u!1 &102684320631531064
 GameObject:
   m_ObjectHideFlags: 0
@@ -7389,6 +7393,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+--- !u!114 &2214634799482950359 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3439001374607904638, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+  m_PrefabInstance: {fileID: 3531454439820090793}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fddcb419e4c9f7d4cb98de38c41544b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6525756508468438084 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7751288568014158317, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}

@@ -9,8 +9,8 @@ public class UIManager : MonoBehaviour
 {
     private static UIManager instance = null;
 
-    [SerializeField]
-    MapGenerator mapGenerator;
+    // [SerializeField]
+    // MapGenerator mapGenerator;
 
     // Basic UI
     public GameObject FirstStartUI;
@@ -126,7 +126,7 @@ public class UIManager : MonoBehaviour
         if (!ui_8_ProgramInstall.isESCDisabled && Input.GetKeyDown(KeyCode.Escape))
         {
             // Debug.Log("ui_8_ProgramInstall.isESCDisabled" + ui_8_ProgramInstall.isESCDisabled);
-            if (mapGenerator.currentMapClear)
+            // if (mapGenerator.currentMapClear)
             {
                 WindowUISetActive();
             }
@@ -252,7 +252,7 @@ public class UIManager : MonoBehaviour
         statusManager.InitializeStatus();
 
         ui_0_HUD.HpBarSet();
-        GameManager.Instance.ReStartGame();
+        // GameManager.Instance.ReStartGame();
         GameManager.Instance.ResetPlayTime();
     }
 
