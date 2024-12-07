@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class FolderGenerator : MonoBehaviour
 {
-    public int MaxFolderCount;
+    public int GenerateMapCount;
+    private int MaxFolderCount;
 
     [Header("Folder Prefab Lists")]
     public List<GameObject> StartFolderPrefabs1; // 오른쪽 포탈 1개 스타트맵
@@ -30,11 +31,13 @@ public class FolderGenerator : MonoBehaviour
 
     public void GenerateMap()
     {
-        if (MaxFolderCount < 6)
+        if (GenerateMapCount < 6)
         {
             Debug.LogError("MaxFolderCount must be at least 6 to ensure proper map generation.");
             return;
         }
+        // 2(다운로드, 상점) + 1(보스방) + 2(스페셜) = 5개를 제외 시켜야 함.(시작 방은 포함되어 있음)
+        MaxFolderCount = GenerateMapCount - 5;
 
         // 가장 먼저 트리 자료 구조를 생성
         TreeTemplete = GenerateTreeData(MaxFolderCount);
@@ -59,6 +62,8 @@ public class FolderGenerator : MonoBehaviour
         //Debug.Log("Map generation complete.");
     }
 
+
+    // 트리에 따라 실제로 시작 맵을 생성시키는 함수
     private FolderNode CreateStartMap()
     {
         // 1. 루트 노드 식별
@@ -97,6 +102,7 @@ public class FolderGenerator : MonoBehaviour
 
         // 3. 시작 맵 생성
         GameObject startMap = Instantiate(startPrefab, Vector3.zero, Quaternion.identity);
+        startMap.transform.SetParent(this.transform);
 
         // 4. FolderNode 스크립트 찾기
         FolderNode folderNode = startMap.GetComponent<FolderNode>();
@@ -113,6 +119,7 @@ public class FolderGenerator : MonoBehaviour
         return folderNode;
     }
 
+    // 트리에 따라 실제로 중간, 엔드, 보스 방을 생성시키는 함수
     private void CreateMiddleMaps(FolderNode parentFolder, TreeNodeData parentNode, Vector3 parentPosition)
     {
         // 1. 자식 노드 탐색
@@ -142,6 +149,7 @@ public class FolderGenerator : MonoBehaviour
 
             // 4. 맵 생성
             GameObject middleMap = Instantiate(middlePrefab, childPosition, Quaternion.identity);
+            middleMap.transform.SetParent(this.transform);
 
             // 5. FolderNode 설정
             FolderNode folderNode = middleMap.GetComponent<FolderNode>();
@@ -163,53 +171,6 @@ public class FolderGenerator : MonoBehaviour
 
     public FolderNode GetRootNode() { return rootFolder; }
 
-    private FolderNode GenerateTreeStructure(int nodeCount)
-    {
-        FolderNode root = new GameObject("StartFolder").AddComponent<FolderNode>();
-        root.Type = FolderNode.FolderType.Start;
-
-        List<FolderNode> validParents = new List<FolderNode> { root };
-        int nextId = 1;
-        int leafCount = 0;
-
-        System.Random random = new System.Random();
-
-        while (nextId < nodeCount || leafCount < 5)
-        {
-            FolderNode parent = validParents[random.Next(validParents.Count)];
-
-            int maxChildren = Mathf.Min(3, nodeCount - nextId);
-            int childCount = random.Next(1, maxChildren + 1);
-
-            for (int i = 0; i < childCount && nextId < nodeCount; i++)
-            {
-                FolderNode child = new GameObject($"Folder_{nextId}").AddComponent<FolderNode>();
-                parent.AddChild(child);
-
-                child.Type = AssignFolderType(nextId, nodeCount);
-                validParents.Add(child);
-                nextId++;
-            }
-
-            if (parent.Children.Count >= 3)
-                validParents.Remove(parent);
-
-            if (nextId >= nodeCount && leafCount < 5)
-            {
-                foreach (var parentNode in validParents)
-                {
-                    FolderNode extraLeaf = new GameObject($"Folder_{nextId}").AddComponent<FolderNode>();
-                    parentNode.AddChild(extraLeaf);
-                    extraLeaf.Type = FolderNode.FolderType.Hidden; // Assign hidden type for extra leaves
-                    leafCount++;
-                    nextId++;
-                    if (leafCount >= 5) break;
-                }
-            }
-        }
-
-        return root;
-    }
 
     private FolderNode InstantiateNode(FolderNode node, Vector2 position, FolderNode parent, GameObject customPrefab = null)
     {
@@ -270,21 +231,6 @@ public class FolderGenerator : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-
-    private FolderNode.FolderType AssignFolderType(int id, int maxNodes)
-    {
-        if (id == 1) return FolderNode.FolderType.Start;
-        if (id == maxNodes) return FolderNode.FolderType.End;
-
-        int randomType = UnityEngine.Random.Range(0, 100);
-        if (randomType < 10) return FolderNode.FolderType.Shop;
-        if (randomType < 20) return FolderNode.FolderType.Download;
-        if (randomType < 30) return FolderNode.FolderType.Boss;
-        if (randomType < 40) return FolderNode.FolderType.RandomSpecial;
-
-        return FolderNode.FolderType.Middle;
     }
 
     private void ConnectPortals(FolderNode node)
@@ -381,6 +327,7 @@ public class FolderGenerator : MonoBehaviour
             IsLeaf = true; // 초기화 시 기본적으로 리프 노드로 설정
         }
     }
+
     private List<TreeNodeData> GenerateTreeData(int nodeCount)
     {
         System.Random random = new System.Random();
@@ -421,7 +368,7 @@ public class FolderGenerator : MonoBehaviour
                 if (parent.ChildCount >= 3) break; // 자식이 최대 개수를 초과하면 중단
 
                 // 자식 노드 생성
-                var child = new TreeNodeData(nextId++, parent.Id, AssignFolderType(nextId, nodeCount), parent.Depth + 1);
+                var child = new TreeNodeData(nextId++, parent.Id, FolderNode.FolderType.Middle , parent.Depth + 1);
                 parent.Children.Add(child.Id);
                 parent.ChildCount++;
                 parent.IsLeaf = false; // 부모가 되었으므로 리프 노드가 아님
@@ -455,6 +402,36 @@ public class FolderGenerator : MonoBehaviour
                     if (leafCount >= 5) break;
                 }
             }
+        }
+
+        // 3. 노드 타입 재설정
+        TreeNodeData bossNode = null;
+        int maxDepth = -1; // 가장 깊은 리프 노드를 찾기 위한 변수
+
+        foreach (var node in nodes)
+        {
+            if (node.Children.Count == 0 && node.ParentId != null) // 리프 노드
+            {
+                node.Type = FolderNode.FolderType.End;
+
+                // 가장 깊은 리프 노드 찾기
+                if (node.Depth > maxDepth)
+                {
+                    maxDepth = node.Depth;
+                    bossNode = node;
+                }
+            }
+            else if (node.ParentId != null) // 중간 노드
+            {
+                node.Type = FolderNode.FolderType.Middle;
+            }
+        }
+
+        // 가장 깊은 리프 노드 타입을 Boss로 설정
+        if (bossNode != null)
+        {
+            bossNode.Type = FolderNode.FolderType.Boss;
+            // Debug.Log($"Boss Node Assigned - ID: {bossNode.Id}, Depth: {bossNode.Depth}");
         }
 
         // 디버깅: 최종 트리 구조 출력

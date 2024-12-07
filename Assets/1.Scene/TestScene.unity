@@ -3613,7 +3613,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c38e22bde571c4a49828389e44806159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxFolderCount: 10
+  GenerateMapCount: 15
   StartFolderPrefabs1:
   - {fileID: 945945839606852239, guid: a8bf296f6c9730149b3de974ba07d964, type: 3}
   - {fileID: 6305169169667318165, guid: befc4c9fd6b45814cbd2eb95f0887b74, type: 3}
