@@ -139,8 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemScore: 100
   itemType: 24
-  ItemName: "\uB0B4 \uBB38\uC11C \uD655\uC7A5 \uD0A4\uD2B8 Lv.1"
-  ItemInfomation: " \uB0B4 \uBB38\uC11C\uC758 \uC800\uC7A5\uACF5\uAC04\uC744 \uD655\uC7A5\uD569\uB2C8\uB2E4.
+  ItemName: "\uB0B4 \uD30C\uC77C \uD655\uC7A5 \uD0A4\uD2B8 Lv.1"
+  ItemInfomation: " \uB0B4 \uD30C\uC77C\uC758 \uC800\uC7A5\uACF5\uAC04\uC744 \uD655\uC7A5\uD569\uB2C8\uB2E4.
     \r  \n \uC800\uC7A5 \uACF5\uAC04 \uD655\uC7A5 \uD0A4\uD2B8\uC758 Lv.1 \uD504\uB85C\uD1A0\uD0C0\uC785,
     \uCD94\uAC00 \uC800\uC7A5\uACF5\uAC04\uC740 <b>[100MB]</b>\uC785\uB2C8\uB2E4. 
     \n\r  \n <size=+2><b>* \uC0AC\uC6A9\uBC95</b></size>  \r\n <size=-2>1. \uC2E4\uD589.</size>\r"

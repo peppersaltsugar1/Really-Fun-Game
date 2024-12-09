@@ -198,6 +198,7 @@ public class UI_3_MyDocument : MonoBehaviour
     public void UpdateStorage()
     {
         i_StorageView.fillAmount = (float)statusManager.CurrentStorage / (statusManager.B_MaxStorage);
+        if (i_StorageView.fillAmount >= 0.8f) i_StorageView.color = new Color(1f, 0.1949685f, 0.1949685f); else i_StorageView.color = new Color(0.1960784f, 1f, 0.6738115f);
         t_StorageRate.text = statusManager.MaxStorage.ToString() + "MB 중 " + (statusManager.MaxStorage - statusManager.CurrentStorage).ToString() + "MB 사용 가능";
     }
 

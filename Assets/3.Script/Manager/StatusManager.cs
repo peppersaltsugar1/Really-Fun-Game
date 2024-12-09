@@ -129,7 +129,6 @@ public class StatusManager : MonoBehaviour
     private IEnumerator Hit_Coroutine(float damage)
     {
         IsHit = true;
-
         if (ShieldHp > 0)
         {
             ShieldHp -= damage;
