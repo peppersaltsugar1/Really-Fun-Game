@@ -130,14 +130,13 @@ public class FolderManager : MonoBehaviour
         FolderNode DestinationFolder = CurrentPortal.ConnectedFolder;
         int DestinationFolderPortalIndex = CurrentPortal.ParentPortalIndex;
 
-        // 지금 여기에ㅐ 버그가 있음
         MoveToFolder(CurrentFolder.Parent, index);
 
         if (Player != null)
         {
             Vector3 newPosition = DestinationFolder.Portals[DestinationFolderPortalIndex].transform.position;
             newPosition.x -= 1.5f;
-            newPosition.y -= 1.5f;
+            newPosition.y -= 0.5f;
             Player.transform.position = newPosition;
         }
 
@@ -173,7 +172,7 @@ public class FolderManager : MonoBehaviour
         {
             Vector3 newPosition = CurrentFolder.Left_Portal.transform.position;
             newPosition.x += 1.5f; 
-            newPosition.y -= 1.5f; 
+            newPosition.y -= 0.5f; 
             Player.transform.position = newPosition;
         }
 
