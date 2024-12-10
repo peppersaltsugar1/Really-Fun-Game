@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.VisualScripting.Metadata;
 
 public class FolderGenerator : MonoBehaviour
 {
+
+    [Header("MapCount")]
     public int GenerateMapCount;
     private int MaxFolderCount;
 
@@ -36,6 +39,7 @@ public class FolderGenerator : MonoBehaviour
             Debug.LogError("MaxFolderCount must be at least 6 to ensure proper map generation.");
             return;
         }
+
         // 2(다운로드, 상점) + 1(보스방) + 2(스페셜) = 5개를 제외 시켜야 함.(시작 방은 포함되어 있음)
         MaxFolderCount = GenerateMapCount - 5;
 
@@ -52,12 +56,8 @@ public class FolderGenerator : MonoBehaviour
             CreateMiddleMaps(rootFolder, rootNode, Vector3.zero);
         }
 
-        //// Step 3: Instantiate Root Folder with Selected Prefab
-        //Vector2 startPosition = new Vector2(0, 0);
-        //rootFolder = InstantiateNode(treeRoot, startPosition, null, startPrefab);
-
-        //// Step 4: Connect Portals
-        //ConnectPortals(rootFolder);
+        // Step 4: Connect Portals
+        ConnectPortals(rootFolder);
 
         //Debug.Log("Map generation complete.");
     }
@@ -171,7 +171,6 @@ public class FolderGenerator : MonoBehaviour
 
     public FolderNode GetRootNode() { return rootFolder; }
 
-
     private FolderNode InstantiateNode(FolderNode node, Vector2 position, FolderNode parent, GameObject customPrefab = null)
     {
         // 선택된 프리팹 사용
@@ -233,10 +232,13 @@ public class FolderGenerator : MonoBehaviour
         }
     }
 
+    // 실제로 포탈을 연결해주는 함수
     private void ConnectPortals(FolderNode node)
     {
         if (node == null) return;
 
+        // 기존 코드
+        /*
         // 연결된 포탈 리스트 초기화
         int rightPortalIndex = 0;
 
@@ -295,6 +297,40 @@ public class FolderGenerator : MonoBehaviour
             }
 
             rightPortalIndex++;
+        }
+        */
+        // 신규 코드
+        if (node.Portals == null)
+        {
+            Debug.LogError($"Node {node.name} has null Portals");
+            return;
+        }
+
+        if (node.Children == null)
+        {
+            Debug.LogError($"Node {node.name} has null Children");
+            return;
+        }
+
+        for (int i = 0; i < node.Children.Count; i++)
+        {
+            if (node.Portals[i] == null)
+            {
+                Debug.LogError($"Node {node.name} has null Portal at index {i}");
+                continue;
+            }
+
+            if (node.Children[i] == null)
+            {
+                Debug.LogError($"Node {node.name} has null Child at index {i}");
+                continue;
+            }
+
+            // 현재 맵 -> 자식 맵 포탈 이어주기
+            node.Portals[i].SetConnectedFolder(node.Children[i], 0);
+
+            // 자식 맵 -> 현재 맵 포탈 이어주기
+            node.Children[i].Left_Portal.SetConnectedFolder(node, i);
         }
 
         // 재귀적으로 자식 노드의 포탈 연결
@@ -361,7 +397,7 @@ public class FolderGenerator : MonoBehaviour
 
             int childCount = random.Next(1, maxChildren + 1);
 
-            Debug.Log($"Parent Node ID: {parent.Id}, Adding {childCount} Children");
+            // Debug.Log($"Parent Node ID: {parent.Id}, Adding {childCount} Children");
 
             for (int i = 0; i < childCount && nextId <= nodeCount; i++)
             {
@@ -407,11 +443,13 @@ public class FolderGenerator : MonoBehaviour
         // 3. 노드 타입 재설정
         TreeNodeData bossNode = null;
         int maxDepth = -1; // 가장 깊은 리프 노드를 찾기 위한 변수
+        List<TreeNodeData> leafNodes = new List<TreeNodeData>();
 
         foreach (var node in nodes)
         {
             if (node.Children.Count == 0 && node.ParentId != null) // 리프 노드
             {
+                leafNodes.Add(node);
                 node.Type = FolderNode.FolderType.End;
 
                 // 가장 깊은 리프 노드 찾기
@@ -427,14 +465,40 @@ public class FolderGenerator : MonoBehaviour
             }
         }
 
-        // 가장 깊은 리프 노드 타입을 Boss로 설정
+        // 4. 가장 깊은 리프 노드 타입을 Boss로 설정
         if (bossNode != null)
         {
             bossNode.Type = FolderNode.FolderType.Boss;
+            leafNodes.Remove(bossNode);
             // Debug.Log($"Boss Node Assigned - ID: {bossNode.Id}, Depth: {bossNode.Depth}");
         }
 
-        // 디버깅: 최종 트리 구조 출력
+        // 5. 특수 타입 방 지정
+        if (leafNodes.Count >= 4)
+        {
+            // 다운로드 1개
+            var downloadNode = leafNodes[random.Next(leafNodes.Count)];
+            downloadNode.Type = FolderNode.FolderType.Download;
+            leafNodes.Remove(downloadNode);
+            // Debug.Log($"Download Node Assigned - ID: {downloadNode.Id}");
+
+            // 상점 1개
+            var storeNode = leafNodes[random.Next(leafNodes.Count)];
+            storeNode.Type = FolderNode.FolderType.Shop;
+            leafNodes.Remove(storeNode);
+            // Debug.Log($"Store Node Assigned - ID: {storeNode.Id}");
+
+            // 스페셜 2개
+            for (int i = 0; i < 2; i++)
+            {
+                var specialNode = leafNodes[random.Next(leafNodes.Count)];
+                specialNode.Type = FolderNode.FolderType.RandomSpecial;
+                leafNodes.Remove(specialNode);
+                // Debug.Log($"Special Node Assigned - ID: {specialNode.Id}");
+            }
+        }
+
+        // 6. 디버깅: 최종 트리 구조 출력
         foreach (var node in nodes)
         {
             Debug.Log($"Node ID: {node.Id}, Parent ID: {node.ParentId}, ChildCount: {node.ChildCount}, Depth: {node.Depth}, Type: {node.Type}");

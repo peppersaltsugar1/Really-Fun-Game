@@ -159,8 +159,8 @@ public class MonsterBase : MonoBehaviour
 
     protected virtual void Die()
     {
-        Destroy(this.gameObject);
         folderManager.UpdateMonsterCount(-1);
+        Destroy(this.gameObject);
     }
 
     public bool DetectionPlayerPosition()

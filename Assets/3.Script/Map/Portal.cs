@@ -36,6 +36,7 @@ public class Portal : MonoBehaviour
         if (collision.CompareTag("Player") && isActive)
         {
             Debug.Log("Portal Enter");
+            isActive = false;
             MovePlayerToConnectedFolder();
         }
         else if (collision.CompareTag("Player") && !isActive)
@@ -51,13 +52,19 @@ public class Portal : MonoBehaviour
 
         Debug.Log($"Player moved to folder: {ConnectedFolder.FolderName} portalindex : {PortalIndex}");
 
-        if (PortalIndex == 0)
+        if (Direction == PortalDirection.Left)
         {
-            folderManager.MoveToPreviousFolder();
+            folderManager.MoveToPreviousFolder(ParentPortalIndex);
         }
         else
         {
             folderManager.MoveToNextFolder(PortalIndex);
         }
+    }
+
+    public void SetConnectedFolder(FolderNode conneted, int parentPortalIndex)
+    {
+        ConnectedFolder = conneted;
+        ParentPortalIndex = parentPortalIndex;
     }
 }

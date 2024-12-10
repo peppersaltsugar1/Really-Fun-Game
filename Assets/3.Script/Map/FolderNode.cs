@@ -28,6 +28,7 @@ public class FolderNode : MonoBehaviour
     public bool IsCleared = false; // 클리어 여부
     public float nowPosition;
 
+    // 포탈
     [Header("왼쪽 포탈")]
     public Portal Left_Portal = null; // 왼쪽 포탈
     [Header("오른쪽 포탈 리스트")]
@@ -74,28 +75,32 @@ public class FolderNode : MonoBehaviour
     {
         if (CurrentFolder == null) return;
 
-        Debug.Log("SetFolderDeActive");
+        // Debug.Log("SetFolderDeActive");
         CurrentFolder.SetActive(false);
     }
 
     // 현재 폴더에 있는 포탈을 전부 활성화
     public void ActivePortal()
     {
-        Debug.Log("ActivePortal");
+        // Debug.Log("ActivePortal");
         foreach (var portal in Portals)
         {
             portal.ActivatePortal();
         }
+        if (Left_Portal != null)
+            Left_Portal.ActivatePortal();
     }
 
     // 현재 폴더에 있는 포탈을 전부 비활성화
     public void DeActivePortal()
     {
-        Debug.Log("DeActivePortal");
+        // Debug.Log("DeActivePortal");
         foreach (var portal in Portals)
         {
             portal.DeActivatePortal();
         }
+        if (Left_Portal != null)
+            Left_Portal.DeActivatePortal();
     }
 
     // 클리어 여부와 몬스터 존재 여부를 체크 후 포탈을 활성화 시킴
