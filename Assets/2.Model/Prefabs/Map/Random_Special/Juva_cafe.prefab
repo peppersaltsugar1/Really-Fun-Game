@@ -2619,9 +2619,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2256108425953875620}
-  - component: {fileID: 2256108425953875611}
   - component: {fileID: -7141919032441226634}
   - component: {fileID: 164546738287553426}
+  - component: {fileID: 4006577799040460399}
   m_Layer: 0
   m_Name: Juva_cafe
   m_TagString: Untagged
@@ -2656,24 +2656,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2256108425953875611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2256108425953875621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a26c18b2394af1428b6eae1a760d570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 4
-  PortalNum: 1
-  mapName: JuvaCafe
-  isClear: 0
-  currentMonsterNum: 0
-  nowPosition: 0
 --- !u!61 &-7141919032441226634
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2729,6 +2711,28 @@ PolygonCollider2D:
       - {x: -11, y: 8}
       - {x: -11, y: -8}
       - {x: 11, y: -8}
+--- !u!114 &4006577799040460399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2256108425953875621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76724535b150f244ba87fa14bccf15aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentFolder: {fileID: 2256108425953875621}
+  FolderName: Juva_cafe
+  Parent: {fileID: 0}
+  Children: []
+  Type: 4
+  MonsterCount: 0
+  IsCleared: 1
+  nowPosition: 0
+  Left_Portal: {fileID: 4644075408456922432}
+  Portals: []
 --- !u!1 &2256108425978801663
 GameObject:
   m_ObjectHideFlags: 0
@@ -6792,6 +6796,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7751288568014158317, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
   m_PrefabInstance: {fileID: 8055488915234503230}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4644075408456922432 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3439001374607904638, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+  m_PrefabInstance: {fileID: 8055488915234503230}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fddcb419e4c9f7d4cb98de38c41544b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8160594850642557430
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -21,7 +21,6 @@ public class UI_0_HUD : MonoBehaviour
     [SerializeField]
     private int interval;
     
-    // 
     private int hpNum = 0;
 
     // Left side text
@@ -35,6 +34,7 @@ public class UI_0_HUD : MonoBehaviour
 
     // Manager
     private StatusManager statusManager = null;
+    private FolderManager folderManager = null;
 
     public static UI_0_HUD Instance
     {
@@ -72,6 +72,7 @@ public class UI_0_HUD : MonoBehaviour
     void Start()
     {
         statusManager = StatusManager.Instance;
+        folderManager = FolderManager.Instance;
         HpBarSet();
     }
 
@@ -113,12 +114,13 @@ public class UI_0_HUD : MonoBehaviour
     {
         KeyCount.text = ItemManager.Instance.GetKeyCount().ToString();
         CoinCount.text = ItemManager.Instance.GetCoinCount().ToString();
-        BombCount.text = ItemManager.Instance.GetBombCount().ToString(); ;
+        BombCount.text = ItemManager.Instance.GetBombCount().ToString();
+        MonsterCount.text = folderManager.CurrentFolderMonsterCount.ToString();
     }
 
     public void MonsterCountHUDSet(int monsterNum)
     {
-        MonsterCount.text = monsterNum.ToString();
+        // MonsterCount.text = monsterNum.ToString();
     }
 
     // HP

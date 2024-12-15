@@ -1703,9 +1703,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 377212435076808552}
-  - component: {fileID: 377212435076808553}
   - component: {fileID: -7968882209164796441}
   - component: {fileID: 122452353049387700}
+  - component: {fileID: 445003349467217263}
   m_Layer: 0
   m_Name: Guard_room
   m_TagString: Untagged
@@ -1732,24 +1732,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &377212435076808553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 377212435076808555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a26c18b2394af1428b6eae1a760d570, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Type: 4
-  PortalNum: 1
-  mapName: "Window \uBC29\uD654\uBCBD"
-  isClear: 0
-  currentMonsterNum: 0
-  nowPosition: 0
 --- !u!61 &-7968882209164796441
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1805,6 +1787,28 @@ PolygonCollider2D:
       - {x: -11, y: 8}
       - {x: -11, y: -8}
       - {x: 11, y: -8}
+--- !u!114 &445003349467217263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377212435076808555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76724535b150f244ba87fa14bccf15aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurrentFolder: {fileID: 377212435076808555}
+  FolderName: Guard_room
+  Parent: {fileID: 0}
+  Children: []
+  Type: 4
+  MonsterCount: 0
+  IsCleared: 1
+  nowPosition: 0
+  Left_Portal: {fileID: 389228647050389118}
+  Portals: []
 --- !u!1 &377212435345882617
 GameObject:
   m_ObjectHideFlags: 0
@@ -10056,6 +10060,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+--- !u!114 &389228647050389118 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3439001374607904638, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}
+  m_PrefabInstance: {fileID: 3089215236801931520}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fddcb419e4c9f7d4cb98de38c41544b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4705420490788442349 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7751288568014158317, guid: 2a58d50f917648046bdaec6bd1979ff4, type: 3}

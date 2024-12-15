@@ -119,11 +119,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fddcb419e4c9f7d4cb98de38c41544b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectPortal: {fileID: 0}
-  currentMap: {fileID: 0}
-  portalCollider: {fileID: 0}
-  isUse: 0
-  isLock: 0
+  Direction: 0
+  PortalIndex: 0
+  ConnectedFolder: {fileID: 0}
+  ParentPortalIndex: 0
 --- !u!61 &2210682604668043812
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,5 +147,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.65, y: 1.65}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0

@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance = null;
     public Player player;
     public float StartTime;
-    private MapGenerator mg;
+    // private MapGenerator mg;
     private void Awake()
     {
         if (null == instance)
@@ -34,11 +34,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         ResetPlayTime();
-        GameObject mapGeneratorObject = GameObject.Find("MapGenerator");
+        // GameObject mapGeneratorObject = GameObject.Find("MapGenerator");
 
-        if (mapGeneratorObject != null)
+        // if (mapGeneratorObject != null)
         {
-            mg = mapGeneratorObject.GetComponent<MapGenerator>();
+            // mg = mapGeneratorObject.GetComponent<MapGenerator>();
         }
     }
 
@@ -53,17 +53,17 @@ public class GameManager : MonoBehaviour
         StartTime = Time.time;
     }
 
-    public void ReStartGame()
-    {
-        if (mg != null)
-        {
-            mg.RestMap();
-        }
-        else
-        {
-            Debug.Log("MapGenerator is not find");
-        }
-    }
+    //public void ReStartGame()
+    //{
+    //    if (mg != null)
+    //    {
+    //        mg.RestMap();
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("MapGenerator is not find");
+    //    }
+    //}
 
     public Player GetPlayer()
     {

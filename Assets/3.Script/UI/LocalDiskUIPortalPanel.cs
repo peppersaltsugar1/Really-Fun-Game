@@ -8,14 +8,14 @@ public class LocalDiskUIPortalPanel : MonoBehaviour,IPointerClickHandler
     float clickTime = 0;
     public Map connectMap;
     public Map currentMap;
-    MapGenerator mapGenerator;
+    // MapGenerator mapGenerator;
     UI_4_LocalDisk ui_4_LocalDisk;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        mapGenerator = FindObjectOfType<MapGenerator>();
+       //  mapGenerator = FindObjectOfType<MapGenerator>();
         ui_4_LocalDisk = UI_4_LocalDisk.Instance;
     }
 
@@ -28,8 +28,8 @@ public class LocalDiskUIPortalPanel : MonoBehaviour,IPointerClickHandler
 
     void OnMouseDoubleClick()
     {
-       int index = mapGenerator.mapList.IndexOf(connectMap);
-        ui_4_LocalDisk.LocalDisckUISet(index);
+       // int index = mapGenerator.mapList.IndexOf(connectMap);
+        // ui_4_LocalDisk.LocalDisckUISet(index);
     }   
 
     public void OnPointerClick(PointerEventData eventData)

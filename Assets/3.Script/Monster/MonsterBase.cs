@@ -41,6 +41,7 @@ public class MonsterBase : MonoBehaviour
     public float DefenseRate; // 방어력 계수
     public float DetectingAreaR;
     protected bool isMoving = true;
+    private bool isDead = false; // 사망 상태 플래그
 
     // Target Info
     protected Transform player; // 플레이어의 위치
@@ -53,6 +54,8 @@ public class MonsterBase : MonoBehaviour
     protected Animator MAnimator;
     protected Rigidbody2D rb;
 
+    FolderManager folderManager;
+
     // Start is called before the first frame update
     protected virtual void Start()
     {
@@ -61,7 +64,7 @@ public class MonsterBase : MonoBehaviour
         SpriteRenderer = GetComponent<SpriteRenderer>();
         MAnimator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-
+        folderManager = FolderManager.Instance;
         DefenseRate = 1.0f;
     }
 
@@ -143,8 +146,8 @@ public class MonsterBase : MonoBehaviour
             if (collision.gameObject.CompareTag("Bullet"))
             {
                 // Debug.Log("Monster Take Damage");
-                Destroy(collision.gameObject);
-                Debug.Log("Attack Damage : " + statusManager.AttackPower * DefenseRate);
+                collision.gameObject.SetActive(false);
+                // Debug.Log("Attack Damage : " + statusManager.AttackPower * DefenseRate);
                 this.HP -= statusManager.AttackPower * DefenseRate;
                 
                 if (HP <= 0)
@@ -157,6 +160,12 @@ public class MonsterBase : MonoBehaviour
 
     protected virtual void Die()
     {
+        // 이미 죽은 상태라면 실행하지 않음
+        if (isDead) return;
+
+        isDead = true; // 사망 상태로 설정
+
+        folderManager.UpdateMonsterCount(-1);
         Destroy(this.gameObject);
     }
 
