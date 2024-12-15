@@ -35,7 +35,7 @@ public class UI_0_HUD : MonoBehaviour
     // Manager
     private StatusManager statusManager = null;
     private FolderManager folderManager = null;
-
+    private ItemManager itemManager = null;
     public static UI_0_HUD Instance
     {
         get
@@ -73,6 +73,7 @@ public class UI_0_HUD : MonoBehaviour
     {
         statusManager = StatusManager.Instance;
         folderManager = FolderManager.Instance;
+        itemManager = ItemManager.Instance;
         HpBarSet();
     }
 
@@ -112,15 +113,16 @@ public class UI_0_HUD : MonoBehaviour
 
     public void UpdateHUD()
     {
-        KeyCount.text = ItemManager.Instance.GetKeyCount().ToString();
-        CoinCount.text = ItemManager.Instance.GetCoinCount().ToString();
-        BombCount.text = ItemManager.Instance.GetBombCount().ToString();
-        MonsterCount.text = folderManager.CurrentFolderMonsterCount.ToString();
-    }
+        if (folderManager == null || itemManager == null)
+        {
+            Debug.Log("UpdateHUD find null");
+            return;
+        }
 
-    public void MonsterCountHUDSet(int monsterNum)
-    {
-        // MonsterCount.text = monsterNum.ToString();
+        KeyCount.text = itemManager.GetKeyCount().ToString();
+        CoinCount.text = itemManager.GetCoinCount().ToString();
+        BombCount.text = itemManager.GetBombCount().ToString();
+        MonsterCount.text = folderManager.CurrentFolder.GetMonsterCount().ToString();
     }
 
     // HP

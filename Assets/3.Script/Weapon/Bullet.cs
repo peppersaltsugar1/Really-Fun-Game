@@ -65,11 +65,17 @@ public class Bullet : MonoBehaviour
         lifetime = statusManager.BulletMaximumRange / statusManager.BulletSpeed;
         StartCoroutine(DisableAfterTime(lifetime));
     }
+
+    // 비활성화 시 자동으로 큐에 추가
+    public void OnDisable()
+    {
+        pool.bulletPool.Enqueue(this);
+    }
+
     private IEnumerator DisableAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
         gameObject.SetActive(false); // 비활성화
-        pool.bulletPool.Enqueue(this);
     }
 
     private void OnCollisionTrigger2D(Collision2D collision)
@@ -89,6 +95,7 @@ public class Bullet : MonoBehaviour
         bulletMa.color = color;
         
     }
+
 }
 
 

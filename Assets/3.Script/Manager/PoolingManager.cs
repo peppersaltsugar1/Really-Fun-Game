@@ -56,22 +56,15 @@ public class PoolingManager : MonoBehaviour
     {
         for (int i = 0; i < bulletCount; i++)
         {
-            // 총알 프리팹을 선택합니다. (여기서는 랜덤으로 선택하지만 필요에 따라 수정 가능)
+            // 총알 프리팹을 생성
             GameObject bulletPrefab = bulletList[bulletNum];
             GameObject bulletObject = Instantiate(bulletPrefab);
-            bulletObject.SetActive(false); // 비활성화하여 풀에 추가
 
-            // Bullet 컴포넌트를 가져와서 큐에 추가합니다.
-            Bullet bullet = bulletObject.GetComponent<Bullet>();
-
-            if (bullet != null)
-            {
-                bulletPool.Enqueue(bullet);
-            }
+            // 그룹에 넣음
             bulletObject.transform.SetParent(bulletBox.transform, false);
+
             // 생성된 Map 오브젝트를 map의 자식 목록에서 마지막으로 위치시키기
             bulletObject.transform.SetAsLastSibling();
-
         }
     }
     public void ReMakeBullet(int Bulletindex)

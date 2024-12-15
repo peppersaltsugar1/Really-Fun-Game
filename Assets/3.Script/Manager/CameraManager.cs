@@ -59,35 +59,36 @@ public class CameraManager : MonoBehaviour
         playerCamera.transform.position = 
             new Vector3(gameManager.player.transform.position.x,gameManager.player.transform.position.y,playerCamera.transform.position.z);
     }
-    public void SpecialMapCamera(Map specialMap)
-    {
-        switch (specialMap.mapName)
-        {
-            case "전원 옵션":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = chargeCamera;
-                break;
-            case "Window 방화벽":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = guardCamera;
-                break;
-            case "JuvaCafe":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = cafeCamera;
-                break;
-            case "휴지통":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = trashCamera;
-                break;
-            case "Download":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = downloadCamera;
-                break;
-            case "Shop":
-                //숫자를 변경하면됨 기본 6f
-                cinemachineVir.m_Lens.OrthographicSize = shopCamera;
-                break;
-        }
-    }
+
+    //public void SpecialMapCamera(Map specialMap)
+    //{
+    //    switch (specialMap.mapName)
+    //    {
+    //        case "전원 옵션":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = chargeCamera;
+    //            break;
+    //        case "Window 방화벽":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = guardCamera;
+    //            break;
+    //        case "JuvaCafe":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = cafeCamera;
+    //            break;
+    //        case "휴지통":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = trashCamera;
+    //            break;
+    //        case "Download":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = downloadCamera;
+    //            break;
+    //        case "Shop":
+    //            //숫자를 변경하면됨 기본 6f
+    //            cinemachineVir.m_Lens.OrthographicSize = shopCamera;
+    //            break;
+    //    }
+    //}
 }
 

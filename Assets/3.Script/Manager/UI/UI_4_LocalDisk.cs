@@ -26,7 +26,7 @@ public class UI_4_LocalDisk : MonoBehaviour
     List<GameObject> ItemImageList = new();
 
     //주소관련
-    public List<Map> adressList = new();
+    // public List<Map> adressList = new();
     [SerializeField]
     GameObject adressParent;
     [SerializeField]
@@ -580,7 +580,7 @@ public class UI_4_LocalDisk : MonoBehaviour
         {
             Destroy(adressParent.transform.GetChild(i).gameObject);
         }
-        adressList.Clear();
+        // adressList.Clear();
     }
 
     public void SetUIAdress(UIManager.UI uiType)

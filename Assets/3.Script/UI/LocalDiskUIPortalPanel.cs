@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 public class LocalDiskUIPortalPanel : MonoBehaviour,IPointerClickHandler
 {
     float clickTime = 0;
-    public Map connectMap;
-    public Map currentMap;
+    // public Map connectMap;
+    // public Map currentMap;
     // MapGenerator mapGenerator;
     UI_4_LocalDisk ui_4_LocalDisk;
 
@@ -36,11 +36,11 @@ public class LocalDiskUIPortalPanel : MonoBehaviour,IPointerClickHandler
     {
         if ((Time.time - clickTime) < 0.3f)
         {
-            if (connectMap.isClear)
-            {
-                OnMouseDoubleClick();
-                clickTime = -1;
-            }
+            //if (connectMap.isClear)
+            //{
+            //    OnMouseDoubleClick();
+            //    clickTime = -1;
+            //}
         }
         else
         {

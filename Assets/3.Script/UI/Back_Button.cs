@@ -18,11 +18,11 @@ public class Back_Button : MonoBehaviour
 
     public void BackButton()
     {
-        if (ui_4_LocalDisk.adressList.Count > 1)
-        {
-            Map targetMap = ui_4_LocalDisk.adressList[ui_4_LocalDisk.adressList.Count - 2];
-            //int targetIndex = mapGenerator.mapList.IndexOf(targetMap);
-            //ui_4_LocalDisk.LocalDisckUISet(targetIndex);
-        }
+        //if (ui_4_LocalDisk.adressList.Count > 1)
+        //{
+        //    Map targetMap = ui_4_LocalDisk.adressList[ui_4_LocalDisk.adressList.Count - 2];
+        //    //int targetIndex = mapGenerator.mapList.IndexOf(targetMap);
+        //    //ui_4_LocalDisk.LocalDisckUISet(targetIndex);
+        //}
     }
 }

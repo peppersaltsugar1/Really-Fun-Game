@@ -499,10 +499,10 @@ public class FolderGenerator : MonoBehaviour
         }
 
         // 6. 디버깅: 최종 트리 구조 출력
-        foreach (var node in nodes)
-        {
-            Debug.Log($"Node ID: {node.Id}, Parent ID: {node.ParentId}, ChildCount: {node.ChildCount}, Depth: {node.Depth}, Type: {node.Type}");
-        }
+        //foreach (var node in nodes)
+        //{
+        //    Debug.Log($"Node ID: {node.Id}, Parent ID: {node.ParentId}, ChildCount: {node.ChildCount}, Depth: {node.Depth}, Type: {node.Type}");
+        //}
 
         return nodes;
     }
