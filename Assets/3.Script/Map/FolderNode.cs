@@ -83,29 +83,43 @@ public class FolderNode : MonoBehaviour
     public void ActivePortal()
     {
         // Debug.Log("ActivePortal");
+
+        // 왼쪽 포탈 활성화
+        if (Left_Portal != null)
+            Left_Portal.ActivatePortal();
+
+        // 오른쪽 포탈들 활성화
         foreach (var portal in Portals)
         {
             portal.ActivatePortal();
         }
-        if (Left_Portal != null)
-            Left_Portal.ActivatePortal();
     }
 
     // 현재 폴더에 있는 포탈을 전부 비활성화
     public void DeActivePortal()
     {
         // Debug.Log("DeActivePortal");
+
+        // 왼쪽 포탈 비활성화
+        if (Left_Portal != null)
+            Left_Portal.DeActivatePortal();
+
+        // 오른쪽 포탈들 비활성화
         foreach (var portal in Portals)
         {
             portal.DeActivatePortal();
         }
-        if (Left_Portal != null)
-            Left_Portal.DeActivatePortal();
     }
 
     // 클리어 여부와 몬스터 존재 여부를 체크 후 포탈을 활성화 시킴
     public void CheckCurrentFolder()
     {
+        if (IsCleared)
+        {
+            ActivePortal();
+            return;
+        }
+
         if (MonsterCount > 0) return;
         else IsCleared = true;
 
@@ -116,7 +130,7 @@ public class FolderNode : MonoBehaviour
     }
 
     // 몬스터 처치 시 호출
-    public void OnMonsterDefeated()
+    public void ChangeMonsterCount()
     {
         MonsterCount--;
 

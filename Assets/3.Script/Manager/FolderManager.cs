@@ -90,6 +90,7 @@ public class FolderManager : MonoBehaviour
         CurrentFolder = folder;
         CurrentFolder.SetFolderActive();
 
+        // HUD 업데이트
         SetMonsterCount(folder);
         Debug.Log($"Current MonsterCount: {CurrentFolderMonsterCount}");
         ui_0_HUD.UpdateHUD();
@@ -100,25 +101,37 @@ public class FolderManager : MonoBehaviour
     }
 
     // 폴더 이동
-    public void MoveToFolder(FolderNode folder, int index = 0)
+    public void MoveToFolder(FolderNode folder)
     {
         if (folder == null) return;
 
         folder.SetFolderActive();
         CurrentFolder.SetFolderDeActive();
-        CurrentFolder = folder;
 
-        SetMonsterCount(folder);
-        ui_0_HUD.UpdateHUD();
+        SetCurrentFolder(folder);
+
+        // 현재 맵의 포탈을 모두 비활성화
+        // DeAcitivateAllPortals();
 
         // 클리어 여부와 몬스터 수를 확인 후 포탈을 활성화 
         // CurrentFolder.CheckCurrentFolder();
         // 디버깅용 상시 포탈 활성화
-        CurrentFolder.ActivePortal();
+        // CurrentFolder.ActivePortal();
+    }
+
+    private void DeAcitivateAllPortals()
+    {
+        if(CurrentFolder.Left_Portal != null)
+            CurrentFolder.Left_Portal.DeActivatePortal();
+        
+        foreach(Portal portal in CurrentFolder.Portals)
+        {
+            portal.DeActivatePortal();
+        }
     }
 
     // 상위 폴더로 이동(왼쪽 포탈)
-    public void MoveToPreviousFolder(int index)
+    public void MoveToPreviousFolder(int ParentPortalIndex)
     {
         if (CurrentFolder == null || CurrentFolder.Parent == null)
         {
@@ -128,18 +141,16 @@ public class FolderManager : MonoBehaviour
         // 플레이어 위치 조정: 상위 폴더의 연결된 오른쪽 포탈 근처로 이동
         Portal CurrentPortal = CurrentFolder.Left_Portal;
         FolderNode DestinationFolder = CurrentPortal.ConnectedFolder;
-        int DestinationFolderPortalIndex = CurrentPortal.ParentPortalIndex;
-
-        MoveToFolder(CurrentFolder.Parent, index);
 
         if (Player != null)
         {
-            Vector3 newPosition = DestinationFolder.Portals[DestinationFolderPortalIndex].transform.position;
-            newPosition.x -= 1.5f;
+            Vector3 newPosition = DestinationFolder.Portals[ParentPortalIndex].transform.position;
+            newPosition.x -= 0.5f;
             newPosition.y -= 0.5f;
             Player.transform.position = newPosition;
         }
 
+        MoveToFolder(DestinationFolder);
     }
 
     // 하위 폴더로 이동 (오른쪽 포탈을 이용하는 경우)
@@ -164,18 +175,19 @@ public class FolderManager : MonoBehaviour
             return;
         }
 
+        FolderNode PreviousFolderNode = CurrentFolder;
         MoveToFolder(CurrentPortal.ConnectedFolder);
 
         // 플레이어 위치 조정: 하위 폴더의 왼쪽 포탈 근처로 이동
-
         if (Player != null)
         {
             Vector3 newPosition = CurrentFolder.Left_Portal.transform.position;
-            newPosition.x += 1.5f; 
-            newPosition.y -= 0.5f; 
+            newPosition.x += 0.5f;
+            newPosition.y -= 0.5f;
             Player.transform.position = newPosition;
         }
 
+        PreviousFolderNode.DeActivePortal();
     }
 
     private void AllFolderDeActivate()
@@ -197,6 +209,7 @@ public class FolderManager : MonoBehaviour
     public void UpdateMonsterCount(int value)
     {
         CurrentFolderMonsterCount += value;
+        CurrentFolder.ChangeMonsterCount();
         ui_0_HUD.UpdateHUD();
         // Debug.Log($"Current MonsterCount: {CurrentFolderMonsterCount}");
         CheckMonsterCount();
@@ -212,5 +225,8 @@ public class FolderManager : MonoBehaviour
             CurrentFolder.ActivePortal();
         }
     }
+
+    public bool IsClear()
+    { return CurrentFolder.IsCleared; }
 
 }
