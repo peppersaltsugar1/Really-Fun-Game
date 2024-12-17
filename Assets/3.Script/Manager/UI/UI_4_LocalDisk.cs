@@ -10,30 +10,26 @@ public class UI_4_LocalDisk : MonoBehaviour
     // UI Window
     public GameObject UI_W_LocalDisk = null;
 
-    // Detail
-    [SerializeField]
-    GameObject localDiskContent;
-   //  [SerializeField]
-   // MapGenerator mapGenerator;
-    //포탈 Ui관련
-    [SerializeField]
-    GameObject UIPortal;
-    [SerializeField]
-    List<Sprite> portalUiList = new();
-    [SerializeField]
-    List<Sprite> closePortalUiList = new();
-    [SerializeField]
-    List<GameObject> ItemImageList = new();
-
     //주소관련
     // public List<Map> adressList = new();
     [SerializeField]
     GameObject adressParent;
     [SerializeField]
     Adress_Button adressButton;
-    //
     public Text Address;
-    // Manager
+
+    // 신규 
+    [Header("UI References")]
+    public RectTransform content;       // 트리 UI의 Content 그룹
+    public GameObject FoldPrefab;       // 노말 폴더 노드 프리팹
+    public GameObject DownloadPrefab;   // 다운로드 폴더 노드 프리팹
+    public GameObject ShopPrefab;       // 상점 폴더 노드 프리팹
+    public GameObject BossPrefab;       // 보스 폴더 노드 프리팹
+    public RectTransform linePrefab;    // 선으로 사용할 프리팹
+    public float xOffset = 200f;        // X축 간격
+    public float yOffset = 100f;        // Y축 간격
+
+    private Dictionary<int, int> depthNodeCount; // 각 Depth의 노드 개수를 저장
 
     public static UI_4_LocalDisk Instance
     {
@@ -97,476 +93,136 @@ public class UI_4_LocalDisk : MonoBehaviour
         }
     }
 
-    // ================ Map Section ================
-    //public void RoomUISet()
-    //{
-    //    //UI에 남아있는요소 확인후 삭제
-    //    for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
-    //    {
-    //        Transform child = localDiskContent.transform.GetChild(i);
+    public void GenerateTreeUI(List<FolderGenerator.TreeNodeData> nodes)
+    {
+        if (nodes == null || nodes.Count == 0)
+        {
+            Debug.LogError("No nodes available for generating the UI.");
+            return;
+        }
 
-    //        if (child != null)
-    //        {
-    //            Destroy(child.gameObject); // 자식 객체 삭제
-    //        }
-    //    }
-    //    //맵 index초기화
-    //    int mapIndex = 0;
-    //    //현제 맵이 몇번째 index인지 확인
-    //    for (int i = 0; i < mapGenerator.mapList.Count; i++)
-    //    {
-    //        Map map = mapGenerator.mapList[i];
+        // 기존 UI 초기화
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
 
-    //        // 현재 활성화된 맵인지 확인
-    //        if (map.transform.gameObject.activeSelf)
-    //        {
-    //            mapIndex = i;
-    //            continue; // 활성화된 맵의 인덱스 반환
-    //        }
-    //    }
-    //    /*LocalDisk_UI.GetComponent<LocalDiskUI>().currentLocakDiskMapIndex = mapIndex;*/
-    //    //맵list에서 현제맵을 가져옴
-    //    LocalDisckUISet(mapIndex);
-    //}
+        // Depth별 노드 개수 계산
+        CalculateDepthNodeCount(nodes);
 
-    //public void LocalDisckUISet(int mapIndex)
-    //{
-    //    AdressSet(mapIndex);
-    //    for (int i = localDiskContent.transform.childCount - 1; i >= 0; i--)
-    //    {
-    //        Transform child = localDiskContent.transform.GetChild(i);
+        // 루트 노드부터 시작
+        var rootNode = nodes.Find(node => node.ParentId == null);
+        if (rootNode == null)
+        {
+            Debug.LogError("Root node not found.");
+            return;
+        }
 
-    //        if (child != null)
-    //        {
-    //            Destroy(child.gameObject); // 자식 객체 삭제
-    //        }
-    //    }
-    //    GameObject currentMap = mapGenerator.mapList[mapIndex].transform.gameObject;
+        // 재귀적으로 UI 생성 시작
+        GenerateNodeUI(rootNode, nodes, null, 0, 0);
+    }
 
-    //    if (mapIndex == 0)
-    //    {
-    //        //0번쨰방일때 현제맵의 포탈을 가져와서 ui갱신
-    //        foreach (Transform child in currentMap.transform)
-    //        {
-    //            Portal curretnportal = child.GetComponent<Portal>();
-    //            if (curretnportal != null)
-    //            {
-    //                GameObject portalUI = Instantiate(UIPortal);
-    //                portalUI.transform.SetParent(localDiskContent.transform);
-    //                portalUI.transform.SetAsLastSibling();
-    //                UI_W_LocalDisk.GetComponent<LocalDiskUI>().telMap = currentMap;
-    //                Text mapName = portalUI.GetComponentInChildren<Text>();
-    //                Image[] images = portalUI.GetComponentsInChildren<Image>(true);
-    //                Image portalImage = images[1];
+    // Depth별 노드 개수를 계산하는 함수
+    private void CalculateDepthNodeCount(List<FolderGenerator.TreeNodeData> nodes)
+    {
+        depthNodeCount = new Dictionary<int, int>();
 
-    //                if (curretnportal.connectPortal != null)
-    //                {
-    //                    Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-    //                    // 맵 이름을 설정합니다.
-    //                    mapName.text = connectedMap.mapName;
-    //                    // LocalDiskUIPortalPanel의 connectMap을 설정합니다.
-    //                    portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
-    //                        mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
+        foreach (var node in nodes)
+        {
+            if (!depthNodeCount.ContainsKey(node.Depth))
+            {
+                depthNodeCount[node.Depth] = 0;
+            }
+            depthNodeCount[node.Depth]++;
+        }
+    }
 
-    //                    if (connectedMap != null)
-    //                    {
-    //                        // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
-    //                        if (connectedMap.isClear)
-    //                        {
-    //                            switch (connectedMap.Type)
-    //                            {
-    //                                case Map.MapType.Middle:
-    //                                    portalImage.sprite = portalUiList[0];
-    //                                    continue;
+    private void GenerateNodeUI(FolderGenerator.TreeNodeData node, List<FolderGenerator.TreeNodeData> nodes,
+                                RectTransform parentUI, int depth, int siblingIndex)
+    {
+        // 현재 노드 UI 생성
+        GameObject newNodeUI;
 
-    //                                case Map.MapType.Boss:
-    //                                    portalImage.sprite = portalUiList[1];
-    //                                    continue;
+        // 노드 타입에 따라 프리팹 설정
+        switch (node.Type)
+        {
+            case FolderNode.FolderType.Download:
+                newNodeUI = Instantiate(DownloadPrefab, content);
+                break;
+            case FolderNode.FolderType.Shop:
+                newNodeUI = Instantiate(ShopPrefab, content);
+                break;
+            case FolderNode.FolderType.Boss:
+                newNodeUI = Instantiate(BossPrefab, content);
+                break;
+            default:
+                newNodeUI = Instantiate(FoldPrefab, content);
+                break;
+        }
 
-    //                                case Map.MapType.Download:
-    //                                    portalImage.sprite = portalUiList[2];
-    //                                    continue;
-    //                                case Map.MapType.Shop:
-    //                                    portalImage.sprite = portalUiList[3];
-    //                                    continue;
-    //                                case Map.MapType.RandomSpecial:
-    //                                    switch (connectedMap.mapName)
-    //                                    {
-    //                                        case "휴지통":
-    //                                            portalImage.sprite = portalUiList[4];
-    //                                            continue;
-    //                                        case "전원 옵션":
-    //                                            portalImage.sprite = portalUiList[5];
-    //                                            continue;
-    //                                        case "JuvaCafe":
-    //                                            portalImage.sprite = portalUiList[6];
-    //                                            continue;
-    //                                        case "Window 방화벽":
-    //                                            portalImage.sprite = portalUiList[7];
-    //                                            continue;
-    //                                    }
-    //                                    continue;
-    //                            }
-    //                        }
-    //                        else
-    //                        {
-    //                            // Debug.Log("여기");
-    //                            switch (connectedMap.Type)
-    //                            {
-    //                                case Map.MapType.Middle:
-    //                                    portalImage.sprite = closePortalUiList[0];
-    //                                    continue;
-    //                                case Map.MapType.Boss:
-    //                                    portalImage.sprite = closePortalUiList[1];
-    //                                    continue;
-    //                                case Map.MapType.Download:
-    //                                    if (curretnportal.isLock)
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[3];
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[2];
-    //                                    }
-    //                                    continue;
-    //                                case Map.MapType.Shop:
-    //                                    if (curretnportal.isLock)
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[4];
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[5];
-    //                                    }
-    //                                    continue;
-    //                                case Map.MapType.RandomSpecial:
-    //                                    switch (connectedMap.mapName)
-    //                                    {
-    //                                        case "휴지통":
-    //                                            portalImage.sprite = closePortalUiList[6];
-    //                                            continue;
-    //                                        case "전원 옵션":
-    //                                            portalImage.sprite = closePortalUiList[7];
-    //                                            continue;
-    //                                        case "JuvaCafe":
-    //                                            portalImage.sprite = closePortalUiList[8];
-    //                                            continue;
-    //                                        case "Window 방화벽":
-    //                                            portalImage.sprite = closePortalUiList[9];
-    //                                            continue;
-    //                                    }
-    //                                    continue;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
+        RectTransform rectTransform = newNodeUI.GetComponent<RectTransform>();
+        rectTransform.name = $"Node_{node.Id}";
 
-    //        }
-    //        //0번째 방일때 현제맵의 아이템을 가져와서 ui갱신
-    //        foreach (Transform child in currentMap.transform)
-    //        {
-    //            Item fildItem = child.GetComponent<Item>();
-    //            if (fildItem != null)
-    //            {
-    //                switch (fildItem.itemType)
-    //                {
-    //                    case Item.ItemType.Coin1:
-    //                        switch (fildItem.itemScore)
-    //                        {
-    //                            case 1:
-    //                                GameObject oneCoinUI = Instantiate(ItemImageList[0]);
-    //                                oneCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                oneCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 5:
-    //                                GameObject fiveCoinUI = Instantiate(ItemImageList[1]);
-    //                                fiveCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                fiveCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 10:
-    //                                GameObject tenCoinUI = Instantiate(ItemImageList[2]);
-    //                                tenCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                tenCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 15:
-    //                                GameObject fifteenCoinUI = Instantiate(ItemImageList[3]);
-    //                                fifteenCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                fifteenCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                        }
-    //                        continue;
-    //                    case Item.ItemType.Heal:
-    //                        GameObject healUI = Instantiate(ItemImageList[0]);
-    //                        healUI.transform.SetParent(localDiskContent.transform);
-    //                        healUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.TemHp:
-    //                        GameObject ItemUI = Instantiate(ItemImageList[0]);
-    //                        ItemUI.transform.SetParent(localDiskContent.transform);
-    //                        ItemUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.Shiled:
-    //                        GameObject shiledUI = Instantiate(ItemImageList[0]);
-    //                        shiledUI.transform.SetParent(localDiskContent.transform);
-    //                        shiledUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.Spark:
-    //                        GameObject sparkUI = Instantiate(ItemImageList[0]);
-    //                        sparkUI.transform.SetParent(localDiskContent.transform);
-    //                        sparkUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                }
+        // X축 위치 계산
+        float xPos = depth * xOffset;
+
+        // Y축 위치 계산: Depth의 노드 개수에 따라 중앙에서 균등 분산
+        int totalNodesAtDepth = depthNodeCount[depth];
+        float ySpacing = yOffset; // 노드 간 간격
+        float yStart = -(totalNodesAtDepth - 1) * ySpacing / 2; // 중앙 기준 시작점
+
+        float yPos = yStart + siblingIndex * ySpacing;
+
+        rectTransform.anchoredPosition = new Vector2(xPos, yPos);
+
+        // 노드 정보 설정
+        Text nodeText = newNodeUI.GetComponentInChildren<Text>();
+        if (nodeText != null)
+        {
+            nodeText.text = $"ID: {node.Id}";
+        }
+
+        // 부모와 자식 사이에 선 그리기
+        if (parentUI != null)
+        {
+            DrawLine(parentUI, rectTransform);
+        }
+
+        // 자식 노드 순회
+        int childIndex = 0;
+        foreach (var childId in node.Children)
+        {
+            var childNode = nodes.Find(n => n.Id == childId);
+            if (childNode != null)
+            {
+                GenerateNodeUI(childNode, nodes, rectTransform, depth + 1, childIndex);
+                childIndex++;
+            }
+        }
+    }
+    private void DrawLine(RectTransform startNode, RectTransform endNode)
+    {
+        // 선 프리팹 생성
+        RectTransform line = Instantiate(linePrefab, content);
+        line.name = "Line";
+
+        Vector2 startPosition = startNode.anchoredPosition;
+        Vector2 endPosition = endNode.anchoredPosition;
+
+        // 선 길이와 각도 설정
+        float distance = Vector2.Distance(startPosition, endPosition);
+        float angle = Mathf.Atan2(endPosition.y - startPosition.y, endPosition.x - startPosition.x) * Mathf.Rad2Deg;
+
+        line.sizeDelta = new Vector2(distance, 2f); // 선 두께
+        line.anchoredPosition = (startPosition + endPosition) / 2; // 선의 중심
+        line.localRotation = Quaternion.Euler(0, 0, angle); // 선 회전
+    }
 
 
-    //            }
-
-    //        }
-    //    }
-    //    else
-    //    {
-    //        List<GameObject> currentPortalList = new();
-    //        foreach (Transform child in currentMap.transform)
-    //        {
-    //            Portal curretnportal = child.GetComponent<Portal>();
-    //            if (curretnportal != null)
-    //            {
-    //                GameObject portalUI = Instantiate(UIPortal);
-    //                portalUI.transform.SetParent(localDiskContent.transform);
-    //                portalUI.transform.SetAsLastSibling();
-    //                UI_W_LocalDisk.GetComponent<LocalDiskUI>().telMap = currentMap;
-    //                currentPortalList.Add(portalUI);
-    //                Text mapName = portalUI.GetComponentInChildren<Text>();
-    //                Image[] images = portalUI.GetComponentsInChildren<Image>(true);
-    //                Image portalImage = images[1];
-
-    //                if (curretnportal.connectPortal != null)
-    //                {
-    //                    Map connectedMap = curretnportal.connectPortal.transform.parent.GetComponent<Map>();
-    //                    mapName.text = connectedMap.mapName;
-    //                    portalUI.GetComponent<LocalDiskUIPortalPanel>().connectMap =
-    //                        mapGenerator.mapList[mapGenerator.mapList.IndexOf(connectedMap)];
-    //                    if (connectedMap != null)
-    //                    {
-    //                        // connectedMap이 클리어 되었는지 여부에 따라 스프라이트 결정
-    //                        if (connectedMap.isClear)
-    //                        {
-    //                            switch (connectedMap.Type)
-    //                            {
-    //                                case Map.MapType.Middle:
-    //                                    portalImage.sprite = portalUiList[0];
-    //                                    continue;
-
-    //                                case Map.MapType.Boss:
-    //                                    portalImage.sprite = portalUiList[1];
-    //                                    continue;
-
-    //                                case Map.MapType.Download:
-    //                                    portalImage.sprite = portalUiList[2];
-    //                                    continue;
-    //                                case Map.MapType.Shop:
-    //                                    portalImage.sprite = portalUiList[3];
-    //                                    continue;
-    //                                case Map.MapType.RandomSpecial:
-    //                                    switch (connectedMap.mapName)
-    //                                    {
-    //                                        case "휴지통":
-    //                                            portalImage.sprite = portalUiList[4];
-    //                                            continue;
-    //                                        case "전원 옵션":
-    //                                            portalImage.sprite = portalUiList[5];
-    //                                            continue;
-    //                                        case "JuvaCafe":
-    //                                            portalImage.sprite = portalUiList[6];
-    //                                            continue;
-    //                                        case "Window 방화벽":
-    //                                            portalImage.sprite = portalUiList[7];
-    //                                            continue;
-    //                                    }
-    //                                    continue;
-    //                            }
-    //                        }
-    //                        else
-    //                        {
-    //                            switch (connectedMap.Type)
-    //                            {
-    //                                case Map.MapType.Middle:
-    //                                    portalImage.sprite = closePortalUiList[0];
-    //                                    continue;
-    //                                case Map.MapType.Boss:
-    //                                    portalImage.sprite = closePortalUiList[1];
-    //                                    continue;
-    //                                case Map.MapType.Download:
-    //                                    if (curretnportal.isLock)
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[3];
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[2];
-    //                                    }
-    //                                    continue;
-    //                                case Map.MapType.Shop:
-    //                                    if (curretnportal.isLock)
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[4];
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        portalImage.sprite = closePortalUiList[5];
-    //                                    }
-    //                                    continue;
-    //                                case Map.MapType.RandomSpecial:
-    //                                    switch (connectedMap.mapName)
-    //                                    {
-    //                                        case "휴지통":
-    //                                            portalImage.sprite = closePortalUiList[6];
-    //                                            continue;
-    //                                        case "전원 옵션":
-    //                                            portalImage.sprite = closePortalUiList[7];
-    //                                            continue;
-    //                                        case "JuvaCafe":
-    //                                            portalImage.sprite = closePortalUiList[8];
-    //                                            continue;
-    //                                        case "Window 방화벽":
-    //                                            portalImage.sprite = closePortalUiList[9];
-    //                                            continue;
-    //                                    }
-    //                                    continue;
-    //                            }
-    //                        }
-
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        Destroy(currentPortalList[0].gameObject);
-    //        currentPortalList.RemoveAt(0);
-    //        foreach (Transform child in currentMap.transform)
-    //        {
-    //            Item fildItem = child.GetComponent<Item>();
-    //            if (fildItem != null)
-    //            {
-    //                switch (fildItem.itemType)
-    //                {
-    //                    case Item.ItemType.Coin1:
-    //                        switch (fildItem.itemScore)
-    //                        {
-    //                            case 1:
-    //                                GameObject oneCoinUI = Instantiate(ItemImageList[0]);
-    //                                oneCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                oneCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 5:
-    //                                GameObject fiveCoinUI = Instantiate(ItemImageList[1]);
-    //                                fiveCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                fiveCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 10:
-    //                                GameObject tenCoinUI = Instantiate(ItemImageList[2]);
-    //                                tenCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                tenCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                            case 15:
-    //                                GameObject fifteenCoinUI = Instantiate(ItemImageList[3]);
-    //                                fifteenCoinUI.transform.SetParent(localDiskContent.transform);
-    //                                fifteenCoinUI.transform.SetAsLastSibling();
-    //                                continue;
-    //                        }
-    //                        continue;
-    //                    case Item.ItemType.Heal:
-    //                        GameObject healUI = Instantiate(ItemImageList[0]);
-    //                        healUI.transform.SetParent(localDiskContent.transform);
-    //                        healUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.TemHp:
-    //                        GameObject ItemUI = Instantiate(ItemImageList[0]);
-    //                        ItemUI.transform.SetParent(localDiskContent.transform);
-    //                        ItemUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.Shiled:
-    //                        GameObject shiledUI = Instantiate(ItemImageList[0]);
-    //                        shiledUI.transform.SetParent(localDiskContent.transform);
-    //                        shiledUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                    case Item.ItemType.Spark:
-    //                        GameObject sparkUI = Instantiate(ItemImageList[0]);
-    //                        sparkUI.transform.SetParent(localDiskContent.transform);
-    //                        sparkUI.transform.SetAsLastSibling();
-    //                        continue;
-    //                }
 
 
-    //            }
 
-    //        }
-    //    }
-    //    /*AddressSet(mapIndex);*/
-    //}
-
-    //public void AdressSet(int mapIndex)
-    //{
-    //    for (int i = adressParent.transform.childCount - 1; i > 0; i--) // 0번째는 제외하고 역순으로
-    //    {
-    //        Destroy(adressParent.transform.GetChild(i).gameObject);
-    //    }
-    //    adressList.Clear();
-    //    List<Map> temList = new();
-    //    Map currentMap = mapGenerator.mapList[mapIndex];
-    //    //반복시켜야함
-    //    if (currentMap != null)
-    //    {
-
-    //        while (true)
-    //        {
-
-    //            if (currentMap.Type == Map.MapType.Start)
-    //            {
-    //                break;
-    //            }
-    //            //현재 맵을 가져와서 연결된맵을 리스트에 추가
-    //            int siblingIndex = currentMap.transform.GetSiblingIndex(); // 몇 번째 자식인지 가져오기
-    //            if (siblingIndex != 0)
-    //            {
-    //                //Portal connectMapPortal = mapGenerator.map.GetChild(siblingIndex).GetComponent<Portal>();
-    //                Transform nowMap = mapGenerator.map.transform.GetChild(siblingIndex);
-    //                Portal currentMapPortal = nowMap.GetComponentInChildren<Portal>();
-    //                Portal connectPortal = currentMapPortal.connectPortal;
-    //                Map connectMap = connectPortal.currentMap.GetComponent<Map>();
-    //                temList.Add(currentMap);
-    //                currentMap = connectMap;
-    //            }
-
-    //        }
-
-    //    }
-
-    //    temList.Add(mapGenerator.mapList[0]);
-
-    //    for (int i = temList.Count - 1; i >= 0; i--)
-    //    {
-    //        adressList.Add(temList[i]);
-    //    }
-
-
-    //    for (int i = 0; i < adressList.Count; i++)
-    //    {
-    //        Adress_Button adressObj = Instantiate(adressButton, adressParent.transform);
-    //        Text adressText = adressObj.GetComponentInChildren<Text>();
-    //        adressText.text += adressList[i].mapName + " > ";
-    //    }
-    //    Text firstChildText = adressParent.transform.GetChild(0).GetComponentInChildren<Text>();
-    //    firstChildText.text = "C:\\";
-    //    // 마지막 자식의 Text 변경
-    //    int lastIndex = adressParent.transform.childCount - 1;
-    //    Text lastChildText = adressParent.transform.GetChild(lastIndex).GetComponentInChildren<Text>();
-    //    // Debug.Log(lastChildText.text);
-    //    lastChildText.text = lastChildText.text.Replace(">", "");
-    //    /*adressText.text = adressText.text.TrimEnd('>');*/
-    //    Canvas.ForceUpdateCanvases();
-    //    StartCoroutine(LayoutReset(adressParent.GetComponent<RectTransform>()));
-    //}
-
+    // 아래는 기존 동근이가 작성한 코드임
     IEnumerator LayoutReset(RectTransform obj)
     {
         yield return new WaitForEndOfFrame();
@@ -585,7 +241,7 @@ public class UI_4_LocalDisk : MonoBehaviour
 
     public void SetUIAdress(UIManager.UI uiType)
     {
-        switch(uiType)
+        switch (uiType)
         {
             case UIManager.UI.UI_MyPC:
                 Address.text = "내 PC";

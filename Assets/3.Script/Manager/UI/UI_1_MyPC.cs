@@ -93,7 +93,7 @@ public class UI_1_MyPC : MonoBehaviour
             // Debug.Log("UpdateStats");
             AttackText.text = statusManager.AttackPower.ToString();
             AttackSpeedText.text = statusManager.AttackSpeed.ToString();
-            BulletVelocityText.text = poolingManager.bulletPool.Peek().speed.ToString();
+            BulletVelocityText.text = statusManager.BulletSpeed.ToString();
             RangeText.text = statusManager.AngleRange.ToString();
             MoveSpeedText.text = statusManager.MoveSpeed.ToString();
             Storage.text = statusManager.CurrentStorage.ToString();

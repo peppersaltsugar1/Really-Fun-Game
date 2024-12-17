@@ -30,7 +30,7 @@ public class FolderGenerator : MonoBehaviour
     public float HorizontalSpacing;
     public float VerticalSpacing;
 
-    private List<TreeNodeData> TreeTemplete;
+    public List<TreeNodeData> TreeTemplete;
 
     public void GenerateMap()
     {

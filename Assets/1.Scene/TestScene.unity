@@ -2167,32 +2167,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UI_W_LocalDisk: {fileID: 1662586170}
-  localDiskContent: {fileID: 0}
-  UIPortal: {fileID: 3377475705501524865, guid: 606e54738333aad48874f4ec0b675868, type: 3}
-  portalUiList:
-  - {fileID: 1127124907, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -915068727, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: 1822713184, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1583352473, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -396369561, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: 826647242, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1867870008, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  - {fileID: -1674180315, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  closePortalUiList:
-  - {fileID: 2000000841, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -860560246, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -655639855, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -702670396, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 1521753489, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -980278564, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -60972639, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 368143465, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: 1534443574, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  - {fileID: -1595032775, guid: 5572bf0c2ba4b564198fc5edc38689ce, type: 3}
-  ItemImageList: []
   adressParent: {fileID: 4643454225879247797}
   adressButton: {fileID: -2117697981345528623, guid: 7e6d6e35a5ecbbb459a44a17cf708831, type: 3}
   Address: {fileID: 1591240012}
+  content: {fileID: 2032275802}
+  FoldPrefab: {fileID: 4721211824792232769, guid: 5ad29d1f80fead64e9cedb1e9a7eff48, type: 3}
+  DownloadPrefab: {fileID: 4721211824792232769, guid: e1f97d84977cdd841ac6e56e1af4984d, type: 3}
+  ShopPrefab: {fileID: 4721211824792232769, guid: 197bb292c9b1fa04a82935c1b591b5a1, type: 3}
+  BossPrefab: {fileID: 4721211824792232769, guid: a68daffec64a168438ba22f51388098b, type: 3}
+  linePrefab: {fileID: 1681052467281665017, guid: 8265dad5ea732804b84cc3058ab1ba5c, type: 3}
+  xOffset: 200
+  yOffset: 100
 --- !u!114 &598970849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2293,6 +2278,7 @@ MonoBehaviour:
   CurrentFolder: {fileID: 0}
   FolderGenerator: {fileID: 1839915740}
   CurrentFolderMonsterCount: 0
+  rootFolder: {fileID: 0}
 --- !u!1001 &603053065
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5464,6 +5450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c9d7cc1de2dc53479d2b584d06b7787, type: 3}
+--- !u!224 &2032275802 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4820080291391876542, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
+  m_PrefabInstance: {fileID: 4643454225879247795}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2067549780
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,10 +13,11 @@ public class FolderManager : MonoBehaviour
     public FolderNode CurrentFolder; // 현재 폴더
     public FolderGenerator FolderGenerator; // 폴더 생성기
     public int CurrentFolderMonsterCount = 0;
+    public FolderNode rootFolder;
 
 
     private UI_0_HUD ui_0_HUD; // HUD를 갱신하기 위한 참조
-
+    private UI_4_LocalDisk localDiskUI;
     private void Awake()
     {
         if (instance == null)
@@ -57,6 +58,7 @@ public class FolderManager : MonoBehaviour
 
 
         ui_0_HUD = UI_0_HUD.Instance;
+        localDiskUI = UI_4_LocalDisk.Instance;
 
         // 맵 생성 시작
         GenerateMap();
@@ -64,13 +66,18 @@ public class FolderManager : MonoBehaviour
         AllFolderDeActivate();
 
         SetCurrentFolder(CurrentFolder);
+
+        if (localDiskUI != null && rootFolder != null)
+        {
+            localDiskUI.GenerateTreeUI(FolderGenerator.TreeTemplete);
+        }
     }
 
     // 맵 생성 시작
     public void GenerateMap()
     {
         FolderGenerator.GenerateMap();
-        FolderNode rootFolder = FolderGenerator.GetRootNode();
+        rootFolder = FolderGenerator.GetRootNode();
 
         if (rootFolder == null)
         {
