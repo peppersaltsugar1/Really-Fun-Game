@@ -5203,9 +5203,10 @@ MonoBehaviour:
   FolderName: Donwload_room
   Parent: {fileID: 0}
   Children: []
+  isDetectionDone: 0
   Type: 3
   MonsterCount: 0
-  IsCleared: 1
+  IsCleared: 0
   nowPosition: 0
   Left_Portal: {fileID: 3801199399408970692}
   Portals: []

@@ -1561,9 +1561,10 @@ MonoBehaviour:
   FolderName: Store_room
   Parent: {fileID: 0}
   Children: []
+  isDetectionDone: 0
   Type: 2
   MonsterCount: 0
-  IsCleared: 1
+  IsCleared: 0
   nowPosition: 0
   Left_Portal: {fileID: 4603112962626787422}
   Portals: []

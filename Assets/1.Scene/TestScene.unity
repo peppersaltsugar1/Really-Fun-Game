@@ -2171,13 +2171,18 @@ MonoBehaviour:
   adressButton: {fileID: -2117697981345528623, guid: 7e6d6e35a5ecbbb459a44a17cf708831, type: 3}
   Address: {fileID: 1591240012}
   content: {fileID: 2032275802}
+  linePrefab: {fileID: 1681052467281665017, guid: 8265dad5ea732804b84cc3058ab1ba5c, type: 3}
   FoldPrefab: {fileID: 4721211824792232769, guid: 5ad29d1f80fead64e9cedb1e9a7eff48, type: 3}
+  FoldHiddenPrefab: {fileID: 4579589692340265928, guid: 07c5c04d3c434de4f8865ffd95cc877f, type: 3}
+  BossPrefab: {fileID: 4721211824792232769, guid: a68daffec64a168438ba22f51388098b, type: 3}
   DownloadPrefab: {fileID: 4721211824792232769, guid: e1f97d84977cdd841ac6e56e1af4984d, type: 3}
   ShopPrefab: {fileID: 4721211824792232769, guid: 197bb292c9b1fa04a82935c1b591b5a1, type: 3}
-  BossPrefab: {fileID: 4721211824792232769, guid: a68daffec64a168438ba22f51388098b, type: 3}
-  linePrefab: {fileID: 1681052467281665017, guid: 8265dad5ea732804b84cc3058ab1ba5c, type: 3}
-  xOffset: 200
-  yOffset: 100
+  ChargeRoomPrefab: {fileID: 4721211824792232769, guid: 67671cc18d1e9884cad1b5cff472463e, type: 3}
+  GuardRoomPrefab: {fileID: 4721211824792232769, guid: 79dd637926c786a4eb0bfb2dd60d14ff, type: 3}
+  JuvaCafePrefab: {fileID: 4721211824792232769, guid: 8072b70b0f5d83243997d3e94b12bdd7, type: 3}
+  TrashRoomPrefab: {fileID: 4721211824792232769, guid: 46d9764c4b9729f46aa6cb93639e2015, type: 3}
+  ySpacing: 100
+  xSpacing: 200
 --- !u!114 &598970849
 MonoBehaviour:
   m_ObjectHideFlags: 0

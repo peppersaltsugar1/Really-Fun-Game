@@ -2727,9 +2727,10 @@ MonoBehaviour:
   FolderName: Juva_cafe
   Parent: {fileID: 0}
   Children: []
+  isDetectionDone: 0
   Type: 4
   MonsterCount: 0
-  IsCleared: 1
+  IsCleared: 0
   nowPosition: 0
   Left_Portal: {fileID: 4644075408456922432}
   Portals: []
