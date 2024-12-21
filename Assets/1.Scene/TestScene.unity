@@ -5190,6 +5190,14 @@ MonoBehaviour:
   - {fileID: 197837822198071625, guid: 0aae5c00d07df7b41be9ad8bf493f841, type: 3}
   - {fileID: 197837822198071625, guid: cf45d0837f4eae841ba03e8ae91ab0fc, type: 3}
   - {fileID: 197837822198071625, guid: 5742abb504c58b141821a83a215e06e5, type: 3}
+  bossPortalSprite: {fileID: -915068727, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  shopPortalSprite: {fileID: -1583352473, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  downloadPortalSprite: {fileID: 1822713184, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  Charge_room: {fileID: 826647242, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  Guard_room: {fileID: -1674180315, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  Juva_cafe: {fileID: -1867870008, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  Trash_room: {fileID: -396369561, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  Default: {fileID: 157078799, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
   HorizontalSpacing: 0
   VerticalSpacing: 0
 --- !u!4 &1839915741
