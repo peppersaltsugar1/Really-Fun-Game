@@ -11,24 +11,17 @@ public class Portal : MonoBehaviour
     public int ParentPortalIndex = 0; // 왼쪽 포탈의 경우 상위 폴더의 몇 번째 포탈에 연결된 것인지를
                                       // 나타내는 인덱스(0 ~ 2 범위)
 
-    private bool isActive = true; // 포탈 활성화 여부
-    private bool isMoving = false; // 포탈 이동 중 여부
+
+    // 디버깅 용으로 퍼블릭으로 설정함.
+    // private bool isActive = true; // 포탈 활성화 여부
+    // private bool isMoving = false; // 포탈 이동 중 여부
+    public bool isActive = true; // 포탈 활성화 여부
+    public bool isMoving = false; // 포탈 이동 중 여부
     FolderManager folderManager = null;
 
     public void Start()
     {
         folderManager = FolderManager.Instance;
-    }
-
-    // 포탈 활성화 함수
-    public void ActivatePortal()
-    {
-        isActive = true;
-    }
-
-    public void DeActivatePortal()
-    {
-        isActive = false;
     }
 
     // OnTriggerEnter2D, OnTriggerStay2D 이 두개는 로직이 같음
@@ -118,9 +111,10 @@ public class Portal : MonoBehaviour
         
         // 지연 후 실행할 함수 호출
         Debug.Log("DelayAfterPortalActive");
-        folderManager.CurrentFolder.CheckCurrentFolder();
-
         isMoving = false;
+
+        if (folderManager.PreviousPortal != null)
+            folderManager.PreviousPortal.isMoving = false;
     }
 
 
@@ -135,13 +129,14 @@ public class Portal : MonoBehaviour
         if (Direction == PortalDirection.Left)
         {
             Debug.Log("Left");
-
-            folderManager.MoveToPreviousFolder(ParentPortalIndex);
+            ConnectedFolder.Portals[ParentPortalIndex].isMoving = true;
+            folderManager.MoveToPreviousFolder(ParentPortalIndex, this);
         }
         else
         {
             Debug.Log("Right");
-            folderManager.MoveToNextFolder(PortalIndex);
+            ConnectedFolder.Left_Portal.isMoving= true;
+            folderManager.MoveToNextFolder(PortalIndex, this);
         }
     }
 
@@ -151,5 +146,10 @@ public class Portal : MonoBehaviour
     {
         ConnectedFolder = conneted;
         ParentPortalIndex = parentPortalIndex;
+    }
+
+    public void SetIsMovingFalse()
+    {
+        isMoving = false;
     }
 }

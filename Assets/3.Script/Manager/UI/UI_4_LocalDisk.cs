@@ -11,6 +11,10 @@ public class UI_4_LocalDisk : MonoBehaviour
     // UI Window
     public GameObject UI_W_LocalDisk = null;
 
+    // Manager
+    private FolderManager folderManager;
+    public Player player;
+
     //주소관련
     // public List<Map> adressList = new();
     [SerializeField]
@@ -48,6 +52,7 @@ public class UI_4_LocalDisk : MonoBehaviour
     private Dictionary<int, RectTransform> nodeUIMap;       // 노드 ID와 UI RectTransform 매핑
     private Dictionary<int, List<GameObject>> linesMap;     // 각 노드에 연결된 선을 저장
 
+
     public static UI_4_LocalDisk Instance
     {
         get
@@ -83,7 +88,7 @@ public class UI_4_LocalDisk : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        folderManager = FolderManager.Instance;
     }
 
     // Update is called once per frame
@@ -231,6 +236,13 @@ public class UI_4_LocalDisk : MonoBehaviour
                     RectTransform parentUI = nodeUIMap[node.Parent.GetInstanceID()];
                     DrawLine(node.Parent, node, parentUI, rectTransform);
                 }
+
+                // 버튼 이벤트 
+                Button button = newNodeUI.GetComponent<Button>();
+                if (button != null)
+                {
+                    button.onClick.AddListener(() => OnNodeButtonClicked(node));
+                }
             }
         }
     }
@@ -269,6 +281,42 @@ public class UI_4_LocalDisk : MonoBehaviour
         }
         linesMap[endNodeID].Add(line.gameObject);
     }
+
+    private void OnNodeButtonClicked(FolderNode node)
+    {
+        if (node == null)
+        {
+            Debug.LogError("Folder is null.");
+            return;
+        }
+
+        // 클리어 상태 확인
+        if (!node.IsCleared)
+        {
+            Debug.Log($"Folder {node.FolderName} is not cleared.");
+            return;
+        }
+
+        // 이동 로직 실행
+        Debug.Log($"Moving to Folder {node.FolderName}");
+        folderManager.MoveToFolder(node);
+
+        Transform teleportPoint = node.transform.Find("TeleportPoint");
+        if (teleportPoint != null && player != null)
+        {
+            player.transform.position = teleportPoint.position;
+            Debug.Log($"Player moved to {node.FolderName} at {teleportPoint.position}");
+        }
+        else
+        {
+            Debug.LogWarning("TeleportPoint not found or Player is null.");
+        }
+        
+        // 현재 포탈을 모두 활성화
+        folderManager.ResetCurrentPortal();
+    }
+
+
 
     public void UpdateNodeUIStates()
     {
