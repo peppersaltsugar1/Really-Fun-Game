@@ -374,12 +374,6 @@ public class UI_4_LocalDisk : MonoBehaviour
 
 
     // 아래는 기존 동근이가 작성한 코드임
-    IEnumerator LayoutReset(RectTransform obj)
-    {
-        yield return new WaitForEndOfFrame();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(obj);
-
-    }
 
     public void AdressReset()
     {

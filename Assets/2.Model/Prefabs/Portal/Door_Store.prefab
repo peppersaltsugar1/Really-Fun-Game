@@ -126,6 +126,9 @@ MonoBehaviour:
   ParentPortalIndex: 0
   isActive: 1
   isMoving: 0
+  isLocking: 1
+  childAnimator: {fileID: 4820733378727684566}
+  childspriteRenderer: {fileID: 4820733378727684567}
 --- !u!61 &7124717223973905352
 BoxCollider2D:
   m_ObjectHideFlags: 0

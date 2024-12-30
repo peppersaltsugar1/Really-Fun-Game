@@ -263,9 +263,9 @@ public class ItemManager : MonoBehaviour
     public int GetKeyCount()
     {
         int KeyCount = 0;
-        if (ItemManager.Instance.itemList.ContainsKey("잠금파일 해독 키"))
+        if (ItemManager.Instance.itemList.ContainsKey("잠금파일 해독키"))
         {
-            KeyCount = ItemManager.Instance.itemList["잠금파일 해독 키"].Count;
+            KeyCount = ItemManager.Instance.itemList["잠금파일 해독키"].Count;
         }
         return KeyCount;
     }

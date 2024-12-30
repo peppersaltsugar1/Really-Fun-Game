@@ -111,10 +111,38 @@ public class FolderManager : MonoBehaviour
         CurrentFolder.isDetectionDone = true;
 
         // 연결된 폴더도 모두 발견 상태로 만듦.
+        if (CurrentFolder == null)
+        {
+            Debug.LogError("CurrentFolder is null!");
+            return;
+        }
+
+        if (CurrentFolder.Portals == null)
+        {
+            Debug.LogError("CurrentFolder.Portals is null!");
+            return;
+        }
+
         foreach (Portal portal in CurrentFolder.Portals)
         {
+            if (portal == null)
+            {
+                Debug.LogWarning("Portal is null. Skipping...");
+                continue;
+            }
+
+            if (portal.ConnectedFolder == null)
+            {
+                Debug.LogWarning($"Portal {portal.name} does not have a connected folder.");
+                continue;
+            }
+
             portal.ConnectedFolder.isDetectionDone = true;
         }
+        //foreach (Portal portal in CurrentFolder.Portals)
+        //{
+        //    portal.ConnectedFolder.isDetectionDone = true;
+        //}
     }
 
     // 폴더 이동
@@ -127,8 +155,6 @@ public class FolderManager : MonoBehaviour
 
         SetCurrentFolder(folder);
     }
-
-    
 
     // 상위 폴더로 이동(왼쪽 포탈)
     public void MoveToPreviousFolder(int ParentPortalIndex, Portal preportal)
