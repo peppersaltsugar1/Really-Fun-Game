@@ -119,10 +119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fddcb419e4c9f7d4cb98de38c41544b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Direction: 0
+  Direction: 1
   PortalIndex: 0
   ConnectedFolder: {fileID: 0}
   ParentPortalIndex: 0
+  isActive: 1
+  isMoving: 0
 --- !u!61 &-3821712479992233731
 BoxCollider2D:
   m_ObjectHideFlags: 0

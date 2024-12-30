@@ -123,6 +123,8 @@ MonoBehaviour:
   PortalIndex: 0
   ConnectedFolder: {fileID: 0}
   ParentPortalIndex: 0
+  isActive: 1
+  isMoving: 0
 --- !u!61 &3771237068345362976
 BoxCollider2D:
   m_ObjectHideFlags: 0

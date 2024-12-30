@@ -5204,14 +5204,14 @@ MonoBehaviour:
   - {fileID: 197837822198071625, guid: 0aae5c00d07df7b41be9ad8bf493f841, type: 3}
   - {fileID: 197837822198071625, guid: cf45d0837f4eae841ba03e8ae91ab0fc, type: 3}
   - {fileID: 197837822198071625, guid: 5742abb504c58b141821a83a215e06e5, type: 3}
-  bossPortalSprite: {fileID: -915068727, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  shopPortalSprite: {fileID: -1583352473, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  downloadPortalSprite: {fileID: 1822713184, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  Charge_room: {fileID: 826647242, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  Guard_room: {fileID: -1674180315, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  Juva_cafe: {fileID: -1867870008, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  Trash_room: {fileID: -396369561, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
-  Default: {fileID: 157078799, guid: f8952f46f1ae8584391bc6d0a66d71d1, type: 3}
+  BossPortal: {fileID: 6235806326948411526, guid: 799c9624e5fb03f47b3ac039538e6662, type: 3}
+  ShopPortal: {fileID: 4820733377079305132, guid: 34c2dfa19af76124283ce7c33e19d71d, type: 3}
+  DownloadPortal: {fileID: 2846304963694770893, guid: 0328078c8f30b804da17712600d95a95, type: 3}
+  Charge_room: {fileID: 6725418212507406809, guid: a0f61db65f9c3664290f41942d31463f, type: 3}
+  Guard_room: {fileID: 3837617482852523015, guid: d78b42b8d4b8c834e8bf7dc1dfbaf3f0, type: 3}
+  Juva_cafe: {fileID: 329882468549925560, guid: 3732d411a8f9fd94a9bd7beceee3cf5f, type: 3}
+  Trash_room: {fileID: 5480275669131382547, guid: c9a604dcfdcdfc14cb19101af3bd6f0a, type: 3}
+  Default: {fileID: 7751288568014158312, guid: b34964fcfc7d07445b5387863ac1c4d6, type: 3}
   HorizontalSpacing: 70
   VerticalSpacing: 0
 --- !u!4 &1839915741
