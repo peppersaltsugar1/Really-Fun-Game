@@ -345,16 +345,23 @@ public class UI_4_LocalDisk : MonoBehaviour
                 Debug.LogError("Image Component is not found");
                 return;
             }
-
-            // 발견 O + 클리어 X : 색상을 어둡게 처리
-            if (node.isDetectionDone && !node.IsCleared)
+            // 탐색되지 않은 경우 UI 비활성화
+            if (node.isDetectionDone == false)
             {
+                nodeGameObject.SetActive(false);
+            }
+            // 발견 O + 클리어 X : 색상을 어둡게 처리
+            else if (node.isDetectionDone == true && node.IsCleared == false)
+            {
+                Debug.Log("발견 O + 클리어 X");
                 nodeGameObject.SetActive(true);
                 imageComponent.color = new Color(0.3f, 0.3f, 0.3f, 0.6f);
             }
             // 발견 O + 클리어 O : 색상 원복, 선 활성화
-            else if (node.isDetectionDone && node.IsCleared)
+            else if (node.isDetectionDone == true && node.IsCleared == true)
             {
+                Debug.Log("발견 O + 클리어 O");
+                nodeGameObject.SetActive(true);
                 imageComponent.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 if (linesMap.ContainsKey(nodeID))
                 {
@@ -364,11 +371,11 @@ public class UI_4_LocalDisk : MonoBehaviour
                     }
                 }
             }
-            // 탐색되지 않은 경우 UI 비활성화
-            else if (!node.isDetectionDone)
+            else
             {
-                nodeGameObject.SetActive(false);
+                Debug.LogError("이상한 상태가 별견됨");
             }
+            
         }
     }
 
