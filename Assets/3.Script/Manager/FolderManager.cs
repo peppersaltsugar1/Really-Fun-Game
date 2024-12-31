@@ -87,7 +87,7 @@ public class FolderManager : MonoBehaviour
         }
 
         CurrentFolder = rootFolder; // 루트 폴더를 현재 폴더로 설정
-        Debug.Log("Map generation completed.");
+        // Debug.Log("Map generation completed.");
     }
 
     // 현재 폴더 설정
@@ -100,13 +100,13 @@ public class FolderManager : MonoBehaviour
 
         // HUD 업데이트
         SetMonsterCount(folder);
-        Debug.Log($"Current MonsterCount: {CurrentFolderMonsterCount}");
+        // Debug.Log($"Current MonsterCount: {CurrentFolderMonsterCount}");
         ui_0_HUD.UpdateHUD();
 
         // 클리어 여부와 몬스터 수를 확인 후 포탈을 활성화 
         CurrentFolder.DeActivePortal();
         CurrentFolder.CheckCurrentFolder(); 
-        Debug.Log($"Current folder set to: {CurrentFolder.FolderName}");
+        // Debug.Log($"Current folder set to: {CurrentFolder.FolderName}");
 
         // 현재 폴더를 발견 상태로 만듦.
         CurrentFolder.isDetectionDone = true;

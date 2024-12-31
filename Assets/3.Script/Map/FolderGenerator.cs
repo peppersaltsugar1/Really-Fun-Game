@@ -125,7 +125,7 @@ public class FolderGenerator : MonoBehaviour
         }
 
         // FolderNode가 성공적으로 찾은 경우
-        Debug.Log("FolderNode component found successfully.");
+        // Debug.Log("FolderNode component found successfully.");
 
         return folderNode;
     }
