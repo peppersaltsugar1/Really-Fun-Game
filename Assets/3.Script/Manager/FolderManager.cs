@@ -234,6 +234,7 @@ public class FolderManager : MonoBehaviour
 
         MoveToFolder(DestinationFolder);
         PreviousFolderNode.DeActivePortal();
+        DestinationFolder.Left_Portal.DelayisMovingFalse();
     }
 
     private void AllFolderDeActivate()

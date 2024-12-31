@@ -67,7 +67,7 @@ public class FolderNode : MonoBehaviour
     {
         if (CurrentFolder == null) return;
 
-        // Debug.Log("SetFolderActive");
+        Debug.Log("SetFolderActive");
         CurrentFolder.SetActive(true);
     }
 

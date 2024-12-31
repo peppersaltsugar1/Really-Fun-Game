@@ -167,6 +167,12 @@ public class Portal : MonoBehaviour
         }
     }
 
+    public void DelayisMovingFalse()
+    {
+        // Debug.Log("DelayisMovingFalse");
+        StartCoroutine(DelayAfterPortalisMoving(1.5f));
+    }
+
     private IEnumerator DelayAfterPortalisMoving(float delay)
     {
         // delay만큼 대기
@@ -210,23 +216,20 @@ public class Portal : MonoBehaviour
         ParentPortalIndex = parentPortalIndex;
     }
 
+    // 애니메이터에서 문을 열어주는 이벤트 실행기
     public void SetClearTrigger()
     {
         if (animator == null)
         {
-            Debug.LogError("animator is null");
+            Debug.LogWarning("animator is null");
             return;
         }
 
         switch (ConnectedFolder.name)
         {
             case "Donwload_room(Clone)":
-                // 이벤트 처리
-                Debug.Log("Donwload_room Trigger is not Set");
-                break;
             case "Store_room(Clone)":
-                // 이벤트 처리
-                Debug.Log("Store_room Trigger is not Set");
+                // 클리어 트리거 없어야 함
                 break;
             default:
                 animator.SetBool("Clear", true);
