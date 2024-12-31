@@ -112,7 +112,7 @@ public class FolderNode : MonoBehaviour
         // 오른쪽 포탈들 비활성화
         foreach (var portal in Portals)
         {
-            portal.isActive = false;
+            portal.DeActivePortal();
         }
     }
 

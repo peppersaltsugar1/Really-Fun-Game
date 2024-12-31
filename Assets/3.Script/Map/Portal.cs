@@ -2,6 +2,7 @@ using System.Collections;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Networking.PlayerConnection;
 
 public class Portal : MonoBehaviour
 {
@@ -209,11 +210,6 @@ public class Portal : MonoBehaviour
         ParentPortalIndex = parentPortalIndex;
     }
 
-    public void SetIsMovingFalse()
-    {
-        isMoving = false;
-    }
-
     public void SetClearTrigger()
     {
         if (animator == null)
@@ -235,6 +231,20 @@ public class Portal : MonoBehaviour
             default:
                 animator.SetBool("Clear", true);
                 break;
+        }
+    }
+
+
+    public void DeActivePortal()
+    {
+        isActive = false;
+        if (animator != null && ConnectedFolder.IsCleared == false)
+        {
+            if (ConnectedFolder.Type == FolderNode.FolderType.Shop ||
+            ConnectedFolder.Type == FolderNode.FolderType.Download)
+            {
+                animator.SetTrigger("NotClear");
+            }
         }
     }
 }
