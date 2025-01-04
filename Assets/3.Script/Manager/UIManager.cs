@@ -126,7 +126,6 @@ public class UIManager : MonoBehaviour
         if (!ui_8_ProgramInstall.isESCDisabled && folderManager.CurrentFolder.IsCleared && Input.GetKeyDown(KeyCode.Escape))
         {
             WindowUISetActive();
-
         }
     }
 

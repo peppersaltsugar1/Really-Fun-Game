@@ -126,12 +126,6 @@ public class ItemManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     // 코인 순서에 맞춰 정렬하기 위한 비교기
     public class CoinComparer : IComparer<string>
     {

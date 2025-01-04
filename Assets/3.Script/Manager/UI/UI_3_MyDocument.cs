@@ -84,12 +84,6 @@ public class UI_3_MyDocument : MonoBehaviour
         RemoveItemDetail();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OpenUI()
     {
         if (UI_W_MyDocument != null)

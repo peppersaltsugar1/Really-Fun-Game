@@ -67,13 +67,6 @@ public class MonsterBase : MonoBehaviour
         folderManager = FolderManager.Instance;
         DefenseRate = 1.0f;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public virtual IEnumerator MonsterRoutine()
     {
         Debug.Log("\"MonsterRoutine \"함수를 재정의하지 않음.");

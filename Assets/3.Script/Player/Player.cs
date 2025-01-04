@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     Animator anim;
 
     //플레이어 카메라
-    public Camera camera;
+    // public Camera camera;
 
     // Manager
     private UIManager uiManager;

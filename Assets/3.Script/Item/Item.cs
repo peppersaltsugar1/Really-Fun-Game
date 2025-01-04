@@ -7,7 +7,8 @@ public class Item : MonoBehaviour
 {
     public enum ItemType
     {
-        Coin1, Coin5, Coin10, Coin15, Coin100, Key, CardPack, ForcedDeletion, ProgramRemove, ProgramRecycle, Heal, TemHp, Shiled, Spark
+        Coin1, Coin5, Coin10, Coin15, Coin100, Key, CardPack, ForcedDeletion, ProgramRemove, ProgramRecycle
+        , Heal, TemHp, Shiled, Spark, HPFull
         , Card_Clover, Card_Spade, Card_Hearth, Card_Dia
         , Ticket_Random, Ticket_Down, Ticket_Shop, Ticket_Special, Ticket_BlackShop,Ticket_Boss
         , ExpansionKit_1, ExpansionKit_2, ExpansionKit_3
@@ -73,8 +74,15 @@ public class Item : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Player"))
         {
-            // 용량 부족한 경우
-            if (statusManager.MaxStorage - statusManager.CurrentStorage < ItemSize)
+            // 용량 부족한 경우 or (현재 체력 + 힐 아이템 회복량 > 맥스 체력)
+            if (statusManager.MaxStorage - statusManager.CurrentStorage < ItemSize
+                || 
+                    (
+                    (itemType == ItemType.Heal || itemType == ItemType.HPFull)
+                    && 
+                    (statusManager.HPisFull || (int)statusManager.CurrentHp + itemScore > (int)statusManager.MaxHp)
+                    )
+               )
             {
                 isTracking = false;
                 if (rb != null)
@@ -180,7 +188,9 @@ public class Item : MonoBehaviour
             case ItemType.Spark:
                 SparkItem();
                 break;
-
+            case ItemType.HPFull:
+                HPFullItem();
+                break;
 
         }
     }
@@ -255,7 +265,11 @@ public class Item : MonoBehaviour
 
     private void HealItem()
     {
-        Debug.Log("힐 아이템 기능 구현 안되어 있음");
+        if(statusManager != null)
+        {
+            statusManager.Heal(itemScore);
+            Destroy(gameObject);
+        }
     }
 
     private void TemHpItem()
@@ -273,6 +287,16 @@ public class Item : MonoBehaviour
         Debug.Log("전기 아이템 기능 구현 안되어 있음");
     }
 
+    private void HPFullItem()
+    {
+        if (statusManager != null)
+        {
+            statusManager.HPisFull = true;
+            itemScore = (int)statusManager.MaxHp - (int)statusManager.CurrentHp;
+            statusManager.Heal(itemScore);
+            Destroy(gameObject);
+        }
+    }
 
     IEnumerator StopAfterDelay(float delay)
     {

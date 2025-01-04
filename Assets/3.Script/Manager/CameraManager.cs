@@ -46,8 +46,6 @@ public class CameraManager : MonoBehaviour
     {
         gameManager = GameManager.Instance;
     }
-
-    // Update is called once per frame
     
     public void CameraLimit(GameObject map)
     {

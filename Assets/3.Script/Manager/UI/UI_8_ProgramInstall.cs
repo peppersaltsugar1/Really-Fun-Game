@@ -106,12 +106,6 @@ public class UI_8_ProgramInstall : MonoBehaviour
         OP_ED_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OpenUI()
     {
         if (UI_W_ProgramInstall != null)

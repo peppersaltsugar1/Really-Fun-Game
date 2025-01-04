@@ -44,6 +44,8 @@ public class StatusManager : MonoBehaviour
     public float Shield; // 공격 막아주는 것
     public float ShieldHp;
     public float Elect;
+    public bool HPisFull = false;
+
     public MonsterBase.MonsterType DeathSign; // 사망원인
     private float HealCoolTime;
     private Coroutine healing_coroutine;
@@ -163,7 +165,7 @@ public class StatusManager : MonoBehaviour
         if (TemHp > 0)
         {
             TemHp -= damage;
-            ui_0_HUD.HpSet();
+            // ui_0_HUD.HpSet();
 
             if (TemHp <= 0)
             {
@@ -195,7 +197,7 @@ public class StatusManager : MonoBehaviour
         if (CurrentHp > 0)
         {
             CurrentHp -= damage;
-            ui_0_HUD.HpSet();
+            ui_0_HUD.UpdateHpUI();
 
             if (CurrentHp <= 0)
             {
@@ -254,10 +256,12 @@ public class StatusManager : MonoBehaviour
                 CurrentHp += 1;
                 CurrentHp = Mathf.Min(CurrentHp, MaxHp);
             }
+            ui_0_HUD.UpdateHpUI();
             yield return new WaitForSeconds(HealCoolTime);
         }
-
         healing_coroutine = null;
+
+        HPisFull = false;
     }
 
     private void Die()

@@ -91,12 +91,6 @@ public class UI_4_LocalDisk : MonoBehaviour
         folderManager = FolderManager.Instance;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void OpenUI()
     {
         Debug.Log("OpenUI");
