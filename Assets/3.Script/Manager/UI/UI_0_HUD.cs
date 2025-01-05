@@ -15,12 +15,12 @@ public class UI_0_HUD : MonoBehaviour
     // HP
     [SerializeField]
     private List<GameObject> hpPrefabsList;
-    private List<GameObject> hpList = new();
+    public List<GameObject> hpList = new();
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
     private int interval;
-    
+
     private int hpNum = 0;
 
     // Left side text
@@ -141,12 +141,14 @@ public class UI_0_HUD : MonoBehaviour
         // 플레이어의 체력 상황에따라 체력바 재생성
         // 최적화 코드
         // 체력 관련 데이터를 배열로 정의 - 새로운거 추가되면 여기에 추가해야 함.
+        int HPTotal = ((int)statusManager.MaxHp / 3) + ((int)statusManager.MaxHp % 3 > 0 ? 1 : 0);
+        int TempTotal = ((int)statusManager.TemHp / 3) + ((int)statusManager.TemHp % 3 > 0 ? 1 : 0);
         var hpData = new (int count, GameObject prefab)[]
         {
-        ((int)statusManager.MaxHp / 3, hpPrefabsList[0]), // 일반 체력
-        ((int)statusManager.TemHp / 3, hpPrefabsList[1]), // 임시 체력
-        ((int)statusManager.Elect, hpPrefabsList[2]),     // 전기
-        ((int)statusManager.ShieldHp, hpPrefabsList[3])   // 쉴드
+        ( HPTotal, hpPrefabsList[0]), // 일반 체력
+        ( TempTotal, hpPrefabsList[1]), // 임시 체력
+        ( (int)statusManager.Elect, hpPrefabsList[2]),     // 전기
+        ( (int)statusManager.Shield, hpPrefabsList[3])   // 쉴드
         };
 
         // 체력바 생성
@@ -162,66 +164,7 @@ public class UI_0_HUD : MonoBehaviour
             }
         }
 
-        // 기존 동근이 코드
-        /*
-        if (statusManager.MaxHp > 0)
-        {
-            //최대체력 3당 체력베터리 1개 생성후 리스트에 추가
-            for (int i = 0; i < statusManager.MaxHp / 3; i++)
-            {
-                GameObject newHp = Instantiate(hpPrefabsList[0], canvas.transform);
-                newHp.transform.SetParent(canvas.transform, false);
-                RectTransform rectTransform = newHp.GetComponent<RectTransform>();
-                rectTransform.anchoredPosition = new Vector2(i * interval, 0); // 위치 조정 (임의로 설정)
-                hpList.Add(newHp);
-                hpNum += 1;
-            }
-            //임시체력 3당 임시체력베터리 1개 생성후 리스트에 추가
-            if (statusManager.TemHp > 0)
-            {
-                for (int i = 0; i < statusManager.TemHp / 3; i++)
-                {
-                    GameObject newTemHp = Instantiate(hpPrefabsList[1], canvas.transform);
-                    newTemHp.transform.SetParent(canvas.transform, false);
-                    RectTransform rectTransform = newTemHp.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-                    hpList.Add(newTemHp);
-                    hpNum += 1;
-
-                }
-            }
-            //전기1 전기베터리 1개 생성후 리스트에 추가
-
-            if (statusManager.Elect > 0)
-            {
-                for (int i = 0; i < statusManager.Elect; i++)
-                {
-                    GameObject spark = Instantiate(hpPrefabsList[2], canvas.transform);
-                    spark.transform.SetParent(canvas.transform, false);
-                    RectTransform rectTransform = spark.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-                    hpList.Add(spark);
-                    hpNum += 1;
-
-                }
-            }
-            //쉴드체력1당 체력베터리 1개 생성후 리스트에 추가
-            if (statusManager.ShieldHp > 0)
-            {
-                for (int i = 0; i < statusManager.ShieldHp; i++)
-                {
-                    GameObject newShildHp = Instantiate(hpPrefabsList[3], canvas.transform);
-                    newShildHp.transform.SetParent(canvas.transform, false);
-                    RectTransform rectTransform = newShildHp.GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(hpNum * interval, 0); // 위치 조정 (임의로 설정)
-                    hpList.Add(newShildHp);
-                    hpNum += 1;
-
-                }
-            }
-        }
-        */
-
+        // UpdateHpUI();
     }
 
     // HP UI를 최신화해주는 함수
@@ -230,10 +173,20 @@ public class UI_0_HUD : MonoBehaviour
         // 현재 체력 UI의 상태를 업데이트
         for (int i = 0; i < hpList.Count; i++)
         {
-            Transform hpSegment = hpList[i].transform;
-            hpSegment.GetChild(1).gameObject.SetActive(false); // 첫 칸
-            hpSegment.GetChild(2).gameObject.SetActive(false); // 두 번째 칸
-            hpSegment.GetChild(3).gameObject.SetActive(false); // 세 번째 칸
+            if (hpList[i].name == "R_Heart(Clone)")
+            {
+                Transform hpSegment = hpList[i].transform;
+                hpSegment.GetChild(1).gameObject.SetActive(false); // 첫 칸
+                hpSegment.GetChild(2).gameObject.SetActive(false); // 두 번째 칸
+                hpSegment.GetChild(3).gameObject.SetActive(false); // 세 번째 칸
+            }
+            if (hpList[i].name == "RDis_Heart(Clone)")
+            {
+                Transform hpSegment = hpList[i].transform;
+                hpSegment.GetChild(0).gameObject.SetActive(false); // 첫 칸
+                hpSegment.GetChild(1).gameObject.SetActive(false); // 두 번째 칸
+                hpSegment.GetChild(2).gameObject.SetActive(false); // 세 번째 칸
+            }
         }
 
         // 체력을 3씩 나눠 각 세그먼트를 활성화
@@ -242,7 +195,7 @@ public class UI_0_HUD : MonoBehaviour
         {
             // 기본 체력에 경우에만 처리
             if (hpList[i].name != "R_Heart(Clone)")
-                return;
+                continue;
 
             Transform hpSegment = hpList[i].transform;
 
@@ -265,6 +218,39 @@ public class UI_0_HUD : MonoBehaviour
                 remainingHp -= 1;
             }
         }
+
+        // 임시 체력을 3씩 나눠 각 세그먼트를 활성화
+        int remainingTemp = (int)statusManager.TemHp;
+        for (int i = 0; i < hpList.Count && remainingTemp > 0; i++)
+        {
+            // 임시체력의 경우에만 처리
+            if (hpList[i].name != "RDis_Heart(Clone)")
+                continue;
+
+            Transform hpSegment = hpList[i].transform;
+
+            if (remainingTemp >= 3)
+            {
+                hpSegment.GetChild(0).gameObject.SetActive(true);
+                hpSegment.GetChild(1).gameObject.SetActive(true);
+                hpSegment.GetChild(2).gameObject.SetActive(true);
+                remainingTemp -= 3;
+            }
+            else if (remainingTemp == 2)
+            {
+                hpSegment.GetChild(0).gameObject.SetActive(true);
+                hpSegment.GetChild(1).gameObject.SetActive(true);
+                remainingTemp -= 2;
+            }
+            else if (remainingTemp == 1)
+            {
+                hpSegment.GetChild(0).gameObject.SetActive(true);
+                remainingTemp -= 1;
+            }
+        }
+
+        // 쉴드 갱신
+        ShiledOn();
     }
 
     // ShiledHP를 먹은 상태고 히트 상태가 될 때 HP에 Shiled를 씌워주는 함수
@@ -278,26 +264,39 @@ public class UI_0_HUD : MonoBehaviour
             hpList.RemoveAt(index);
             Destroy(removeHp);
             hpNum--;
+            SetRandomShiledNum();
             ShiledOn();
             return;
         }
     }
 
+    // 쉴드가 씌워질 개수를 설정해주는 함수
+    private void SetRandomShiledNum()
+    {
+        int RandomShiledNum = UnityEngine.Random.Range(1, (int)statusManager.CurrentHp / 3 + 1);
+
+        Debug.Log($"배터리 개수 : {RandomShiledNum}");
+        statusManager.ShieldHp = RandomShiledNum;
+    }
+
     // HP에 Shiled를 씌워주는 함수
     private void ShiledOn()
     {
-        int RandomShiledNum = UnityEngine.Random.Range(0, (int)statusManager.CurrentHp % 3);
+        int remainingShields = (int)statusManager.ShieldHp; // 활성화할 쉴드 개수
+        int currentHp = (int)statusManager.CurrentHp;       // 현재 HP
 
-        //Hp체력바의 쉴드를 활성화
-        for (int i = hpNum - 1; i >= 0 && RandomShiledNum > 0; i--)
+        int ActiveShield = currentHp / 3 - 1;
+        // ActiveShield = ActiveShield >= 
+        // 오른쪽부터 쉴드 적용
+        for (int i = ActiveShield; i >= 0 && remainingShields > 0; i--)
         {
             if (hpList[i].name == "R_Heart(Clone)")
             {
-                // 첫 번째 자식을 가져와 활성화
+                Transform segments = hpList[i].transform;
                 if (hpList[i].transform.childCount > 0)
                 {
                     hpList[i].transform.GetChild(0).gameObject.SetActive(true);
-                    RandomShiledNum--;
+                    remainingShields--;
                 }
             }
         }
@@ -307,7 +306,7 @@ public class UI_0_HUD : MonoBehaviour
     public void ShiledOff()
     {
         // 가장 오른쪽 ShiledHP를 비활성화
-        for (int i = hpNum - 1; i >= statusManager.Shield; i--)
+        for (int i = hpNum - 1; i >= 0; i--)
         {
             if (hpList[i].name == "R_Heart(Clone)" && hpList[i].transform.GetChild(0).gameObject.activeSelf)
             {
@@ -317,78 +316,23 @@ public class UI_0_HUD : MonoBehaviour
         }
     }
 
-    public void TemHpSet()
-    {
-        //임시체력 관리 
-        for (int i = hpNum - 1; i >= 0; i--)
-        {
-            if (hpList[i].name == "RDis_Heart(Clone)")
-            {
-                switch (statusManager.TemHp % 3)
-                {
-                    case 0:
-                        hpList[i].transform.GetChild(0).gameObject.SetActive(true);
-                        hpList[i].transform.GetChild(1).gameObject.SetActive(true);
-                        hpList[i].transform.GetChild(2).gameObject.SetActive(true);
-                        break;
 
-                    case 1:
-                        hpList[i].transform.GetChild(0).gameObject.SetActive(true);
-                        hpList[i].transform.GetChild(1).gameObject.SetActive(false);
-                        hpList[i].transform.GetChild(2).gameObject.SetActive(false);
-                        break;
-
-                    case 2:
-                        hpList[i].transform.GetChild(0).gameObject.SetActive(true);
-                        hpList[i].transform.GetChild(1).gameObject.SetActive(true);
-                        hpList[i].transform.GetChild(2).gameObject.SetActive(false);
-                        break;
-                }
-                return;
-            }
-        }
-    }
-    public void TemHpDel()
+    // ShiledHP와 일반(빨간)HP를 처리하는 함수
+    public void DamagedHP()
     {
-        for (int i = hpNum - 1; i >= 0; i--)
-        {
-            if (hpList[i].name == "RDis_Heart(Clone)")
-            {
-                GameObject removeHp = hpList[i];
-                hpList.RemoveAt(i);
-                Destroy(removeHp);
-                hpNum--;
-                return;
-            }
-        }
-    }
-    public void HpDel()
-    {
-        for (int i = hpNum - 1; i >= 0; i--)
+        for (int i = hpList.Count - 1; i >= 0; i--)
         {
             if (hpList[i].name == "R_Heart(Clone)")
             {
-                GameObject removeHp = hpList[i];
-                hpList.RemoveAt(i);
-                Destroy(removeHp);
-                hpNum--;
-                return;
-            }
-        }
-    }
-    public void ElectDel()
-    {
-        for (int i = hpNum - 1; i >= 0; i--)
-        {
-            if (hpList[i].name == "Elect_Heart(Clone)")
-            {
-                GameObject removeHp = hpList[i];
-                hpList.RemoveAt(i);
-                Destroy(removeHp);
-                hpNum--;
-                return;
-            }
-        }
-    }
+                Transform segments = hpList[i].transform;
 
+                if (segments.GetChild(0).gameObject.activeSelf)
+                {
+                    Debug.Log("일반 체력 소모");
+                    segments.GetChild(0).gameObject.SetActive(false); // 일반 체력 감소
+                    statusManager.CurrentHp--;
+                }
+            }
+        }
+    }
 }

@@ -263,6 +263,7 @@ public class Item : MonoBehaviour
         Debug.Log("프로그램 재활용 기능 구현 안되어 있음");
     }
 
+    // HP회복 아이템
     private void HealItem()
     {
         if(statusManager != null)
@@ -272,21 +273,37 @@ public class Item : MonoBehaviour
         }
     }
 
+    // 임시 체력 회복 아이템
     private void TemHpItem()
     {
-        Debug.Log("임시체력 아이템 기능 구현 안되어 있음");
+        if (statusManager != null)
+        {
+            statusManager.TemHpUp(itemScore);
+            Destroy(gameObject);
+        }
     }
 
+    // 쉴드 아이템
     private void ShiledItem()
     {
-        Debug.Log("실드 아이템 기능 구현 안되어 있음");
+        if (statusManager != null)
+        {
+            statusManager.ShieldHpUp(itemScore);
+            Destroy(gameObject);
+        }
     }
 
+    // 번개 아이템
     private void SparkItem()
     {
-        Debug.Log("전기 아이템 기능 구현 안되어 있음");
+        if (statusManager != null)
+        {
+            statusManager.ElectUp(itemScore);
+            Destroy(gameObject);
+        }
     }
 
+    // HPFull 아이템
     private void HPFullItem()
     {
         if (statusManager != null)

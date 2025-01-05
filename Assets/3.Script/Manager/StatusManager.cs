@@ -17,7 +17,7 @@ public class StatusManager : MonoBehaviour
     public float B_Shield;
     public float B_ShieldHp;
     public float B_Elect;
-    private float B_HealCoolTime = 0.2f; // Playher Heal CoolTime
+    public float B_HealCoolTime = 0.2f; // Playher Heal CoolTime
     private float B_HitCoolTime = 2.0f; // Player Attacked CoolTime
 
     // Player Attack Status
@@ -47,8 +47,11 @@ public class StatusManager : MonoBehaviour
     public bool HPisFull = false;
 
     public MonsterBase.MonsterType DeathSign; // »ç¸Á¿øÀÎ
-    private float HealCoolTime;
+    public float HealCoolTime;
+
     private Coroutine healing_coroutine;
+    private Coroutine TempHealing_coroutine;
+
     private float HitCoolTime;
     private bool IsHit = false;
 
@@ -66,7 +69,7 @@ public class StatusManager : MonoBehaviour
     public int MaxStorage;
 
     [Header("Item Drop Physical Force")]
-    public float DragForce;   
+    public float DragForce;
     public float DropForce;
     public float AbsorptionSpeed;
     public float GetDistance;
@@ -117,12 +120,11 @@ public class StatusManager : MonoBehaviour
         MaxStorage = B_MaxStorage;
     }
 
-    // =============================== Fixed Section ===============================
     public void TakeDamage(float damage, MonsterBase.MonsterType deathSign)
     {
         if (!IsHit)
         {
-            // Debug.Log("Player Take Damage");
+            Debug.Log("Player Take Damage");
             DeathSign = deathSign;
             StartCoroutine(Hit_Coroutine(damage));
         }
@@ -131,15 +133,12 @@ public class StatusManager : MonoBehaviour
     private IEnumerator Hit_Coroutine(float damage)
     {
         IsHit = true;
-        if (ShieldHp > 0)
-        {
-            ShieldHp -= damage;
-            ui_0_HUD.ShiledSet();
 
-            if (ShieldHp <= 0)
-            {
-                ShieldHp = 0;
-            }
+        if ((int)Shield > 0)
+        {
+            Debug.Log("½¯µå ¹èÅÍ¸® ÆøÆÈ");
+            Shield--;   // ½¯µå °³¼ö ÇÏ³ª ÁÙÀÌ°í
+            ui_0_HUD.ShiledSet(); // HP¿¡ ½¯µå ¼ÂÆÃ
 
             yield return new WaitForSeconds(HitCoolTime);
             IsHit = false;
@@ -148,8 +147,10 @@ public class StatusManager : MonoBehaviour
 
         if (Elect > 0)
         {
+            Debug.Log("Àü±â ¹èÅÍ¸® ÆøÆÈ");
             Elect -= damage;
-            ui_0_HUD.ElectDel();
+            ui_0_HUD.HpBarSet();
+            ui_0_HUD.UpdateHpUI();
 
             if (Elect <= 0)
             {
@@ -164,29 +165,28 @@ public class StatusManager : MonoBehaviour
 
         if (TemHp > 0)
         {
+            Debug.Log("ÀÓ½Ã Ã¼·Â ¼Ò¸ð");
             TemHp -= damage;
-            // ui_0_HUD.HpSet();
-
-            if (TemHp <= 0)
-            {
-                ui_0_HUD.TemHpDel();
-                TemHp = 0;
-            }
+            ui_0_HUD.HpBarSet();
+            ui_0_HUD.UpdateHpUI();
 
             yield return new WaitForSeconds(HitCoolTime);
             IsHit = false;
             yield break;
         }
 
-        if (Shield > 0 && Shield * 3 >= CurrentHp)
-        {
-            Shield -= 1;
-            ui_0_HUD.ShiledOff();
+        //if (CurrentHp <= 0) Die(); // »ç¸Á Ã³¸®
+        //yield return new WaitForSeconds(HitCoolTime);
+        //IsHit = false;
+        //yield break;
 
-            if (Shield <= 0)
-            {
-                Shield = 0;
-            }
+
+        if (ShieldHp > 0 && CurrentHp > 0)
+        {
+            Debug.Log("½¯µå ¼Ò¸ð");
+            ShieldHp -= 1;
+            ui_0_HUD.ShiledOff();
+            // ui_0_HUD.UpdateHpUI();
 
             yield return new WaitForSeconds(HitCoolTime);
             IsHit = false;
@@ -196,6 +196,7 @@ public class StatusManager : MonoBehaviour
 
         if (CurrentHp > 0)
         {
+            Debug.Log("Ã¼·Â ¼Ò¸ð");
             CurrentHp -= damage;
             ui_0_HUD.UpdateHpUI();
 
@@ -223,17 +224,40 @@ public class StatusManager : MonoBehaviour
     public void ElectUp(int electNum)
     {
         Elect += electNum;
+        ui_0_HUD.HpBarSet();
+        ui_0_HUD.UpdateHpUI();
     }
 
     public void ShieldHpUp(int shieldNum)
     {
-        ShieldHp += shieldNum;
+        Shield += shieldNum;
+        ui_0_HUD.HpBarSet();
+        ui_0_HUD.UpdateHpUI();
     }
 
     public void TemHpUp(int temHpNum)
     {
-        TemHp += temHpNum;
-        ui_0_HUD.TemHpSet();
+        if (TempHealing_coroutine != null)
+        {
+            StopCoroutine(TemHpCoroutine(temHpNum));
+        }
+        TempHealing_coroutine = StartCoroutine(TemHpCoroutine(temHpNum));
+
+        Debug.Log("TempHP+");
+    }
+
+    private IEnumerator TemHpCoroutine(int temHpNum)
+    {
+        for (int i = 0; i < temHpNum; i++)
+        {
+            TemHp++;
+            ui_0_HUD.HpBarSet();
+            ui_0_HUD.UpdateHpUI();
+            yield return new WaitForSeconds(HealCoolTime);
+        }
+        TempHealing_coroutine = null;
+
+        HPisFull = false;
     }
 
     public void Heal(int healNum)
