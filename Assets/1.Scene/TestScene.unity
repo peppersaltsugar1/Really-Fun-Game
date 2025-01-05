@@ -2119,6 +2119,7 @@ MonoBehaviour:
   B_Shield: 0
   B_ShieldHp: 0
   B_Elect: 0
+  B_HealCoolTime: 0.2
   B_AttackPower: 20
   B_AttackSpeed: 18
   B_AttackPushPower: 3
@@ -2138,6 +2139,7 @@ MonoBehaviour:
   Elect: 0
   HPisFull: 0
   DeathSign: 0
+  HealCoolTime: 0
   AttackPower: 0
   AttackSpeed: 0
   AttackPushPower: 0
@@ -2355,6 +2357,7 @@ MonoBehaviour:
   - {fileID: 6450412930878453804, guid: 1b51a653e734c424ca0c287232c37712, type: 3}
   - {fileID: 8016665736267170001, guid: 9f472c881dca1344f88d26e568171250, type: 3}
   - {fileID: 3585480957747634437, guid: 4e9cb7256d12cc94d9fa3dfcecc8797c, type: 3}
+  hpList: []
   canvas: {fileID: 817483665}
   interval: 48
   KeyCount: {fileID: 568233029}
@@ -7069,7 +7072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225346771029, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_Name
-      value: ----------[UI]
+      value: '----------[UI] '
       objectReference: {fileID: 0}
     - target: {fileID: 4643454225368907904, guid: 66a95c3f623811e4b9a9b3e407781709, type: 3}
       propertyPath: m_SizeDelta.y
