@@ -10,7 +10,6 @@ public class FishController : MonoBehaviour
     public float Speed = 0f; // 움직임 속도
     public float MaxPlusSpeed;
     public float MinPlusSpeed;
-
     private SpriteRenderer spriteRenderer;
 
     void Awake()

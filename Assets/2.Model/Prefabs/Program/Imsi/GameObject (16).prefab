@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +106,23 @@ MonoBehaviour:
   AttackSpeed: 0
   MoveSpeed: 0
   BulletSpeed: 0
-  DeleteIsPossible: 1
+  AttackPerUp: 0
+  AttackSpeedPerUp: 0
+  MoveSpeedPerUp: 0
+  bulletSpeedPerUp: 0
+  AttackPerDown: 0
+  AttackSpeedPerDown: 0
+  MoveSpeedPerDown: 0
+  bulletSpeedPerDown: 0
+  SetAttackPer: 0
+  SetAttackSpeedPer: 0
+  SetMoveSpeedPer: 0
+  SetbulletSpeedPer: 0
+  BulletScalePerUP: 0
+  BulletScalePerDown: 0
+  SetBulletScalePer: 0
+  IsUsable: 1
+  IsDeletable: 1
   spriteRenderer: {fileID: 6315629092135534864}
   spriteSheetName: Program 1~20_AbilityIncrease
   spriteIndex: 16
