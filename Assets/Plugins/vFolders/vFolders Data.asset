@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb9c12a8c6c949f7af83a3d238359d0, type: 3}
+  m_Name: vFolders Data
+  m_EditorClassIdentifier: 
+  folderDatas_byGuid:
+    keys:
+    - c439876fab5019e4f98d0924deb26898
+    - 15d95e75281f5974b837ba181d0cb3e7
+    - 5e4f78758409b904c8e58049f0519e95
+    - e596904a471a20049b7cb32da2257534
+    - 0aa67874d787f4b41ba288340ae08011
+    - 1dd1f69ad3c74e249bc32b89bb791c69
+    - c7dc6ea67faec5b48be865ce4260a3ea
+    - 0a2eb2a9420dce344aaf436232c41548
+    values:
+    - iconNameOrGuid: SceneAsset Icon
+      colorIndex: 0
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: cs Script Icon
+      colorIndex: 2
+      isIconRecursive: 1
+      isColorRecursive: 1
+    - iconNameOrGuid: AudioClip Icon
+      colorIndex: 8
+      isIconRecursive: 0
+      isColorRecursive: 1
+    - iconNameOrGuid: Prefab Icon
+      colorIndex: 1
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: RawImage Icon
+      colorIndex: 3
+      isIconRecursive: 0
+      isColorRecursive: 1
+    - iconNameOrGuid: AnimationClip Icon
+      colorIndex: 4
+      isIconRecursive: 0
+      isColorRecursive: 1
+    - iconNameOrGuid: 
+      colorIndex: 6
+      isIconRecursive: 0
+      isColorRecursive: 0
+    - iconNameOrGuid: 
+      colorIndex: 1
+      isIconRecursive: 0
+      isColorRecursive: 1
+  bookmarks:
+  - guid: 1dd1f69ad3c74e249bc32b89bb791c69
+  - guid: 0aa67874d787f4b41ba288340ae08011
+  - guid: 15d95e75281f5974b837ba181d0cb3e7
+  - guid: 0a2eb2a9420dce344aaf436232c41548

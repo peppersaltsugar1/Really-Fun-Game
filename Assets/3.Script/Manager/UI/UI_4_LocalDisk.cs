@@ -349,7 +349,7 @@ public class UI_4_LocalDisk : MonoBehaviour
             {
                 Debug.Log("발견 O + 클리어 X");
                 nodeGameObject.SetActive(true);
-                imageComponent.color = new Color(0.3f, 0.3f, 0.3f, 0.6f);
+                imageComponent.color = new Color(0.45f, 0.45f, 0.45f, 1.0f);
             }
             // 발견 O + 클리어 O : 색상 원복, 선 활성화
             else if (node.isDetectionDone == true && node.IsCleared == true)
