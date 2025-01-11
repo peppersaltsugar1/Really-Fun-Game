@@ -5,7 +5,6 @@ public class White_Spider : MonsterBase
 {
     public float AttackCoolTime; 
     public float SearchingCoolTime;
-    bool First = true;
 
     // Start is called before the first frame update
     protected override void Start()
