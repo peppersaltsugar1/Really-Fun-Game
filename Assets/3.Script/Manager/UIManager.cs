@@ -216,7 +216,7 @@ public class UIManager : MonoBehaviour
                 ui_2_DownLoad.GenerateProgramList();
                 ui_3_MyDocument.GenerateItemList();
                 ui_3_MyDocument.UpdateStorage();
-
+                ui_4_LocalDisk.UpdateNodeUIStates();
                 OpenWindowUI();
             }
         }
