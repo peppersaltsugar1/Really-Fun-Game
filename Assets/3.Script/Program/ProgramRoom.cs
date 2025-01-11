@@ -66,6 +66,8 @@ public class ProgramRoom : MonoBehaviour
 
     #endregion
 
+    #region Program Install UI Setting
+
     public void AddProgram()
     {
         // Add Program
@@ -94,6 +96,8 @@ public class ProgramRoom : MonoBehaviour
             Debug.LogError("Sprite not found or invalid index.");
         }
     }
+
+    #endregion
 
     // 추후 프로그램 변경 아이템용
     public void ChangeDownloadRoomProgram()
