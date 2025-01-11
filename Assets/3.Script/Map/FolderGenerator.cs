@@ -6,6 +6,7 @@ using static Unity.VisualScripting.Metadata;
 
 public class FolderGenerator : MonoBehaviour
 {
+    #region Definition
 
     [Header("MapCount")]
     public int GenerateMapCount;
@@ -43,6 +44,8 @@ public class FolderGenerator : MonoBehaviour
 
     public List<TreeNodeData> TreeTemplete;
 
+    #endregion
+
     public void GenerateMap()
     {
         if (GenerateMapCount < 6)
@@ -73,6 +76,7 @@ public class FolderGenerator : MonoBehaviour
         //Debug.Log("Map generation complete.");
     }
 
+    #region FolderNode
 
     // 트리에 따라 실제로 시작 맵을 생성시키는 함수
     private FolderNode CreateStartMap()
@@ -253,6 +257,10 @@ public class FolderGenerator : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Portal
+
     // 실제로 포탈을 연결해주는 함수
     private void ConnectPortals(FolderNode node)
     {
@@ -332,7 +340,7 @@ public class FolderGenerator : MonoBehaviour
         }
     }
 
-    // BossFolderPrefabs
+    // 연결된 폴더에 따른 포탈 프리펩을 반환해주는 함수
     private GameObject GetPortalPrefabsForFolderType(FolderNode node)
     {
         switch (node.Type)
@@ -363,7 +371,9 @@ public class FolderGenerator : MonoBehaviour
         }
     }
 
+    #endregion
 
+    #region FolderNodeList Base Generator
 
     // 트리 구조체 정보를 담고있는 클래스
     public class TreeNodeData
@@ -531,5 +541,5 @@ public class FolderGenerator : MonoBehaviour
         return nodes;
     }
 
-
+    #endregion
 }

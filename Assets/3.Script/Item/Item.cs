@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour
 {
+    #region Definition
     public enum ItemType
     {
         Coin1, Coin5, Coin10, Coin15, Coin100, Key, CardPack, ForcedDeletion, ProgramRemove, ProgramRecycle
@@ -32,6 +33,10 @@ public class Item : MonoBehaviour
     private Transform playerTransform;
     private bool isTracking = false;
     public bool isDroped = false;
+
+    #endregion
+
+    #region Default Function
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +73,10 @@ public class Item : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Collider
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isPickedUp) return;
@@ -80,7 +89,7 @@ public class Item : MonoBehaviour
                     (
                     (itemType == ItemType.Heal || itemType == ItemType.HPFull)
                     && 
-                    (statusManager.HPisFull || (int)statusManager.CurrentHp + itemScore > (int)statusManager.MaxHp)
+                    (statusManager.HPisFull || (int)statusManager.MaxHp - (int)statusManager.CurrentHp == 0)
                     )
                )
             {
@@ -109,6 +118,10 @@ public class Item : MonoBehaviour
             }
         }
     }
+
+    #endregion
+
+    #region Get Item 
 
     private void ItemTypeToFun()
     {
@@ -213,6 +226,10 @@ public class Item : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Item Effect 
+
     // Item Usage Effect Section
     private void CoinItem()
     {
@@ -315,11 +332,15 @@ public class Item : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region Coroutine
+
     IEnumerator StopAfterDelay(float delay)
     {
         yield return new WaitForSecondsRealtime(delay);
         rb.velocity = Vector2.zero;
     }
 
-
+    #endregion
 }

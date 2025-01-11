@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class StatusManager : MonoBehaviour
 {
+    #region Manager
+
     public static StatusManager Instance;
+    private FolderManager folderManager;
     private UIManager uiManager;
     private UI_0_HUD ui_0_HUD;
+
+    #endregion
+
+    #region Player Base Status
 
     // When game is started, this base status used to Initializing Status based on this list.
     [Header("Player Base Status")]
@@ -34,6 +41,10 @@ public class StatusManager : MonoBehaviour
     public int B_Coin; // 코인 개수
     public int B_CurrentStorage;
     public int B_MaxStorage;
+
+    #endregion
+
+    #region Dynamic Status
 
     // When player in game, playing with this status
     // This status are no need to reset.
@@ -68,12 +79,22 @@ public class StatusManager : MonoBehaviour
     public int CurrentStorage;
     public int MaxStorage;
 
+    #endregion
+
+    #region Item
+
     [Header("Item Drop Physical Force")]
     public float DragForce;
     public float DropForce;
     public float AbsorptionSpeed;
     public float GetDistance;
     public float MaxDistance;
+
+    [Header("Item Effect")]
+    public float ElectValue;
+    #endregion
+
+    #region Default / Init Function
 
     void Awake()
     {
@@ -92,6 +113,7 @@ public class StatusManager : MonoBehaviour
     {
         uiManager = UIManager.Instance;
         ui_0_HUD = UI_0_HUD.Instance;
+        folderManager = FolderManager.Instance;
         InitializeStatus();
     }
 
@@ -119,6 +141,10 @@ public class StatusManager : MonoBehaviour
         CurrentStorage = B_CurrentStorage;
         MaxStorage = B_MaxStorage;
     }
+
+    #endregion
+
+    #region Damage Logic
 
     public void TakeDamage(float damage, MonsterBase.MonsterType deathSign)
     {
@@ -149,7 +175,7 @@ public class StatusManager : MonoBehaviour
         {
             Debug.Log("전기 배터리 폭팔");
             Elect -= damage;
-            ui_0_HUD.HpBarSet();
+            ui_0_HUD.ExceptHp_BarSet();
             ui_0_HUD.UpdateHpUI();
 
             if (Elect <= 0)
@@ -167,7 +193,7 @@ public class StatusManager : MonoBehaviour
         {
             Debug.Log("임시 체력 소모");
             TemHp -= damage;
-            ui_0_HUD.HpBarSet();
+            ui_0_HUD.ExceptHp_BarSet();
             ui_0_HUD.UpdateHpUI();
 
             yield return new WaitForSeconds(HitCoolTime);
@@ -175,30 +201,10 @@ public class StatusManager : MonoBehaviour
             yield break;
         }
 
-        //if (CurrentHp <= 0) Die(); // 사망 처리
-        //yield return new WaitForSeconds(HitCoolTime);
-        //IsHit = false;
-        //yield break;
-
-
-        if (ShieldHp > 0 && CurrentHp > 0)
+        if (ShieldHp > 0 || CurrentHp > 0)
         {
-            Debug.Log("쉴드 소모");
-            ShieldHp -= 1;
-            ui_0_HUD.ShiledOff();
-            // ui_0_HUD.UpdateHpUI();
-
-            yield return new WaitForSeconds(HitCoolTime);
-            IsHit = false;
-            yield break;
-        }
-
-
-        if (CurrentHp > 0)
-        {
-            Debug.Log("체력 소모");
-            CurrentHp -= damage;
-            ui_0_HUD.UpdateHpUI();
+            Debug.Log("HP + 쉴드 소모");
+            ui_0_HUD.DamagedHP();
 
             if (CurrentHp <= 0)
             {
@@ -206,10 +212,21 @@ public class StatusManager : MonoBehaviour
             }
 
             yield return new WaitForSeconds(HitCoolTime);
+            IsHit = false;
+            yield break;
         }
 
         IsHit = false;
     }
+
+    private void Die()
+    {
+        uiManager.PlayerIsDead();
+    }
+
+    #endregion
+
+    #region ItmeEffects
 
     public void SetSpeed(float newSpeed)
     {
@@ -224,14 +241,14 @@ public class StatusManager : MonoBehaviour
     public void ElectUp(int electNum)
     {
         Elect += electNum;
-        ui_0_HUD.HpBarSet();
+        ui_0_HUD.ExceptHp_BarSet();
         ui_0_HUD.UpdateHpUI();
     }
 
     public void ShieldHpUp(int shieldNum)
     {
         Shield += shieldNum;
-        ui_0_HUD.HpBarSet();
+        ui_0_HUD.ExceptHp_BarSet();
         ui_0_HUD.UpdateHpUI();
     }
 
@@ -251,7 +268,7 @@ public class StatusManager : MonoBehaviour
         for (int i = 0; i < temHpNum; i++)
         {
             TemHp++;
-            ui_0_HUD.HpBarSet();
+            ui_0_HUD.ExceptHp_BarSet();
             ui_0_HUD.UpdateHpUI();
             yield return new WaitForSeconds(HealCoolTime);
         }
@@ -288,18 +305,20 @@ public class StatusManager : MonoBehaviour
         HPisFull = false;
     }
 
-    private void Die()
-    {
-        uiManager.PlayerIsDead();
-    }
-
     public void ElectShieldExplode()
     {
-        Debug.Log("ElectShieldExplode Is Not Defined");
+        List<MonsterBase> monsterList = folderManager?.CurrentFolder.FindAndReturnMonster();
+        foreach (MonsterBase monster in monsterList)
+        {
+            monster.Damaged(ElectValue);
+        }
     }
 
     public void MaxStorageUp(int Value)
     {
         MaxStorage += Value;
     }
+
+    #endregion
+
 }
