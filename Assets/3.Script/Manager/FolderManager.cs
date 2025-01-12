@@ -28,7 +28,7 @@ public class FolderManager : MonoBehaviour
 
     // Camera
     [SerializeField] private CinemachineVirtualCamera camera;
-
+    CameraManager cameraManager;
     #endregion
 
     #region Base Function
@@ -74,7 +74,7 @@ public class FolderManager : MonoBehaviour
 
         ui_0_HUD = UI_0_HUD.Instance;
         localDiskUI = UI_4_LocalDisk.Instance;
-
+        cameraManager = CameraManager.Instance;
         // ¸Ê »ý¼º ½ÃÀÛ
         GenerateMap();
 
@@ -177,11 +177,13 @@ public class FolderManager : MonoBehaviour
         SetCurrentFolder(folder);
         if(folder.Type == FolderNode.FolderType.RandomSpecial)
         {
-            camera.m_Lens.OrthographicSize = 8.0f;
+            // camera.m_Lens.OrthographicSize = 8.0f;
+            cameraManager.switcherCamera(folder.mapCamera);
         }
         else
         {
-            camera.m_Lens.OrthographicSize = 5.77f;
+            // camera.m_Lens.OrthographicSize = 5.77f;
+            cameraManager.switchPrimaryCamera();
         }
     }
 

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
@@ -39,6 +40,9 @@ public class FolderNode : MonoBehaviour
     public Portal Left_Portal = null; // 왼쪽 포탈
     [Header("오른쪽 포탈 리스트")]
     public Portal[] Portals; // 오른쪽 포탈 리스트
+
+    // 카메라
+    public CinemachineVirtualCamera mapCamera;
 
     #endregion
 

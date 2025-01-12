@@ -6,6 +6,13 @@ using Cinemachine;
 public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance; // 싱글톤 인스턴스
+
+    public CinemachineVirtualCamera primaryCamera;
+    [SerializeField] private CinemachineVirtualCamera currentCamera;
+    [SerializeField] private Player playerController;
+
+    #region Lagacy Code
+    /*
     [SerializeField]
     private Camera playerCamera;  // 주 카메라
     [SerializeField]
@@ -26,7 +33,10 @@ public class CameraManager : MonoBehaviour
     private float downloadCamera;
     [SerializeField]
     private float shopCamera;
-    
+    */
+    #endregion
+
+    #region Default Function
 
     private void Awake()
     {
@@ -44,9 +54,16 @@ public class CameraManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.Instance;
+        // gameManager = GameManager.Instance;
+        currentCamera = primaryCamera;
     }
-    
+
+    #endregion
+
+    #region Lagacy Code
+
+    /*
+
     public void CameraLimit(GameObject map)
     {
         PolygonCollider2D collider = map.GetComponent<PolygonCollider2D>();
@@ -57,6 +74,7 @@ public class CameraManager : MonoBehaviour
         playerCamera.transform.position = 
             new Vector3(gameManager.player.transform.position.x,gameManager.player.transform.position.y,playerCamera.transform.position.z);
     }
+    */
 
     //public void SpecialMapCamera(Map specialMap)
     //{
@@ -88,5 +106,22 @@ public class CameraManager : MonoBehaviour
     //            break;
     //    }
     //}
+
+    #endregion
+
+    public void switcherCamera(CinemachineVirtualCamera newCamera)
+    {
+        currentCamera.gameObject.SetActive(false);
+        newCamera.gameObject.SetActive(true);
+        currentCamera = newCamera;
+        currentCamera.Follow = playerController.transform;
+    }
+
+    public void switchPrimaryCamera()
+    {
+        currentCamera.gameObject.SetActive(false );
+        primaryCamera.gameObject.SetActive(true);
+        currentCamera = primaryCamera;
+    }
 }
 
