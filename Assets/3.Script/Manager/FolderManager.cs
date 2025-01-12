@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.WSA;
@@ -24,6 +25,9 @@ public class FolderManager : MonoBehaviour
 
     [Header("Portal")]
     public Portal PreviousPortal = null;
+
+    // Camera
+    [SerializeField] private CinemachineVirtualCamera camera;
 
     #endregion
 
@@ -171,6 +175,14 @@ public class FolderManager : MonoBehaviour
         CurrentFolder.SetFolderDeActive();
 
         SetCurrentFolder(folder);
+        if(folder.Type == FolderNode.FolderType.RandomSpecial)
+        {
+            camera.m_Lens.OrthographicSize = 9.0f;
+        }
+        else
+        {
+            camera.m_Lens.OrthographicSize = 5.77f;
+        }
     }
 
     // 상위 폴더로 이동(왼쪽 포탈)
