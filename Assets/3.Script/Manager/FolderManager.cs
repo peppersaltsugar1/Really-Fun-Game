@@ -177,7 +177,7 @@ public class FolderManager : MonoBehaviour
         SetCurrentFolder(folder);
         if(folder.Type == FolderNode.FolderType.RandomSpecial)
         {
-            camera.m_Lens.OrthographicSize = 9.0f;
+            camera.m_Lens.OrthographicSize = 8.0f;
         }
         else
         {
