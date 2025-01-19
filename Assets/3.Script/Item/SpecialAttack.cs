@@ -163,7 +163,7 @@ public class SpecialAttack : MonoBehaviour
         UpdateLineRenderer(attackArea); // 더블 클릭 시에도 라인 렌더러로 영역 표시
         lineRenderer.enabled = true; // 라인 렌더러 활성화
 
-        Debug.Log("AttackSquare");
+        Debug.Log("더블 클릭 인식");
         StartCoroutine(ApplyDamageAfterDelay(attackArea));
 
         isSpecialAttackMode = false; // 스페셜 공격 모드 종료
