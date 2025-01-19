@@ -23,6 +23,7 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-bdbba63d0fefcd04ab1be14995345df9-1698331340-0
         - globalObjectIdString: GlobalObjectId_V1-2-bdbba63d0fefcd04ab1be14995345df9-598970832-0
         - globalObjectIdString: GlobalObjectId_V1-2-bdbba63d0fefcd04ab1be14995345df9-4643454227079626058-4643454225879247795
+        - globalObjectIdString: GlobalObjectId_V1-2-bdbba63d0fefcd04ab1be14995345df9-2133105325-0
         values:
         - colorIndex: 2
           iconNameOrGuid: Canvas Icon
@@ -34,3 +35,5 @@ MonoBehaviour:
           iconNameOrGuid: cs Script Icon
         - colorIndex: 2
           iconNameOrGuid: Canvas Icon
+        - colorIndex: 7
+          iconNameOrGuid: AudioClip Icon
