@@ -355,6 +355,32 @@ public class ItemManager : MonoBehaviour
         }
     }
 
+    public bool ForcedDeletionUse()
+    {
+        // 아이템이 itemList에 있고, 해당 리스트에 아이템이 하나 이상 있는지 확인
+        if (itemList.ContainsKey(ForcedDeletionName) && itemList[ForcedDeletionName].Count > 0)
+        {
+            Item ForcedItem = itemList[ForcedDeletionName][0]; // 첫 번째 아이템 가져오기
+            statusManager.CurrentStorage -= ForcedItem.ItemSize; // 사용 후 저장소 용량 줄이기
+            itemList[ForcedDeletionName].Remove(ForcedItem); // 사용한 아이템 제거
+
+            // 해당 아이템이 더 이상 없으면 리스트에서 아이템 자체를 삭제
+            if (itemList[ForcedDeletionName].Count == 0)
+            {
+                itemList.Remove(ForcedDeletionName);
+            }
+
+            ui_0_HUD.UpdateHUD(); // HUD 업데이트
+            Debug.Log("강제삭제 아이템 사용됨");
+            return true;  // 사용 성공
+        }
+        else
+        {
+            Debug.Log("사용할 수 있는 강제삭제 아이템이 없습니다.");
+            return false;  // 사용 실패
+        }
+    }
+
     public int GetImageIndex(ItemType itemType)
     {
         if (ImageIndexMap.TryGetValue(itemType, out int index))

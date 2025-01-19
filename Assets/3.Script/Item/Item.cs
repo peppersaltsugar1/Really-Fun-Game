@@ -265,7 +265,6 @@ public class Item : MonoBehaviour
     private void ForcedDeletionItem()
     {
         AddItem();
-        Debug.Log("강제삭제 기능 구현 안되어 있음");
     }
 
     private void ProgramRemoveItem()

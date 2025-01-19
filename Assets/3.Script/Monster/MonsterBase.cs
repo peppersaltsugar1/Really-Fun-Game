@@ -150,7 +150,7 @@ public class MonsterBase : MonoBehaviour
 
     public virtual void Damaged(float damage)
     {
-        Debug.Log("Damaged");
+        // Debug.Log("Damaged");
         HP -= damage;
         if (HP <= 0) Die();
     }

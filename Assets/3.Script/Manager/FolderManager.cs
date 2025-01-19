@@ -185,6 +185,8 @@ public class FolderManager : MonoBehaviour
             // camera.m_Lens.OrthographicSize = 5.77f;
             cameraManager.switchPrimaryCamera();
         }
+
+        cameraManager.SetCollider();
     }
 
     // 상위 폴더로 이동(왼쪽 포탈)
@@ -218,7 +220,7 @@ public class FolderManager : MonoBehaviour
     // 하위 폴더로 이동 (오른쪽 포탈을 이용하는 경우)
     public void MoveToNextFolder(int portalIndex, Portal preportal)
     {
-        Debug.Log("MoveToNextFolder");
+        // Debug.Log("MoveToNextFolder");
         if (CurrentFolder == null) return;
         if (portalIndex < 0 || portalIndex >= CurrentFolder.Portals.Length)
         {
