@@ -24,9 +24,12 @@ public class FolderGenerator : MonoBehaviour
     public List<GameObject> BossFolderPrefabs;
     public List<GameObject> SpecialFolderPrefabs;
     public List<GameObject> EndFolderPrefabs;
+    public List<GameObject> HiddenFolderPrefabs;
 
     private List<FolderNode> spawnedFolders = new List<FolderNode>();
     private FolderNode rootFolder;
+
+    public List<GameObject> hiddenFolderList = new List<GameObject>();
 
     [Header("Portal Prefabs")]
     public GameObject BossPortal;
@@ -72,6 +75,9 @@ public class FolderGenerator : MonoBehaviour
 
         // Step 4: Connect Portals
         ConnectPortals(rootFolder);
+
+        // Step 5 : Generate SpecialMap
+        GenerateHiddenFolderList();
 
         //Debug.Log("Map generation complete.");
     }
@@ -254,6 +260,16 @@ public class FolderGenerator : MonoBehaviour
 
             default:
                 return null;
+        }
+    }
+
+    private void GenerateHiddenFolderList()
+    {
+        foreach(var prefab in HiddenFolderPrefabs)
+        {
+            GameObject newmap = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+            newmap.transform.SetParent(this.transform);
+            hiddenFolderList.Add(newmap);
         }
     }
 

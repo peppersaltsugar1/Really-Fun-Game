@@ -15,7 +15,10 @@ public class ItemManager : MonoBehaviour
     private UIManager uIManager;
     private UI_0_HUD ui_0_HUD;
     private Player player;
+    private FolderManager folderManager;
     Rigidbody2D rb;
+
+    #region Item Prefab
 
     [Header("Item Prefab")]
     public GameObject P_Coin1;
@@ -47,9 +50,12 @@ public class ItemManager : MonoBehaviour
     public GameObject P_Shiled;
     public GameObject P_Spark;
 
+    #endregion
 
     GameObject SpawnObject = null;
     GameObject droppedItem = null;
+
+    #region Sorting Item 
 
     // 아이템 이름
     private string KeyName;
@@ -59,6 +65,7 @@ public class ItemManager : MonoBehaviour
     private string Coin10_Name;
     private string Coin15_Name;
     private string Coin100_Name;
+
 
     // ItemType을 키로, 이미지 인덱스를 값으로 저장하는 Dictionary
     public static Dictionary<ItemType, int> ImageIndexMap = new Dictionary<ItemType, int>()
@@ -89,6 +96,46 @@ public class ItemManager : MonoBehaviour
 
 
     };
+
+    // 코인 순서에 맞춰 정렬하기 위한 비교기
+    public class CoinComparer : IComparer<string>
+    {
+        private Dictionary<string, int> customOrder;
+
+        public CoinComparer(ItemManager manager)
+        {
+            customOrder = new Dictionary<string, int>
+            {
+                { manager.Coin1_Name, 1 },
+                { manager.Coin5_Name, 2 },
+                { manager.Coin10_Name, 3 },
+                { manager.Coin15_Name, 4 },
+                { manager.Coin100_Name, 5 }
+            };
+        }
+
+        public int Compare(string x, string y)
+        {
+            // 커스텀 정렬 순서가 있는 경우, 해당 순서로 정렬
+            if (customOrder.ContainsKey(x) && customOrder.ContainsKey(y))
+            {
+                return customOrder[x].CompareTo(customOrder[y]);
+            }
+            // 코인이 아닌 경우 사전 순으로 정렬
+            return x.CompareTo(y);
+        }
+    }
+
+    // 내림차순 정렬을 위한 클래스
+    public class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
+    {
+        public int Compare(T x, T y)
+        {
+            return y.CompareTo(x);
+        }
+    }
+
+    #endregion
 
     private void Awake()
     {
@@ -123,37 +170,10 @@ public class ItemManager : MonoBehaviour
         uIManager = UIManager.Instance;
         ui_0_HUD = UI_0_HUD.Instance;
         player = GameManager.Instance.GetPlayer();
-
+        folderManager = FolderManager.Instance;
     }
 
-    // 코인 순서에 맞춰 정렬하기 위한 비교기
-    public class CoinComparer : IComparer<string>
-    {
-        private Dictionary<string, int> customOrder;
-
-        public CoinComparer(ItemManager manager)
-        {
-            customOrder = new Dictionary<string, int>
-            {
-                { manager.Coin1_Name, 1 },
-                { manager.Coin5_Name, 2 },
-                { manager.Coin10_Name, 3 },
-                { manager.Coin15_Name, 4 },
-                { manager.Coin100_Name, 5 }
-            };
-        }
-
-        public int Compare(string x, string y)
-        {
-            // 커스텀 정렬 순서가 있는 경우, 해당 순서로 정렬
-            if (customOrder.ContainsKey(x) && customOrder.ContainsKey(y))
-            {
-                return customOrder[x].CompareTo(customOrder[y]);
-            }
-            // 코인이 아닌 경우 사전 순으로 정렬
-            return x.CompareTo(y);
-        }
-    }
+    #region Item Add/Drop
 
     public bool AddItem(Item item)
     {
@@ -261,8 +281,6 @@ public class ItemManager : MonoBehaviour
             case Item.ItemType.TemHp: SpawnObject = P_TemHp; break;
             case Item.ItemType.Shiled: SpawnObject = P_Shiled; break;
             case Item.ItemType.Spark: SpawnObject = P_Spark; break;
-
-
         }
     }
 
@@ -273,14 +291,9 @@ public class ItemManager : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
-    // 내림차순 정렬을 위한 클래스
-    public class DescendingComparer<T> : IComparer<T> where T : IComparable<T>
-    {
-        public int Compare(T x, T y)
-        {
-            return y.CompareTo(x);
-        }
-    }
+    #endregion
+
+    #region Get Item Count
 
     public int GetKeyCount()
     {
@@ -327,6 +340,37 @@ public class ItemManager : MonoBehaviour
             BombCount = itemList[ForcedDeletionName].Count;
         }
         return BombCount;
+    }
+
+    #endregion
+
+    #region Item Use
+
+    public void UseItem(Item item)
+    {
+        Debug.Log("UseItem");
+
+        switch (item.itemType)
+        {
+            case ItemType.Card_Clover:
+                folderManager.MoveHiddenFolder("Clover");
+                break;
+            case ItemType.Card_Dia:
+                folderManager.MoveHiddenFolder("Diamond");
+                break;
+            case ItemType.Card_Hearth:
+                folderManager.MoveHiddenFolder("Hearth");
+                break;
+            case ItemType.Card_Spade:
+                folderManager.MoveHiddenFolder("Spade");
+                break;
+            case ItemType.Ticket_BlackShop:
+                folderManager.MoveHiddenFolder("Black");
+                break;
+            default:
+                Debug.Log("아직 정의되지 않은 아이템 사용 효과");
+                break;
+        }
     }
 
     public bool KeyUse()
@@ -380,6 +424,15 @@ public class ItemManager : MonoBehaviour
             return false;  // 사용 실패
         }
     }
+
+    public void UseCardPack()
+    {
+
+    }
+
+    #endregion
+
+    #region Image Setting
 
     public int GetImageIndex(ItemType itemType)
     {
@@ -438,4 +491,5 @@ public class ItemManager : MonoBehaviour
         return spriteSheetName;
     }
 
+    #endregion
 }

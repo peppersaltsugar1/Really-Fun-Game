@@ -18,6 +18,8 @@ public class FolderManager : MonoBehaviour
 
     public GameObject Player; // 캐릭터 위치
     public List<FolderNode> AllFolders = new List<FolderNode>(); // 모든 폴더 리스트
+    public List<GameObject> specialFolderList = new List<GameObject>(); // 스페셜 폴더 리스트
+    public FolderNode previousFolder; // 이전 폴더
     public FolderNode CurrentFolder; // 현재 폴더
     public FolderGenerator FolderGenerator; // 폴더 생성기
     public int CurrentFolderMonsterCount = 0;
@@ -95,7 +97,8 @@ public class FolderManager : MonoBehaviour
     {
         FolderGenerator.GenerateMap();
         rootFolder = FolderGenerator.GetRootNode();
-
+        specialFolderList = FolderGenerator.hiddenFolderList;
+         
         if (rootFolder == null)
         {
             Debug.LogError("Root folder is null. Map generation failed.");
@@ -103,7 +106,6 @@ public class FolderManager : MonoBehaviour
         }
 
         CurrentFolder = rootFolder; // 루트 폴더를 현재 폴더로 설정
-        // Debug.Log("Map generation completed.");
     }
 
     #region Current Folder Setting, Getting Info
@@ -169,12 +171,14 @@ public class FolderManager : MonoBehaviour
     // 폴더 이동
     public void MoveToFolder(FolderNode folder)
     {
+        Debug.Log("MoveToFolder");
         if (folder == null) return;
 
         folder.SetFolderActive();
         CurrentFolder.SetFolderDeActive();
 
         SetCurrentFolder(folder);
+
         if(folder.Type == FolderNode.FolderType.RandomSpecial)
         {
             // camera.m_Lens.OrthographicSize = 8.0f;
@@ -271,6 +275,35 @@ public class FolderManager : MonoBehaviour
         MoveToFolder(DestinationFolder);
         PreviousFolderNode.DeActivePortal();
         DestinationFolder.Left_Portal.DelayisMovingFalse();
+    }
+
+    public void MoveHiddenFolder(string Name)
+    {
+        Debug.Log("MoveHiddenFolder");
+
+        foreach (var cur in specialFolderList)
+        {
+            FolderNode folder = cur.GetComponent<FolderNode>();
+            if (folder.FolderName == Name)
+            {
+                Debug.Log("Find");
+                previousFolder = CurrentFolder;
+                folder.Left_Portal.ConnectedFolder = previousFolder;
+                Player.transform.position = folder.transform.Find("TeleportPoint").position;
+                MoveToFolder(folder);
+                break;   
+            }
+        }
+    }
+
+    public void MoveHiddenToPre(FolderNode folder)
+    {
+        Debug.Log("MoveHiddenToPre");
+
+        CurrentFolder.DeActivePortal();
+
+        Player.transform.position = folder.transform.Find("TeleportPoint").position;
+        MoveToFolder(folder);
     }
 
     #endregion
